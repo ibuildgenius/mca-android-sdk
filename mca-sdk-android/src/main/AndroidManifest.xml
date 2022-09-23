@@ -2,4 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.covergenius.mca_sdk_android">
 
+    <application>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.Mcasdkandroid" />
+    </application>
+
 </manifest>
