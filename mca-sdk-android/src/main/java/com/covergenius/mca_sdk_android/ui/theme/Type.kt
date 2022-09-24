@@ -18,6 +18,12 @@ val Typography = Typography(
         fontFamily = fonts,
         fontWeight = FontWeight.W500,
         fontSize = 14.sp
+    ),
+
+    body2 = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.W800,
+        fontSize = 14.sp
     )
 
     /* Other default text styles to override

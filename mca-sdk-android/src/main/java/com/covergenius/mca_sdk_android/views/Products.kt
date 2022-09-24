@@ -18,10 +18,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.Product
-import com.covergenius.mca_sdk_android.ui.theme.appBarTitleText
-import com.covergenius.mca_sdk_android.ui.theme.colorPrimary
-import com.covergenius.mca_sdk_android.ui.theme.colorPrimaryLight
-import com.covergenius.mca_sdk_android.ui.theme.textFieldShape
+import com.covergenius.mca_sdk_android.ui.theme.*
 
 @Composable
 fun ProductsPage() {
@@ -51,41 +48,43 @@ fun ProductsPage() {
 
 @Composable
 fun ProductItem(product: Product) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row() {
-            IconButton(
-                onClick = { }, modifier =
-                Modifier
-                    .background(colorPrimaryLight.copy(alpha = 0.5f))
-                    .padding(12.dp)
-                    .clip(CircleShape)
-                    .size(24.dp)
-            ) {
-                Icon(
-                    Icons.Default.Home, contentDescription = "", tint = colorPrimary,
-                )
-            }
+    Box(Modifier.padding(12.dp)) {
+        Card(modifier = Modifier.padding(horizontal = 15.dp, vertical = 12.dp)) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row() {
 
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = 15.dp)
-            ) {
-                Text(text = product.name)
-                Row(Modifier.padding(top = 10.dp)) {
-                    Text(text = product.company, style = MaterialTheme.typography.h3)
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.leadway),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .width(18.dp)
-                            .height(18.dp)
+                    Icon(
+                        Icons.Default.Home, contentDescription = "", tint = colorPrimary,
+                        modifier =
+                        Modifier
+                            .background(colorPrimaryLight.copy(alpha = 0.5f), shape = CircleShape)
+                            .padding(12.dp)
+                            .size(24.dp)
                     )
+
+
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(horizontal = 15.dp)
+                    ) {
+                        Text(text = product.name)
+                        Row(Modifier.padding(top = 10.dp)) {
+                            Text(text = product.company, style = MaterialTheme.typography.h3)
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Image(
+                                painter = painterResource(id = R.drawable.leadway),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .width(18.dp)
+                                    .height(18.dp)
+                            )
+                        }
+                    }
+                    Text(text = "N${product.price}", style = MaterialTheme.typography.body2)
                 }
             }
-            Text(text = product.price)
         }
     }
 }
