@@ -4,4 +4,5 @@ enum class MyCoverRoutes {
     Health,
     Auto,
     Gadgets,
+    Products,
 }

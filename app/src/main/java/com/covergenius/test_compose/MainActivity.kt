@@ -29,8 +29,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column() {
                         val context = LocalContext.current
-                        Greeting("Android")
+                        MyCoverAI.init(context)
                         FloatingActionButton(onClick = { MyCoverAI.init(context) }) {
+                        Greeting("Android")
 
                         }
                     }
