@@ -10,4 +10,4 @@ val Shapes = Shapes(
     large = RoundedCornerShape(0.dp)
 )
 
-val textFieldShape = RoundedCornerShape(12.dp)
+val textFieldShape = RoundedCornerShape(50.dp)

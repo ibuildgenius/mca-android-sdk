@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.R
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
+    primary = colorPrimary,
+    primaryVariant = colorPrimaryLight,
     secondary = Teal200
 )
 
@@ -33,12 +33,6 @@ private val LightColorPalette = lightColors(
     onBackground = Color.Black,
     onSurface = Color.Black,
     */
-)
-
-val appBarTitleText = TextStyle(
-    fontSize = 16.sp,
-    color = colorBlack,
-    fontWeight = FontWeight.W700
 )
 
 val fonts = FontFamily(
