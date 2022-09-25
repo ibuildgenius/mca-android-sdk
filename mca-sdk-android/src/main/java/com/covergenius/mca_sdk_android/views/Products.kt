@@ -22,12 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.Product
 import com.covergenius.mca_sdk_android.ui.theme.*
 
 @Composable
-fun ProductsPage() {
+fun ProductsPage(onItemClicked: (value: Boolean) -> Unit) {
 
     val productList = mutableListOf(
         Product("Gadget", "", "AIICO", "6000"),
@@ -48,58 +49,66 @@ fun ProductsPage() {
     var search by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        Modifier
             .fillMaxWidth()
-            .background(
-                colorBackground
-            )
-    ) {
-        Text(
-            text = "Products Page",
-            style = MaterialTheme.typography.body2.copy(fontSize = 16.sp),
-            modifier = Modifier.padding(top = 12.dp, bottom = 25.dp)
-        )
-        OutlinedTextField(
-            value = search,
-            shape = textFieldShape,
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "", tint = colorGrey) },
-            placeholder = {
-                Text(
-                    text = "Search Products",
-                    style = MaterialTheme.typography.h3.copy(color = colorGrey)
+            .padding(12.dp)
+            .background(colorGrey)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    colorBackground
                 )
-            },
-            singleLine = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = colorPrimary,
-                unfocusedBorderColor = colorGrey
-            ),
-            onValueChange = { text: TextFieldValue -> search = text },
-            modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Text(
+                text = "Products Page",
+                style = MaterialTheme.typography.body2.copy(fontSize = 16.sp),
+                modifier = Modifier.padding(top = 12.dp, bottom = 25.dp)
+            )
+            OutlinedTextField(
+                value = search,
+                shape = textFieldShape,
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "", tint = colorGrey) },
+                placeholder = {
+                    Text(
+                        text = "Search Products",
+                        style = MaterialTheme.typography.h3.copy(color = colorGrey)
+                    )
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = colorPrimary,
+                    unfocusedBorderColor = colorGrey
+                ),
+                onValueChange = { text: TextFieldValue -> search = text },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        ChipGroup(items = filterList)
+            ChipGroup(items = filterList)
 
-        LazyColumn(Modifier.padding(vertical = 10.dp)) {
-            items(productList.size) { index ->
-                ProductItem(product = productList[index])
+            LazyColumn(Modifier.padding(vertical = 10.dp)) {
+                items(productList.size) { index ->
+                    ProductItem(product = productList[index], onItemClicked)
+                }
             }
         }
     }
+
 }
 
 data class Filter(val name: String, val selected: Boolean = false)
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, onItemClicked: (value: Boolean) -> Unit) {
+
     Card(
         modifier = Modifier
             .padding(vertical = 8.dp)
             .background(
                 colorPrimaryLight, shape = RoundedCornerShape(8.dp)
             )
-            .toggleable(value = true, onValueChange = {}),
+            .toggleable(value = true, onValueChange = onItemClicked,),
         elevation = 0.dp
     ) {
         Column(

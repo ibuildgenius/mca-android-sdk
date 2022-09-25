@@ -23,23 +23,26 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = colorPrimaryLight,
     primaryVariant = colorPrimaryLight,
-    secondary = Teal200
+    secondary = Teal200,
 
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    // Other default colors to override
+    background = colorWhite,
+    surface = colorBackground,
 )
 
-val fonts = FontFamily(
-    Font(R.font.space_grotesk_regular),
-    Font(R.font.space_grotesk_medium, weight = FontWeight.W600),
-    Font(R.font.space_grotesk_bold, weight = FontWeight.W800)
+val fontsGrotesk = FontFamily(
+    Font(R.font.space_grotesk_regular, FontWeight.W500),
+    Font(R.font.space_grotesk_medium, weight = FontWeight.W700),
+    Font(R.font.space_grotesk_bold, weight = FontWeight.W900)
 )
+
+val fontsMetropolis = FontFamily(
+    Font(R.font.metropolis_regular, FontWeight.W500),
+    Font(R.font.metropolis_medium, FontWeight.W700),
+    Font(R.font.metropolis_bold, FontWeight.W900),
+)
+
+
 
 @Composable
 fun McasdkandroidTheme(
