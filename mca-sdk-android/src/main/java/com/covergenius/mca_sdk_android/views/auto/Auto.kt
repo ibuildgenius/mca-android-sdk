@@ -24,6 +24,8 @@ import com.covergenius.mca_sdk_android.ui.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.utils.Toolbar
 import com.covergenius.mca_sdk_android.utils.center
+import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
+import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
@@ -33,52 +35,12 @@ import kotlinx.coroutines.launch
 fun AutoInsuranceForm() {
     val pagerState = rememberPagerState(pageCount = 3)
 
-
-    ConstraintLayout(Modifier.fillMaxSize()) {
-
-        val (bgStart, bgBottom, layout) = createRefs()
-
-
-
-        Image(
-            painter = painterResource(id = R.drawable.bg),
-            contentDescription = "",
-            modifier = Modifier.constrainAs(bgStart) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-            })
-
-        Image(
-            painter = painterResource(id = R.drawable.bg),
-            contentDescription = "",
-            modifier = Modifier.constrainAs(bgBottom) {
-                bottom.linkTo(parent.bottom)
-                end.linkTo(parent.end)
-            })
-
-
-        Column(Modifier.constrainAs(layout) {
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        }) {
-
-            Toolbar(onBackPressed = {}, onCancelPressed = {})
-
+    MyCoverTemplate(
+        content =  {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(12.dp)
             ) {
-                Column(Modifier.padding(bottom = 12.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .width(160.dp)
-                            .height(28.dp)
-                    )
-                }
                 Tabs(pagerState = pagerState)
                 Box(Modifier.height(10.dp))
                 Column(Modifier.weight(1f)) {
@@ -99,32 +61,10 @@ fun AutoInsuranceForm() {
                     Separator()
                 }
 
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp),
-                    onClick = {},
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
-                ) {
-                    Text(
-                        "Continue",
-                        style = MaterialTheme.typography.body1.copy(color = colorWhite)
-                    )
-                }
-
-                Image(
-                    painter = painterResource(id = R.drawable.powered_by),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .width(160.dp)
-                        .height(20.dp)
-                )
+               MyCoverButton(buttonText = "Continue", {})
             }
         }
-
-
-    }
-
+    )
 }
 
 
