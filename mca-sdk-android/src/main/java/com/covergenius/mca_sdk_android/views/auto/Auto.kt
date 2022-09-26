@@ -1,13 +1,13 @@
 package com.covergenius.mca_sdk_android.views.auto
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.indication
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -26,45 +26,58 @@ import kotlinx.coroutines.launch
 @Composable
 fun AutoInsuranceForm() {
     val pagerState = rememberPagerState(pageCount = 3)
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(12.dp)) {
+    Column() {
         Toolbar(onBackPressed = {}, onCancelPressed = {})
-        Column(Modifier.padding(vertical = 12.dp)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(12.dp)
+        ) {
+            Column(Modifier.padding(bottom = 12.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .width(160.dp)
+                        .height(28.dp)
+                )
+            }
+            Tabs(pagerState = pagerState)
+            Column(Modifier.weight(1f)) {
+                TabsContent(pagerState = pagerState)
+            }
+
+            Column() {
+                Box(
+                    modifier = Modifier
+                        .height(1.dp)
+                        .background(colorGreyLight)
+                        .fillMaxWidth()
+                )
+            }
+
+
+            Box(Modifier.padding(top = 12.dp)) {
+                Separator()
+            }
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
+            ) {
+                Text("Continue", style = MaterialTheme.typography.body1.copy(color = colorWhite))
+            }
+
             Image(
-                painter = painterResource(id = R.drawable.logo),
+                painter = painterResource(id = R.drawable.powered_by),
                 contentDescription = "",
                 modifier = Modifier
                     .width(160.dp)
-                    .height(35.dp)
+                    .height(20.dp)
             )
         }
-        Tabs(pagerState = pagerState)
-        Column(Modifier.weight(1f)) {
-            TabsContent(pagerState = pagerState)
-        }
-
-        Column() {
-            Box(modifier = Modifier
-                .height(1.dp)
-                .background(colorGreyLight)
-                .fillMaxWidth())
-        }
-
-        Separator()
-
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp), onClick = {}, colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)) {
-            Text("Continue", style = MaterialTheme.typography.body1.copy(color = colorWhite))
-        }
-
-        Image(
-            painter = painterResource(id = R.drawable.powered_by),
-            contentDescription = "",
-            modifier = Modifier
-                .width(160.dp)
-                .height(20.dp)
-        )
     }
 }
 
@@ -82,13 +95,9 @@ fun Tabs(pagerState: PagerState) {
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = colorWhite,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                Modifier
-                    .tabIndicatorOffset(tabPositions[pagerState.currentPage])
-            )
-        },
+        backgroundColor = colorBackground,
+        indicator = { tabPositions -> },
+        divider = {}
     ) {
 
         titles.forEachIndexed { index, _ ->
@@ -97,13 +106,16 @@ fun Tabs(pagerState: PagerState) {
 
             Tab(
                 selected = selected,
-                selectedContentColor = colorPrimary,
+                selectedContentColor = colorPrimaryLight,
                 unselectedContentColor = colorNavyBlue,
+                modifier = Modifier.background(if (selected) colorPrimaryBg else colorWhite).border(
+                    BorderStroke(0.5.dp, colorGreyLight)
+                ),
                 onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
                 text = {
                     Text(
                         text = titles[index],
-                        style = if (selected) MaterialTheme.typography.h1 else MaterialTheme.typography.body1
+                        style = if (selected) MaterialTheme.typography.h1 else MaterialTheme.typography.body1,
                     )
                 })
 
@@ -115,23 +127,33 @@ fun Tabs(pagerState: PagerState) {
 @ExperimentalPagerApi
 @Composable
 fun TabsContent(pagerState: PagerState) {
-    HorizontalPager(state = pagerState) { page ->
+    HorizontalPager(state = pagerState, modifier = Modifier.background(colorPrimaryBg)) { page ->
         when (page) {
             0 -> TabsContentScreen(
                 perks = listOf(
                     "Get this Auto insurance plan",
-                    "PRovide Vehicle Detail",
+                    "Provide Vehicle Detail",
                     "Get your Insurance Certificate",
-                    "Inspect your vehicle, form anywhere"
+                    "Inspect your vehicle, form anywhere",
                 ),
                 icon = R.drawable.how_it_works
             )
             1 -> TabsContentScreen(
-                perks = listOf("Get this Auto insurance plan"),
+                perks = listOf(
+                    "3rd Party Bodily Injury",
+                    "3rd Party Property Damage Up to 1 Million",
+                    "Own Accident Damage",
+                    "Excess Buy Back",
+                    "Theft",
+                ),
                 icon = R.drawable.benefits
             )
             2 -> TabsContentScreen(
-                perks = listOf("Get this Auto insurance plan"),
+                perks = listOf(
+                    "Take Pictures of damage",
+                    "Track Progress of your Claim",
+                    "Get paid",
+                ),
                 icon = R.drawable.how_to_claim
             )
         }
@@ -142,25 +164,53 @@ fun TabsContent(pagerState: PagerState) {
 @ExperimentalPagerApi
 @Composable
 fun TabsContentScreen(perks: List<String>, icon: Int) {
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(
-            painter = painterResource(id = icon),
-            contentDescription = "",
-            modifier = Modifier.size(80.dp)
-        )
+    Column(
 
-        Separator()
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-        LazyColumn(Modifier.padding(10.dp)) {
+        Box(
+            Modifier
+                .padding(vertical = 20.dp)
+                .size(100.dp)
+        ) {
+            Image(
+
+                painter = painterResource(id = icon),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(80.dp)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Box(Modifier.padding(vertical = 25.dp, horizontal = 5.dp)) {
+            Separator()
+        }
+        LazyColumn(
+            Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
             items(perks.size) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(8.dp)
+                ) {
                     Box(
                         modifier = Modifier
-                            .background(color = colorPrimary, shape = CircleShape)
-                            .size(8.dp)
+                            .background(color = colorGreen, shape = CircleShape)
+                            .size(6.dp)
                     )
                     Box(Modifier.width(10.dp))
-                    Text(text = perks[it])
+                    Text(
+                        text = perks[it],
+                        style = MaterialTheme.typography.body1.copy(colorNavyBlue)
+                    )
                 }
             }
         }
