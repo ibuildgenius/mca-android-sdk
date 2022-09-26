@@ -48,6 +48,7 @@ dependencies {
     //paging
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha04"
 

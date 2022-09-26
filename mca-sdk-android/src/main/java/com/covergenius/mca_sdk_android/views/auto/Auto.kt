@@ -11,74 +11,120 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.ui.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.utils.Toolbar
+import com.covergenius.mca_sdk_android.utils.center
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun AutoInsuranceForm() {
     val pagerState = rememberPagerState(pageCount = 3)
-    Column() {
-        Toolbar(onBackPressed = {}, onCancelPressed = {})
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(12.dp)
-        ) {
-            Column(Modifier.padding(bottom = 12.dp)) {
+
+
+    ConstraintLayout(Modifier.fillMaxSize()) {
+
+        val (bgStart, bgBottom, layout) = createRefs()
+
+
+
+        Image(
+            painter = painterResource(id = R.drawable.bg),
+            contentDescription = "",
+            modifier = Modifier.constrainAs(bgStart) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+            })
+
+        Image(
+            painter = painterResource(id = R.drawable.bg),
+            contentDescription = "",
+            modifier = Modifier.constrainAs(bgBottom) {
+                bottom.linkTo(parent.bottom)
+                end.linkTo(parent.end)
+            })
+
+
+        Column(Modifier.constrainAs(layout) {
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }) {
+
+            Toolbar(onBackPressed = {}, onCancelPressed = {})
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(12.dp)
+            ) {
+                Column(Modifier.padding(bottom = 12.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .width(160.dp)
+                            .height(28.dp)
+                    )
+                }
+                Tabs(pagerState = pagerState)
+                Box(Modifier.height(10.dp))
+                Column(Modifier.weight(1f)) {
+                    TabsContent(pagerState = pagerState)
+                }
+
+                Column() {
+                    Box(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .background(colorGreyLight)
+                            .fillMaxWidth()
+                    )
+                }
+
+
+                Box(Modifier.padding(top = 12.dp)) {
+                    Separator()
+                }
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
+                ) {
+                    Text(
+                        "Continue",
+                        style = MaterialTheme.typography.body1.copy(color = colorWhite)
+                    )
+                }
+
                 Image(
-                    painter = painterResource(id = R.drawable.logo),
+                    painter = painterResource(id = R.drawable.powered_by),
                     contentDescription = "",
                     modifier = Modifier
                         .width(160.dp)
-                        .height(28.dp)
+                        .height(20.dp)
                 )
             }
-            Tabs(pagerState = pagerState)
-            Column(Modifier.weight(1f)) {
-                TabsContent(pagerState = pagerState)
-            }
-
-            Column() {
-                Box(
-                    modifier = Modifier
-                        .height(1.dp)
-                        .background(colorGreyLight)
-                        .fillMaxWidth()
-                )
-            }
-
-
-            Box(Modifier.padding(top = 12.dp)) {
-                Separator()
-            }
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
-            ) {
-                Text("Continue", style = MaterialTheme.typography.body1.copy(color = colorWhite))
-            }
-
-            Image(
-                painter = painterResource(id = R.drawable.powered_by),
-                contentDescription = "",
-                modifier = Modifier
-                    .width(160.dp)
-                    .height(20.dp)
-            )
         }
+
+
     }
+
 }
 
 
@@ -108,14 +154,16 @@ fun Tabs(pagerState: PagerState) {
                 selected = selected,
                 selectedContentColor = colorPrimaryLight,
                 unselectedContentColor = colorNavyBlue,
-                modifier = Modifier.background(if (selected) colorPrimaryBg else colorWhite).border(
-                    BorderStroke(0.5.dp, colorGreyLight)
-                ),
+                modifier = Modifier
+                    .background(if (selected) colorPrimaryBg else colorWhite)
+                    .border(
+                        BorderStroke(0.5.dp, colorGreyLight)
+                    ),
                 onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
                 text = {
                     Text(
                         text = titles[index],
-                        style = if (selected) MaterialTheme.typography.h1 else MaterialTheme.typography.body1,
+                        style = if (selected) MaterialTheme.typography.h1.center() else MaterialTheme.typography.body1.center(),
                     )
                 })
 
@@ -168,13 +216,14 @@ fun TabsContentScreen(perks: List<String>, icon: Int) {
 
         Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .padding(vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Box(
             Modifier
-                .padding(vertical = 20.dp)
+                .padding(bottom = 20.dp)
                 .size(100.dp)
         ) {
             Image(
