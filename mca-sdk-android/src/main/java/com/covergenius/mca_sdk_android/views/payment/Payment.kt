@@ -127,7 +127,7 @@ fun StepTwo() {
         Column(
             Modifier
                 .background(colorGreyLight)
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 50.dp, vertical = 15.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(Modifier.height(20.dp))
@@ -137,18 +137,19 @@ fun StepTwo() {
                 )
             )
 
-            Separator(color = colorGrey, modifier = Modifier.padding(vertical = 15.dp))
+            Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
 
             Text(
                 text = "Access Bank\nMycover.ai\n12345678904",
                 style = MaterialTheme.typography.body2.copy(
                     fontSize = 20.sp,
                     color = colorNavyBlue,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    lineHeight = 33.sp
                 )
             )
 
-            Separator(color = colorGrey, modifier = Modifier.padding(vertical = 15.dp))
+            Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
         }
     }
 }
