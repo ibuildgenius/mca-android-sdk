@@ -11,16 +11,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.views.Routes
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.theme.colorSpaceGray
 
 @Composable
-fun PaymentResult() {
-
-    val navController = rememberNavController()
+fun PaymentResult(proceedTo: () -> Unit) {
 
     Column(Modifier.padding(12.dp)) {
         Column(
@@ -54,9 +50,7 @@ fun PaymentResult() {
                 textAlign = TextAlign.Center
             )
         }
-        MyCoverButton("Go to Inbox") {
-            navController.popBackStack(Routes.ProductList, false)
-        }
+        MyCoverButton("Go to Inbox", proceedTo)
 
     }
 }

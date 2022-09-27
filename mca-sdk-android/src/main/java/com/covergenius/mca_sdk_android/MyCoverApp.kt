@@ -43,7 +43,7 @@ fun MyCoverApp() {
         }
 
         composable(route = Routes.PaymentResult) {
-            PaymentResult()
+            PaymentResult { navController.popBackStack(Routes.ProductList, false) }
         }
     }
 
