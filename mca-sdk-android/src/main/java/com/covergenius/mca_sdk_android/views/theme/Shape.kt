@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.ui.theme
+package com.covergenius.mca_sdk_android.views.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

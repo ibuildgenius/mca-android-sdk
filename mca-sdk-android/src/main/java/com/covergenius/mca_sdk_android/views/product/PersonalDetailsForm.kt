@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.auto
+package com.covergenius.mca_sdk_android.views.product
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.Product
-import com.covergenius.mca_sdk_android.ui.theme.*
+import com.covergenius.mca_sdk_android.views.theme.*
 import com.covergenius.mca_sdk_android.views.composables.DropdownField
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
@@ -30,12 +30,12 @@ import com.covergenius.mca_sdk_android.views.composables.TitledTextField
 
 
 @Composable
-fun AutoPersonalDetailsForm(product: Product) {
+fun ProductDetailsForm(product: Product, onContinuePressed: () -> Unit) {
     var formProgress by remember { mutableStateOf(0) }
     var hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
 
-    val animationTime = 200 // miliseconds
-    val animationTimeExit = 0 // miliseconds
+    val animationTime = 200 // milliseconds
+    val animationTimeExit = 0 // milliseconds
 
 
     MyCoverTemplate(content = {
@@ -146,10 +146,11 @@ fun AutoPersonalDetailsForm(product: Product) {
             }
 
             MyCoverButton("Continue", onPressed = {
-                if (formProgress == 1) {
-                } else {
+                if (formProgress == 0) {
                     formProgress = 1
                     hintText = "Enter Vehicle details"
+                } else {
+                    onContinuePressed()
                 }
             })
 
@@ -175,7 +176,7 @@ fun FormOne() {
 @Composable
 fun FormTwo() {
     Column {
-        Row() {
+        Row {
             Column(
                 Modifier
                     .fillMaxWidth()

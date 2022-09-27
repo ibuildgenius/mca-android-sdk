@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views
+package com.covergenius.mca_sdk_android.views.product
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.Product
-import com.covergenius.mca_sdk_android.ui.theme.*
+import com.covergenius.mca_sdk_android.views.theme.*
 
 @Composable
-fun ProductsPage(onItemClicked: (value: Boolean) -> Unit) {
+fun ProductListScreen(onItemClicked: (value: Boolean) -> Unit) {
 
     val productList = mutableListOf(
         Product("Gadget", "", "AIICO", "6000"),
@@ -92,7 +92,6 @@ fun ProductsPage(onItemClicked: (value: Boolean) -> Unit) {
             }
         }
     }
-
 }
 
 data class Filter(val name: String, val selected: Boolean = false)

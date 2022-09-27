@@ -1,10 +1,8 @@
 package com.covergenius.mca_sdk_android.views
 
 object Routes {
-    val Health = "healthScreen"
-    val Auto = "autoScreen"
-    val AutoForms = "autoFormsScreen"
-    val Gadgets = "gadgetScreen"
-    val Products = "productsScreen"
-    val Payment = "paymentScreen"
+    const val ProductInfo = "productInfoScreen"
+    const val ProductForms = "productFormsScreen"
+    const val ProductList = "productsScreen"
+    const val Payment = "paymentScreen"
 }

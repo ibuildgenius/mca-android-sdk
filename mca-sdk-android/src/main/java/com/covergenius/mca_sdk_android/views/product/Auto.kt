@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.auto
+package com.covergenius.mca_sdk_android.views.product
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -11,12 +11,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.ui.theme.*
+import com.covergenius.mca_sdk_android.views.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.utils.center
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
@@ -25,9 +24,9 @@ import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun AutoInsuranceForm(onContinuePressed: () -> Unit) {
+fun ProductInfoScreen(onContinuePressed: () -> Unit) {
     val pagerState = rememberPagerState(pageCount = 3)
 
     MyCoverTemplate(
@@ -42,7 +41,7 @@ fun AutoInsuranceForm(onContinuePressed: () -> Unit) {
                     TabsContent(pagerState = pagerState)
                 }
 
-                Column() {
+                Column {
                     Box(
                         modifier = Modifier
                             .height(1.dp)
@@ -77,7 +76,7 @@ fun Tabs(pagerState: PagerState) {
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = colorBackground,
-        indicator = { tabPositions -> },
+        indicator = { },
         divider = {}
     ) {
 

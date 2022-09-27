@@ -2,39 +2,37 @@ package com.covergenius.mca_sdk_android
 
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.data.model.Product
-import com.covergenius.mca_sdk_android.ui.theme.colorBackground
-import com.covergenius.mca_sdk_android.views.ProductsPage
+import com.covergenius.mca_sdk_android.views.theme.colorBackground
 import com.covergenius.mca_sdk_android.views.Routes
-import com.covergenius.mca_sdk_android.views.auto.AutoInsuranceForm
-import com.covergenius.mca_sdk_android.views.auto.AutoPersonalDetailsForm
+import com.covergenius.mca_sdk_android.views.product.ProductInfoScreen
+import com.covergenius.mca_sdk_android.views.product.ProductDetailsForm
 import com.covergenius.mca_sdk_android.views.payment.PaymentScreen
+import com.covergenius.mca_sdk_android.views.product.ProductListScreen
 
 @Composable
 fun MyCoverApp() {
     val navController = rememberNavController()
-    val backStackEntry by navController.currentBackStackEntryAsState()
+    // val backStackEntry by navController.currentBackStackEntryAsState()
 
     NavHost(
         navController = navController,
-        startDestination = Routes.Payment,
+        startDestination = Routes.ProductList,
         Modifier.background(colorBackground)
     ) {
-        composable(route = Routes.Products) {
-            ProductsPage(onItemClicked = { l -> navController.navigate(Routes.Auto) })
+        composable(route = Routes.ProductList) {
+            ProductListScreen(onItemClicked = { navController.navigate(Routes.ProductInfo) })
         }
-        composable(route = Routes.Auto) {
-            AutoInsuranceForm(onContinuePressed = { navController.navigate(Routes.AutoForms)})
+        composable(route = Routes.ProductInfo) {
+            ProductInfoScreen(onContinuePressed = { navController.navigate(Routes.ProductForms)})
         }
 
-        composable(route = Routes.AutoForms) {
-            AutoPersonalDetailsForm(Product())
+        composable(route = Routes.ProductForms) {
+            ProductDetailsForm(Product()) { navController.navigate(Routes.Payment) }
         }
 
         composable(route = Routes.Payment) {

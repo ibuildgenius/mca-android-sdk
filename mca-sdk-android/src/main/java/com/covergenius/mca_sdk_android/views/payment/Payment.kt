@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.data.model.PaymentMethod
-import com.covergenius.mca_sdk_android.ui.theme.*
+import com.covergenius.mca_sdk_android.views.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
@@ -139,7 +139,7 @@ fun StepTwo() {
             Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
 
             Text(
-                text = "Access Bank\nMycover.ai\n12345678904",
+                text = "Access Bank\nMyCover.ai\n12345678904",
                 style = MaterialTheme.typography.body2.copy(
                     fontSize = 20.sp,
                     color = colorNavyBlue,

@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.PaymentMethod
-import com.covergenius.mca_sdk_android.ui.theme.*
+import com.covergenius.mca_sdk_android.views.theme.*
 import com.covergenius.mca_sdk_android.utils.Toolbar
 
 @Composable
 fun MyCoverTemplate(
     content: @Composable () -> Unit = {},
     onBackPressed: () -> Unit = {},
-    onCancledPressed: () -> Unit = {}
+    onCanceledPressed: () -> Unit = {}
 ) {
     ConstraintLayout(Modifier.fillMaxSize()) {
         val (bgStart, bgBottom, layout) = createRefs()
@@ -53,7 +53,7 @@ fun MyCoverTemplate(
             },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Toolbar(onBackPressed = onBackPressed, onCancelPressed = onCancledPressed)
+            Toolbar(onBackPressed = onBackPressed, onCancelPressed = onCanceledPressed)
             Column(
                 Modifier.padding(vertical = 12.dp),
             ) {
@@ -129,7 +129,7 @@ fun DropdownField(title: String, options: List<String>) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
-    Column() {
+    Column {
         Text(text = title, style = MaterialTheme.typography.body1)
         Box(modifier = Modifier.height(10.dp))
         ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
