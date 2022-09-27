@@ -5,4 +5,5 @@ object Routes {
     const val ProductForms = "productFormsScreen"
     const val ProductList = "productsScreen"
     const val Payment = "paymentScreen"
+    const val PaymentResult = "paymentResultScreen"
 }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.data.model.Product
 import com.covergenius.mca_sdk_android.views.theme.colorBackground
 import com.covergenius.mca_sdk_android.views.Routes
+import com.covergenius.mca_sdk_android.views.payment.PaymentResult
 import com.covergenius.mca_sdk_android.views.product.ProductInfoScreen
 import com.covergenius.mca_sdk_android.views.product.ProductDetailsForm
 import com.covergenius.mca_sdk_android.views.payment.PaymentScreen
@@ -21,14 +22,14 @@ fun MyCoverApp() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.ProductList,
+        startDestination = Routes.PaymentResult,
         Modifier.background(colorBackground)
     ) {
         composable(route = Routes.ProductList) {
             ProductListScreen(onItemClicked = { navController.navigate(Routes.ProductInfo) })
         }
         composable(route = Routes.ProductInfo) {
-            ProductInfoScreen(onContinuePressed = { navController.navigate(Routes.ProductForms)})
+            ProductInfoScreen(onContinuePressed = { navController.navigate(Routes.ProductForms) })
         }
 
         composable(route = Routes.ProductForms) {
@@ -36,7 +37,13 @@ fun MyCoverApp() {
         }
 
         composable(route = Routes.Payment) {
-            PaymentScreen()
+            PaymentScreen {
+                navController.navigate(Routes.PaymentResult)
+            }
+        }
+
+        composable(route = Routes.PaymentResult) {
+            PaymentResult()
         }
     }
 

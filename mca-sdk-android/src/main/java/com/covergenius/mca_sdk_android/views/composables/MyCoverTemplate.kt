@@ -112,6 +112,7 @@ fun MyCoverButton(buttonText: String = "", onPressed: () -> Unit = {}) {
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         onClick = onPressed,
+
         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
     ) {
         Text(

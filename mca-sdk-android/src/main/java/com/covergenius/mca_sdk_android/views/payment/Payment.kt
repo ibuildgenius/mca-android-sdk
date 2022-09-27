@@ -18,7 +18,7 @@ import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
 import com.covergenius.mca_sdk_android.views.composables.PaymentType
 
 @Composable
-fun PaymentScreen() {
+fun PaymentScreen(onComplete: () -> Unit) {
 
     var formStep by remember { mutableStateOf(0) }
     var buttonText by remember { mutableStateOf("Continue") }
@@ -72,6 +72,8 @@ fun PaymentScreen() {
                     if (formStep == 0) {
                         formStep++
                         buttonText = "I have sent the money"
+                    } else {
+                        onComplete()
                     }
                 })
 
