@@ -22,7 +22,7 @@ fun MyCoverApp() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.PaymentResult,
+        startDestination = Routes.ProductList,
         Modifier.background(colorBackground)
     ) {
         composable(route = Routes.ProductList) {
