@@ -20,11 +20,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.Product
 import com.covergenius.mca_sdk_android.ui.theme.*
-import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.views.composables.DropdownField
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
@@ -33,14 +31,11 @@ import com.covergenius.mca_sdk_android.views.composables.TitledTextField
 
 @Composable
 fun AutoPersonalDetailsForm(product: Product) {
-
-
     var formProgress by remember { mutableStateOf(0) }
     var hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
 
     val animationTime = 200 // miliseconds
     val animationTimeExit = 0 // miliseconds
-
 
 
     MyCoverTemplate(content = {
@@ -94,7 +89,7 @@ fun AutoPersonalDetailsForm(product: Product) {
                 )
                 Text(
                     "AIICO",
-                    style = MaterialTheme.typography.h1.copy(colorNavyBlue, fontSize = 12.sp)
+                    style = MaterialTheme.typography.h1.copy(colorSpaceGray, fontSize = 12.sp)
                 )
                 Box(Modifier.width(4.dp))
                 Image(

@@ -13,16 +13,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.ui.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
-import com.covergenius.mca_sdk_android.utils.Toolbar
 import com.covergenius.mca_sdk_android.utils.center
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
@@ -32,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun AutoInsuranceForm() {
+fun AutoInsuranceForm(onContinuePressed: () -> Unit) {
     val pagerState = rememberPagerState(pageCount = 3)
 
     MyCoverTemplate(
@@ -61,7 +56,7 @@ fun AutoInsuranceForm() {
                     Separator()
                 }
 
-               MyCoverButton(buttonText = "Continue", {})
+               MyCoverButton(buttonText = "Continue", onPressed = onContinuePressed)
             }
         }
     )
@@ -93,7 +88,7 @@ fun Tabs(pagerState: PagerState) {
             Tab(
                 selected = selected,
                 selectedContentColor = colorPrimaryLight,
-                unselectedContentColor = colorNavyBlue,
+                unselectedContentColor = colorSpaceGray,
                 modifier = Modifier
                     .background(if (selected) colorPrimaryBg else colorWhite)
                     .border(
@@ -198,7 +193,7 @@ fun TabsContentScreen(perks: List<String>, icon: Int) {
                     Box(Modifier.width(10.dp))
                     Text(
                         text = perks[it],
-                        style = MaterialTheme.typography.body1.copy(colorNavyBlue)
+                        style = MaterialTheme.typography.body1.copy(colorSpaceGray)
                     )
                 }
             }

@@ -6,4 +6,5 @@ object Routes {
     val AutoForms = "autoFormsScreen"
     val Gadgets = "gadgetScreen"
     val Products = "productsScreen"
+    val Payment = "paymentScreen"
 }

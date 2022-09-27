@@ -17,12 +17,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.model.Product
 import com.covergenius.mca_sdk_android.ui.theme.*
@@ -140,7 +138,7 @@ fun ProductItem(product: Product, onItemClicked: (value: Boolean) -> Unit) {
                             text = product.company,
                             style = MaterialTheme.typography.h3.copy(
                                 fontSize = 11.sp,
-                                color = colorNavyBlue
+                                color = colorSpaceGray
                             )
                         )
                         Spacer(modifier = Modifier.width(12.dp))
@@ -180,7 +178,7 @@ fun Chip(name: String, isSelected: Boolean, onSelectionChange: (String) -> Unit 
             Text(
                 text = name,
                 style = MaterialTheme.typography.h3,
-                color = if (isSelected) colorWhite else colorNavyBlue,
+                color = if (isSelected) colorWhite else colorSpaceGray,
                 modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp)
             )
         }

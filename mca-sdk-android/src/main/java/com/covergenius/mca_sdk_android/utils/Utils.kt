@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,11 +43,11 @@ fun Toolbar(margin: Dp = 0.dp, onBackPressed: () -> Unit, onCancelPressed: () ->
 }
 
 @Composable
-fun Separator() {
-    Column() {
+fun Separator(modifier: Modifier = Modifier, color: Color = colorGreyLight) {
+    Column(modifier) {
         Box(modifier = Modifier
             .height(1.dp)
-            .background(colorGreyLight)
+            .background(color)
             .fillMaxWidth())
     }
 }

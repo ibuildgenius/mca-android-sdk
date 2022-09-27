@@ -14,6 +14,7 @@ import com.covergenius.mca_sdk_android.views.ProductsPage
 import com.covergenius.mca_sdk_android.views.Routes
 import com.covergenius.mca_sdk_android.views.auto.AutoInsuranceForm
 import com.covergenius.mca_sdk_android.views.auto.AutoPersonalDetailsForm
+import com.covergenius.mca_sdk_android.views.payment.PaymentScreen
 
 @Composable
 fun MyCoverApp() {
@@ -22,18 +23,22 @@ fun MyCoverApp() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.AutoForms,
+        startDestination = Routes.Payment,
         Modifier.background(colorBackground)
     ) {
         composable(route = Routes.Products) {
             ProductsPage(onItemClicked = { l -> navController.navigate(Routes.Auto) })
         }
         composable(route = Routes.Auto) {
-            AutoInsuranceForm()
+            AutoInsuranceForm(onContinuePressed = { navController.navigate(Routes.AutoForms)})
         }
 
         composable(route = Routes.AutoForms) {
             AutoPersonalDetailsForm(Product())
+        }
+
+        composable(route = Routes.Payment) {
+            PaymentScreen()
         }
     }
 

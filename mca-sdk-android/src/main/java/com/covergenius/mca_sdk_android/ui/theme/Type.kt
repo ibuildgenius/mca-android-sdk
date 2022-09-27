@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+
     body1 = TextStyle(
         fontFamily = fontsMetropolis,
         fontWeight = FontWeight.W500,
@@ -30,6 +31,12 @@ val Typography = Typography(
         fontFamily = fontsGrotesk,
         fontWeight = FontWeight.W800,
         fontSize = 14.sp
+    ),
+
+    subtitle1 = TextStyle(
+        fontFamily = fontsGrotesk,
+        fontWeight = FontWeight.W400,
+        fontSize = 12.sp
     )
 
     /* Other default text styles to override

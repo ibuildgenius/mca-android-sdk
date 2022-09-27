@@ -1,8 +1,9 @@
 package com.covergenius.mca_sdk_android.views.composables
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -11,8 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
+import com.covergenius.mca_sdk_android.data.model.PaymentMethod
 import com.covergenius.mca_sdk_android.ui.theme.*
 import com.covergenius.mca_sdk_android.utils.Toolbar
 
@@ -162,5 +165,77 @@ fun DropdownField(title: String, options: List<String>) {
             }
         }
 
+    }
+}
+
+
+@Composable
+fun PaymentType(
+    method: PaymentMethod = PaymentMethod.Transfer,
+    isSelected: Boolean = false,
+    onPressed: () -> Unit
+) {
+    Card(
+        elevation = 0.dp,
+        modifier =
+        Modifier
+            .padding(vertical = 10.dp)
+            .fillMaxWidth()
+            .background(colorGreyLight, RoundedCornerShape(8.dp))
+            .border(
+                BorderStroke(
+                    if (isSelected) 1.5.dp else 0.5.dp,
+                    if (isSelected) colorPrimary else colorGrey
+                ), RoundedCornerShape(8.dp)
+            )
+            .clickable { onPressed() }
+    ) {
+        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = if (method == PaymentMethod.Transfer) R.drawable.transfer else R.drawable.ussd),
+                contentDescription = "",
+                modifier = Modifier.size(42.dp)
+            )
+
+            Column(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+            ) {
+                Text(
+                    if (method == PaymentMethod.Transfer) "Transfer" else "USSD",
+                    style = MaterialTheme.typography.body2.copy(fontSize = 16.sp)
+                )
+                Box(Modifier.height(8.dp))
+                Text(
+                    if (method == PaymentMethod.Transfer) "Send to a bank Account" else "Select any bank to generate USSD",
+                    style = MaterialTheme.typography.body2.copy(fontSize = 13.sp, color = colorGrey)
+                )
+            }
+
+            Box(
+                Modifier
+                    .size(14.dp)
+                    .border(
+                        BorderStroke(0.5.dp, if (isSelected) colorPrimary else colorGrey),
+                        CircleShape
+                    )
+                    .background(if (isSelected) colorPrimary else colorWhite, shape = CircleShape)
+
+            ) {
+                if (isSelected) {
+                    Box(
+                        Modifier
+                            .size(6.dp)
+                            .background(colorWhite, shape = CircleShape)
+                            .align(Alignment.Center)
+
+                    )
+                }
+            }
+
+
+        }
     }
 }
