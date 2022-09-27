@@ -17,7 +17,6 @@ import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
 import com.covergenius.mca_sdk_android.views.composables.PaymentType
 
-
 @Composable
 fun PaymentScreen() {
 
