@@ -1,4 +1,8 @@
-package com.covergenius.mca_sdk_android.data.remote
+import retrofit2.http.POST
 
-class API {
+interface API {
+    @POST("v1/sdk/initialize")
+    suspend fun getPr(token: String) {
+
+    }
 }
