@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".MainActivity"
+            android:name="com.covergenius.mca_sdk_android.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Mcasdkandroid" />

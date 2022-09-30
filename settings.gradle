@@ -12,6 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "mca-sdk-android"
+rootProject.name = "xyz"
 include ':app'
 include ':mca-sdk-android'
