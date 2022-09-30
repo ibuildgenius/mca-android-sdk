@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.covergenius.mca_sdk_android.data.model.PaymentMethod
+import com.covergenius.mca_sdk_android.model.PaymentMethod
 import com.covergenius.mca_sdk_android.views.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton

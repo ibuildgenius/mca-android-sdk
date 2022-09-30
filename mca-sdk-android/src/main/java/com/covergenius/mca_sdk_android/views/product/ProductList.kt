@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.data.model.Product
+import com.covergenius.mca_sdk_android.model.Product
 import com.covergenius.mca_sdk_android.views.theme.*
 
 @Composable

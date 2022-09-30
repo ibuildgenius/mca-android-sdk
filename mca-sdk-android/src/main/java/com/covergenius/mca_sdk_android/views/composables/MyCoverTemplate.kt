@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.data.model.PaymentMethod
+import com.covergenius.mca_sdk_android.model.PaymentMethod
 import com.covergenius.mca_sdk_android.views.theme.*
 import com.covergenius.mca_sdk_android.utils.Toolbar
 
