@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.theme
+package com.covergenius.mca_sdk_android.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

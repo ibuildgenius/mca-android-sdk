@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.product
+package com.covergenius.mca_sdk_android.presentation.views.product
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.views.theme.*
+import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
 import com.covergenius.mca_sdk_android.utils.center
-import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
-import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 

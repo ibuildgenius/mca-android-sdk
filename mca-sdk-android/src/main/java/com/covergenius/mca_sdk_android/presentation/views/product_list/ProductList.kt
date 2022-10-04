@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.product
+package com.covergenius.mca_sdk_android.presentation.views.product_list
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.Product
-import com.covergenius.mca_sdk_android.views.theme.*
+import com.covergenius.mca_sdk_android.presentation.theme.*
 
 @Composable
 fun ProductListScreen(onItemClicked: (value: Boolean) -> Unit) {

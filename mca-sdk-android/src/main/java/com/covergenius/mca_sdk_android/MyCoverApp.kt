@@ -7,13 +7,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.domain.model.Product
-import com.covergenius.mca_sdk_android.views.theme.colorBackground
-import com.covergenius.mca_sdk_android.views.Routes
-import com.covergenius.mca_sdk_android.views.payment.PaymentResult
-import com.covergenius.mca_sdk_android.views.product.ProductInfoScreen
-import com.covergenius.mca_sdk_android.views.product.ProductDetailsForm
-import com.covergenius.mca_sdk_android.views.payment.PaymentScreen
-import com.covergenius.mca_sdk_android.views.product.ProductListScreen
+import com.covergenius.mca_sdk_android.presentation.theme.colorBackground
+import com.covergenius.mca_sdk_android.presentation.views.Routes
+import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentResult
+import com.covergenius.mca_sdk_android.presentation.views.product.ProductInfoScreen
+import com.covergenius.mca_sdk_android.presentation.views.product.ProductDetailsForm
+import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentScreen
+import com.covergenius.mca_sdk_android.presentation.views.product.ProductListScreen
 
 @Composable
 fun MyCoverApp() {

@@ -15,8 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.covergenius.mca_sdk_android.views.theme.colorGreyLight
-import com.covergenius.mca_sdk_android.views.theme.colorPrimary
+import com.covergenius.mca_sdk_android.presentation.theme.colorGreyLight
+import com.covergenius.mca_sdk_android.presentation.theme.colorPrimary
 
 @Composable
 fun Toolbar(margin: Dp = 0.dp, onBackPressed: () -> Unit, onCancelPressed: () -> Unit) {

@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.payment
+package com.covergenius.mca_sdk_android.presentation.views.payment
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -11,8 +11,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
-import com.covergenius.mca_sdk_android.views.theme.colorSpaceGray
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
+import com.covergenius.mca_sdk_android.presentation.theme.colorSpaceGray
 import com.covergenius.mca_sdk_android.R
 
 @Composable

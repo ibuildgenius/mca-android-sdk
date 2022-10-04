@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.payment
+package com.covergenius.mca_sdk_android.presentation.views.payment
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,11 +11,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.domain.model.PaymentMethod
-import com.covergenius.mca_sdk_android.views.theme.*
+import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.utils.Separator
-import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
-import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
-import com.covergenius.mca_sdk_android.views.composables.PaymentType
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
+import com.covergenius.mca_sdk_android.presentation.views.components.PaymentType
 
 @Composable
 fun PaymentScreen(onComplete: () -> Unit) {

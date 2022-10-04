@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 
 const val SCOPE = "SDK_INITIALISATION_USE_CASE"
-class Initialise @Inject constructor(val repo: InitRepo) {
+class InitialiseUseCase @Inject constructor(val repo: InitRepo) {
 
     operator fun invoke(token: String, paymentOption: PaymentOption): Flow<Resource<Response>> = flow {
       try {

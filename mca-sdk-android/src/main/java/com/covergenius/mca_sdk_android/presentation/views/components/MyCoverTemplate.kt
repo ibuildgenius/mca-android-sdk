@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.composables
+package com.covergenius.mca_sdk_android.presentation.views.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.PaymentMethod
-import com.covergenius.mca_sdk_android.views.theme.*
+import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.utils.Toolbar
 
 @Composable

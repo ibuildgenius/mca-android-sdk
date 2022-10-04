@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.views.product
+package com.covergenius.mca_sdk_android.presentation.views.product
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -22,11 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.Product
-import com.covergenius.mca_sdk_android.views.theme.*
-import com.covergenius.mca_sdk_android.views.composables.DropdownField
-import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
-import com.covergenius.mca_sdk_android.views.composables.MyCoverTemplate
-import com.covergenius.mca_sdk_android.views.composables.TitledTextField
+import com.covergenius.mca_sdk_android.presentation.theme.*
+import com.covergenius.mca_sdk_android.presentation.views.components.DropdownField
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
+import com.covergenius.mca_sdk_android.presentation.views.components.TitledTextField
 
 
 @Composable
