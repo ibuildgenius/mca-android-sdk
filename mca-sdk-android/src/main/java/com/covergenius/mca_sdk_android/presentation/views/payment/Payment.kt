@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.domain.model.PaymentMethod
 import com.covergenius.mca_sdk_android.presentation.theme.*
-import com.covergenius.mca_sdk_android.utils.Separator
+import com.covergenius.mca_sdk_android.common.utils.Separator
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.covergenius.mca_sdk_android.presentation.views.components.PaymentType

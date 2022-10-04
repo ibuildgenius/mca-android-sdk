@@ -4,7 +4,7 @@ import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.data.remote.dto.Response
 import com.covergenius.mca_sdk_android.domain.model.PaymentOption
 import com.covergenius.mca_sdk_android.domain.repo.InitRepo
-import com.covergenius.mca_sdk_android.utils.Log
+import com.covergenius.mca_sdk_android.common.utils.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

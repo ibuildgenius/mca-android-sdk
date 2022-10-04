@@ -13,6 +13,8 @@ import com.covergenius.mca_sdk_android.di.SdkModule_ProvideAPIFactory;
 import com.covergenius.mca_sdk_android.di.SdkModule_ProvideRepoFactory;
 import com.covergenius.mca_sdk_android.domain.repo.InitRepo;
 import com.covergenius.mca_sdk_android.domain.use_case.InitialiseUseCase;
+import com.covergenius.mca_sdk_android.presentation.App;
+import com.covergenius.mca_sdk_android.presentation.MainActivity;
 import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel;
 import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel_HiltModules_KeyModule_ProvideFactory;
 import dagger.hilt.android.ActivityRetainedLifecycle;

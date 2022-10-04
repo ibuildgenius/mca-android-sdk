@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.presentation.theme.*
-import com.covergenius.mca_sdk_android.utils.Separator
-import com.covergenius.mca_sdk_android.utils.center
+import com.covergenius.mca_sdk_android.common.utils.Separator
+import com.covergenius.mca_sdk_android.common.utils.center
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.google.accompanist.pager.*

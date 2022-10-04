@@ -17,7 +17,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.PaymentMethod
 import com.covergenius.mca_sdk_android.presentation.theme.*
-import com.covergenius.mca_sdk_android.utils.Toolbar
+import com.covergenius.mca_sdk_android.common.utils.Toolbar
 
 @Composable
 fun MyCoverTemplate(

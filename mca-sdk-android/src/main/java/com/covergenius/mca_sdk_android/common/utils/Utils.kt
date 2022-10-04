@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android.utils
+package com.covergenius.mca_sdk_android.common.utils
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

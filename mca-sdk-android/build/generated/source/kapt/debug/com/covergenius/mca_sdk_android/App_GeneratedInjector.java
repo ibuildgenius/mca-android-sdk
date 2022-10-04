@@ -1,5 +1,7 @@
 package com.covergenius.mca_sdk_android;
 
+import com.covergenius.mca_sdk_android.presentation.App;
+
 import dagger.hilt.InstallIn;
 import dagger.hilt.codegen.OriginatingElement;
 import dagger.hilt.components.SingletonComponent;

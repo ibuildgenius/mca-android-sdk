@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android
+package com.covergenius.mca_sdk_android.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
