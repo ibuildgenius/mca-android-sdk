@@ -1,4 +1,4 @@
-package com.covergenius.mca_sdk_android;
+package com.covergenius.mca_sdk_android.presentation;
 
 import androidx.hilt.lifecycle.ViewModelFactoryModules;
 import com.covergenius.mca_sdk_android.di.SdkModule;

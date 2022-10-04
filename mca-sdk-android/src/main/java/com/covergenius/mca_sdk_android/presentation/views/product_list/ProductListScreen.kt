@@ -19,11 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.domain.model.Product
+import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.presentation.theme.*
 
 @Composable
@@ -31,20 +32,6 @@ fun ProductListScreen(
     onItemClicked: (value: Boolean) -> Unit,
     viewModel: ProductListViewModel = hiltViewModel()
 ) {
-
-    val productList = mutableListOf(
-        Product("Gadget", "", "AIICO", "6000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-        Product("Health", "", "Leedway", "2000"),
-    )
 
     val state = viewModel.state.value
 
@@ -56,7 +43,6 @@ fun ProductListScreen(
         Modifier
             .fillMaxSize()
             .padding(12.dp)
-            .background(colorGrey)
     ) {
 
         if (state.isLoading) {
@@ -68,6 +54,9 @@ fun ProductListScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         } else if (state.response != null) {
+
+            val products = state.response.data.productDetails
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -108,9 +97,9 @@ fun ProductListScreen(
 
                 ChipGroup(items = filterList)
 
-                LazyColumn(Modifier.padding(vertical = 10.dp)) {
-                    items(productList.size) { index ->
-                        ProductItem(product = productList[index], onItemClicked)
+                LazyColumn() {
+                    items(products.size) { index ->
+                        ProductItem(product = products[index], onItemClicked)
                     }
                 }
             }
@@ -127,11 +116,10 @@ fun ProductListScreen(
 data class Filter(val name: String, val selected: Boolean = false)
 
 @Composable
-fun ProductItem(product: Product, onItemClicked: (value: Boolean) -> Unit) {
+fun ProductItem(product: ProductDetail, onItemClicked: (value: Boolean) -> Unit) {
 
     Card(
         modifier = Modifier
-            .padding(vertical = 8.dp)
             .background(
                 colorPrimaryLight, shape = RoundedCornerShape(8.dp)
             )
@@ -164,7 +152,7 @@ fun ProductItem(product: Product, onItemClicked: (value: Boolean) -> Unit) {
                     Text(text = product.name, style = MaterialTheme.typography.h3)
                     Row(Modifier.padding(top = 10.dp)) {
                         Text(
-                            text = product.company,
+                            text = product.prefix,
                             style = MaterialTheme.typography.h3.copy(
                                 fontSize = 11.sp,
                                 color = colorSpaceGray

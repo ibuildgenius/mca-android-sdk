@@ -4,11 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.covergenius.mca_sdk_android.common.Constants
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.domain.model.PaymentOption
 import com.covergenius.mca_sdk_android.domain.use_case.InitialiseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -22,10 +24,7 @@ class ProductListViewModel @Inject constructor(
     val state: State<ProductListState> = _state
 
     init {
-        val token = savedStateHandle.get<String>(Constants.TOKEN_QUERY)
-        val paymentOption = savedStateHandle.get<String>(Constants.PAYMENT_QUERY)
-
-        TODO("Secure token")
+        //TODO("Secure token")
         initialise("MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f",PaymentOption.Gateway)
     }
 
@@ -42,6 +41,6 @@ class ProductListViewModel @Inject constructor(
                     _state.value = ProductListState(response = result.data)
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 }

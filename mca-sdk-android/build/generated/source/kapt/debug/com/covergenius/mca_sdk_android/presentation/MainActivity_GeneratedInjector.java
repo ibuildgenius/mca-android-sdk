@@ -1,6 +1,4 @@
-package com.covergenius.mca_sdk_android;
-
-import com.covergenius.mca_sdk_android.presentation.MainActivity;
+package com.covergenius.mca_sdk_android.presentation;
 
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityComponent;

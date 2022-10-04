@@ -1,10 +1,7 @@
-package com.covergenius.mca_sdk_android;
+package com.covergenius.mca_sdk_android.presentation;
 
 import android.app.Application;
 import androidx.annotation.CallSuper;
-
-import com.covergenius.mca_sdk_android.presentation.App;
-
 import dagger.hilt.android.internal.managers.ApplicationComponentManager;
 import dagger.hilt.android.internal.managers.ComponentSupplier;
 import dagger.hilt.android.internal.modules.ApplicationContextModule;

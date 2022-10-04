@@ -1,6 +1,6 @@
-package com.covergenius.mca_sdk_android;
+package com.covergenius.mca_sdk_android.presentation;
 
-import dagger.hilt.internal.aggregatedroot.codegen._com_covergenius_mca_sdk_android_App;
+import dagger.hilt.internal.aggregatedroot.codegen._com_covergenius_mca_sdk_android_presentation_App;
 import dagger.hilt.internal.componenttreedeps.ComponentTreeDeps;
 import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_android_components_ActivityComponent;
 import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_android_components_ActivityRetainedComponent;
@@ -19,9 +19,9 @@ import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_andro
 import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_components_SingletonComponent;
 import hilt_aggregated_deps._androidx_hilt_lifecycle_ViewModelFactoryModules_ActivityModuleModuleDeps;
 import hilt_aggregated_deps._androidx_hilt_lifecycle_ViewModelFactoryModules_FragmentModuleModuleDeps;
-import hilt_aggregated_deps._com_covergenius_mca_sdk_android_App_GeneratedInjector;
-import hilt_aggregated_deps._com_covergenius_mca_sdk_android_MainActivity_GeneratedInjector;
 import hilt_aggregated_deps._com_covergenius_mca_sdk_android_di_SdkModule;
+import hilt_aggregated_deps._com_covergenius_mca_sdk_android_presentation_App_GeneratedInjector;
+import hilt_aggregated_deps._com_covergenius_mca_sdk_android_presentation_MainActivity_GeneratedInjector;
 import hilt_aggregated_deps._com_covergenius_mca_sdk_android_presentation_views_product_list_ProductListViewModel_HiltModules_BindsModule;
 import hilt_aggregated_deps._com_covergenius_mca_sdk_android_presentation_views_product_list_ProductListViewModel_HiltModules_KeyModule;
 import hilt_aggregated_deps._dagger_hilt_android_internal_lifecycle_DefaultViewModelFactories_ActivityEntryPoint;
@@ -42,7 +42,7 @@ import hilt_aggregated_deps._dagger_hilt_android_internal_modules_ApplicationCon
 import hilt_aggregated_deps._dagger_hilt_android_internal_modules_HiltWrapper_ActivityModule;
 
 @ComponentTreeDeps(
-    rootDeps = _com_covergenius_mca_sdk_android_App.class,
+    rootDeps = _com_covergenius_mca_sdk_android_presentation_App.class,
     defineComponentDeps = {
         _dagger_hilt_android_components_ActivityComponent.class,
         _dagger_hilt_android_components_ActivityRetainedComponent.class,
@@ -79,9 +79,9 @@ import hilt_aggregated_deps._dagger_hilt_android_internal_modules_HiltWrapper_Ac
         _dagger_hilt_android_internal_managers_ViewComponentManager_ViewWithFragmentComponentBuilderEntryPoint.class,
         _dagger_hilt_android_internal_modules_ApplicationContextModule.class,
         _dagger_hilt_android_internal_modules_HiltWrapper_ActivityModule.class,
-        _com_covergenius_mca_sdk_android_App_GeneratedInjector.class,
         _com_covergenius_mca_sdk_android_di_SdkModule.class,
-        _com_covergenius_mca_sdk_android_MainActivity_GeneratedInjector.class,
+        _com_covergenius_mca_sdk_android_presentation_App_GeneratedInjector.class,
+        _com_covergenius_mca_sdk_android_presentation_MainActivity_GeneratedInjector.class,
         _com_covergenius_mca_sdk_android_presentation_views_product_list_ProductListViewModel_HiltModules_BindsModule.class,
         _com_covergenius_mca_sdk_android_presentation_views_product_list_ProductListViewModel_HiltModules_KeyModule.class
     }

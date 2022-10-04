@@ -8,5 +8,5 @@ import dagger.hilt.internal.processedrootsentinel.ProcessedRootSentinel;
 @ProcessedRootSentinel(
     roots = "com.covergenius.mca_sdk_android.presentation.App"
 )
-public class _com_covergenius_mca_sdk_android_App {
+public class _com_covergenius_mca_sdk_android_presentation_App {
 }

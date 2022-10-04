@@ -8,8 +8,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 
@@ -20,8 +23,15 @@ object SdkModule {
     @Provides
     @Singleton
     fun provideAPI(): API {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
+            .client(client)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(API::class.java)

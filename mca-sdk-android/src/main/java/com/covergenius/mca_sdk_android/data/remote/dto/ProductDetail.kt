@@ -25,7 +25,7 @@ data class ProductDetail(
     @SerializedName("form_fields")
     val formFields: List<FormField>,
     @SerializedName("full_benefits")
-    val fullBenefits: List<FullBenefit>,
+    val fullBenefits: Any,
     @SerializedName("how_it_works")
     val howItWorks: String,
     @SerializedName("how_to_claim")
@@ -39,7 +39,7 @@ data class ProductDetail(
     @SerializedName("is_live")
     val isLive: Boolean,
     @SerializedName("key_benefits")
-    val keyBenefits: String,
+    val keyBenefits: Any,
     @SerializedName("mca_commission_percentage")
     val mcaCommissionPercentage: String,
     @SerializedName("meta")

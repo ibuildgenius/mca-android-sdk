@@ -7,7 +7,7 @@ import dagger.hilt.processor.internal.aggregateddeps.AggregatedDeps;
  */
 @AggregatedDeps(
     components = "dagger.hilt.components.SingletonComponent",
-    entryPoints = "com.covergenius.mca_sdk_android.App_GeneratedInjector"
+    entryPoints = "com.covergenius.mca_sdk_android.presentation.App_GeneratedInjector"
 )
-public class _com_covergenius_mca_sdk_android_App_GeneratedInjector {
+public class _com_covergenius_mca_sdk_android_presentation_App_GeneratedInjector {
 }

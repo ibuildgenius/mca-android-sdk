@@ -1,12 +1,9 @@
-package com.covergenius.mca_sdk_android;
+package com.covergenius.mca_sdk_android.presentation;
 
 import android.content.Context;
 import androidx.activity.ComponentActivity;
 import androidx.activity.contextaware.OnContextAvailableListener;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.covergenius.mca_sdk_android.presentation.MainActivity;
-
 import dagger.hilt.android.internal.lifecycle.DefaultViewModelFactories;
 import dagger.hilt.android.internal.managers.ActivityComponentManager;
 import dagger.hilt.internal.GeneratedComponentManagerHolder;

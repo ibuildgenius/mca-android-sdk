@@ -11,5 +11,5 @@ import dagger.hilt.internal.aggregatedroot.AggregatedRoot;
     originatingRoot = "com.covergenius.mca_sdk_android.presentation.App",
     rootAnnotation = HiltAndroidApp.class
 )
-public class _com_covergenius_mca_sdk_android_App {
+public class _com_covergenius_mca_sdk_android_presentation_App {
 }
