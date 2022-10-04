@@ -1,6 +1,8 @@
 package com.covergenius.mca_sdk_android;
 
 import androidx.hilt.lifecycle.ViewModelFactoryModules;
+import com.covergenius.mca_sdk_android.di.SdkModule;
+import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel_HiltModules;
 import dagger.Binds;
 import dagger.Component;
 import dagger.Module;
@@ -115,7 +117,8 @@ public final class App_HiltComponents {
       modules = {
           ActivityRetainedCBuilderModule.class,
           ServiceCBuilderModule.class,
-          ApplicationContextModule.class
+          ApplicationContextModule.class,
+          SdkModule.class
       }
   )
   @Singleton
@@ -139,7 +142,8 @@ public final class App_HiltComponents {
       modules = {
           ActivityCBuilderModule.class,
           ViewModelCBuilderModule.class,
-          HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class
+          HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
+          ProductListViewModel_HiltModules.KeyModule.class
       }
   )
   @ActivityRetainedScoped
@@ -162,7 +166,8 @@ public final class App_HiltComponents {
       }
   )
   @ActivityScoped
-  public abstract static class ActivityC implements ActivityComponent,
+  public abstract static class ActivityC implements MainActivity_GeneratedInjector,
+      ActivityComponent,
       DefaultViewModelFactories.ActivityEntryPoint,
       HiltWrapper_HiltViewModelFactory_ActivityCreatorEntryPoint,
       FragmentComponentManager.FragmentComponentBuilderEntryPoint,
@@ -174,7 +179,10 @@ public final class App_HiltComponents {
   }
 
   @Subcomponent(
-      modules = HiltWrapper_HiltViewModelFactory_ViewModelModule.class
+      modules = {
+          HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
+          ProductListViewModel_HiltModules.BindsModule.class
+      }
   )
   @ViewModelScoped
   public abstract static class ViewModelC implements ViewModelComponent,

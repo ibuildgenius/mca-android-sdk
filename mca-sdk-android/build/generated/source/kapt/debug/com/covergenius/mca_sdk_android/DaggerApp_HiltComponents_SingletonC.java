@@ -7,6 +7,14 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
+import com.covergenius.mca_sdk_android.data.remote.API;
+import com.covergenius.mca_sdk_android.di.SdkModule;
+import com.covergenius.mca_sdk_android.di.SdkModule_ProvideAPIFactory;
+import com.covergenius.mca_sdk_android.di.SdkModule_ProvideRepoFactory;
+import com.covergenius.mca_sdk_android.domain.repo.InitRepo;
+import com.covergenius.mca_sdk_android.domain.use_case.InitialiseUseCase;
+import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel;
+import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel_HiltModules_KeyModule_ProvideFactory;
 import dagger.hilt.android.ActivityRetainedLifecycle;
 import dagger.hilt.android.internal.builders.ActivityComponentBuilder;
 import dagger.hilt.android.internal.builders.ActivityRetainedComponentBuilder;
@@ -39,6 +47,10 @@ public final class DaggerApp_HiltComponents_SingletonC extends App_HiltComponent
 
   private final DaggerApp_HiltComponents_SingletonC singletonC = this;
 
+  private volatile Object aPI = new MemoizedSentinel();
+
+  private volatile Object initRepo = new MemoizedSentinel();
+
   private DaggerApp_HiltComponents_SingletonC(
       ApplicationContextModule applicationContextModuleParam) {
     this.applicationContextModule = applicationContextModuleParam;
@@ -47,6 +59,34 @@ public final class DaggerApp_HiltComponents_SingletonC extends App_HiltComponent
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  private API aPI() {
+    Object local = aPI;
+    if (local instanceof MemoizedSentinel) {
+      synchronized (local) {
+        local = aPI;
+        if (local instanceof MemoizedSentinel) {
+          local = SdkModule_ProvideAPIFactory.provideAPI();
+          aPI = DoubleCheck.reentrantCheck(aPI, local);
+        }
+      }
+    }
+    return (API) local;
+  }
+
+  private InitRepo initRepo() {
+    Object local = initRepo;
+    if (local instanceof MemoizedSentinel) {
+      synchronized (local) {
+        local = initRepo;
+        if (local instanceof MemoizedSentinel) {
+          local = SdkModule_ProvideRepoFactory.provideRepo(aPI());
+          initRepo = DoubleCheck.reentrantCheck(initRepo, local);
+        }
+      }
+    }
+    return (InitRepo) local;
   }
 
   @Override
@@ -71,6 +111,15 @@ public final class DaggerApp_HiltComponents_SingletonC extends App_HiltComponent
 
     public Builder applicationContextModule(ApplicationContextModule applicationContextModule) {
       this.applicationContextModule = Preconditions.checkNotNull(applicationContextModule);
+      return this;
+    }
+
+    /**
+     * @deprecated This module is declared, but an instance is not used in the component. This method is a no-op. For more, see https://dagger.dev/unused-modules.
+     */
+    @Deprecated
+    public Builder sdkModule(SdkModule sdkModule) {
+      Preconditions.checkNotNull(sdkModule);
       return this;
     }
 
@@ -172,13 +221,17 @@ public final class DaggerApp_HiltComponents_SingletonC extends App_HiltComponent
       }
 
       @Override
+      public void injectMainActivity(MainActivity mainActivity) {
+      }
+
+      @Override
       public DefaultViewModelFactories.InternalFactoryFactory getHiltInternalFactoryFactory() {
-        return DefaultViewModelFactories_InternalFactoryFactory_Factory.newInstance(ApplicationContextModule_ProvideApplicationFactory.provideApplication(singletonC.applicationContextModule), Collections.<String>emptySet(), new ViewModelCBuilder(singletonC, activityRetainedCImpl));
+        return DefaultViewModelFactories_InternalFactoryFactory_Factory.newInstance(ApplicationContextModule_ProvideApplicationFactory.provideApplication(singletonC.applicationContextModule), getViewModelKeys(), new ViewModelCBuilder(singletonC, activityRetainedCImpl));
       }
 
       @Override
       public Set<String> getViewModelKeys() {
-        return Collections.<String>emptySet();
+        return Collections.<String>singleton(ProductListViewModel_HiltModules_KeyModule_ProvideFactory.provide());
       }
 
       @Override
@@ -388,23 +441,73 @@ public final class DaggerApp_HiltComponents_SingletonC extends App_HiltComponent
     }
 
     private static final class ViewModelCImpl extends App_HiltComponents.ViewModelC {
+      private final SavedStateHandle savedStateHandle;
+
       private final DaggerApp_HiltComponents_SingletonC singletonC;
 
       private final ActivityRetainedCImpl activityRetainedCImpl;
 
       private final ViewModelCImpl viewModelCImpl = this;
 
+      private volatile Provider<ProductListViewModel> productListViewModelProvider;
+
       private ViewModelCImpl(DaggerApp_HiltComponents_SingletonC singletonC,
           ActivityRetainedCImpl activityRetainedCImpl, SavedStateHandle savedStateHandleParam) {
         this.singletonC = singletonC;
         this.activityRetainedCImpl = activityRetainedCImpl;
+        this.savedStateHandle = savedStateHandleParam;
 
+      }
 
+      private InitialiseUseCase initialiseUseCase() {
+        return new InitialiseUseCase(singletonC.initRepo());
+      }
+
+      private ProductListViewModel productListViewModel() {
+        return new ProductListViewModel(initialiseUseCase(), savedStateHandle);
+      }
+
+      private Provider<ProductListViewModel> productListViewModelProvider() {
+        Object local = productListViewModelProvider;
+        if (local == null) {
+          local = new SwitchingProvider<>(singletonC, activityRetainedCImpl, viewModelCImpl, 0);
+          productListViewModelProvider = (Provider<ProductListViewModel>) local;
+        }
+        return (Provider<ProductListViewModel>) local;
       }
 
       @Override
       public Map<String, Provider<ViewModel>> getHiltViewModelMap() {
-        return Collections.<String, Provider<ViewModel>>emptyMap();
+        return Collections.<String, Provider<ViewModel>>singletonMap("com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel", (Provider) productListViewModelProvider());
+      }
+
+      private static final class SwitchingProvider<T> implements Provider<T> {
+        private final DaggerApp_HiltComponents_SingletonC singletonC;
+
+        private final ActivityRetainedCImpl activityRetainedCImpl;
+
+        private final ViewModelCImpl viewModelCImpl;
+
+        private final int id;
+
+        SwitchingProvider(DaggerApp_HiltComponents_SingletonC singletonC,
+            ActivityRetainedCImpl activityRetainedCImpl, ViewModelCImpl viewModelCImpl, int id) {
+          this.singletonC = singletonC;
+          this.activityRetainedCImpl = activityRetainedCImpl;
+          this.viewModelCImpl = viewModelCImpl;
+          this.id = id;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public T get() {
+          switch (id) {
+            case 0: // com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel 
+            return (T) viewModelCImpl.productListViewModel();
+
+            default: throw new AssertionError(id);
+          }
+        }
       }
     }
   }

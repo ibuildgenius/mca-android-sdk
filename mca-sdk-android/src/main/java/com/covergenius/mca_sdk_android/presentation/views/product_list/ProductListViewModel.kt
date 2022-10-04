@@ -25,7 +25,8 @@ class ProductListViewModel @Inject constructor(
         val token = savedStateHandle.get<String>(Constants.TOKEN_QUERY)
         val paymentOption = savedStateHandle.get<String>(Constants.PAYMENT_QUERY)
 
-        initialise(token!!,PaymentOption.Gateway)
+        TODO("Secure token")
+        initialise("MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f",PaymentOption.Gateway)
     }
 
     fun initialise(token: String, paymentOption: PaymentOption) {

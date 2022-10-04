@@ -23,10 +23,10 @@ fun MyCoverApp() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.ProductList+"MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f", // TODO("never let this get to prod, there's a better way")
+        startDestination = Routes.ProductList,
         Modifier.background(colorBackground)
     ) {
-        composable(route = Routes.ProductList+"/${Constants.TOKEN_QUERY}") {
+        composable(route = Routes.ProductList) {
             ProductListScreen(onItemClicked = { navController.navigate(Routes.ProductInfo) })
         }
         composable(route = Routes.ProductInfo) {
