@@ -26,16 +26,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.presentation.theme.*
+import com.covergenius.mca_sdk_android.presentation.views.product_list.components.ChipGroup
 
 @Composable
 fun ProductListScreen(
     onItemClicked: (value: Boolean) -> Unit,
     viewModel: ProductListViewModel = hiltViewModel()
 ) {
-
     val state = viewModel.state.value
 
-    val filterList = mutableListOf(Filter("All", false), Filter("AIICO", false), Filter("Leadway", true))
+    var filterList: List<Filter>
     var search by remember { mutableStateOf(TextFieldValue("")) }
 
     Box(
@@ -56,10 +56,11 @@ fun ProductListScreen(
 
             val products = state.response.data.productDetails
 
-            //filterList =
-                products.forEach { it ->
+            val fil = mutableListOf<Filter>()
 
-            }
+            products.forEach { fil.add( Filter(it.prefix, false)) }
+
+            filterList = fil.distinct()
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -173,48 +174,6 @@ fun ProductItem(product: ProductDetail, onItemClicked: (value: Boolean) -> Unit)
                     }
                 }
                 Text(text = "N${product.price}", style = MaterialTheme.typography.body2)
-            }
-        }
-    }
-}
-
-@Composable
-fun Chip(name: String, isSelected: Boolean, onSelectionChange: (String) -> Unit = {}) {
-    Surface(
-        modifier = Modifier
-            .padding(4.dp)
-            .border(
-                BorderStroke(1.dp, if (isSelected) colorPrimary else colorGrey),
-                RoundedCornerShape(50.dp)
-            ),
-        elevation = 0.dp,
-        shape = RoundedCornerShape(50.dp),
-        color = if (isSelected) colorPrimary else colorWhite
-    ) {
-        Row(
-            modifier = Modifier.toggleable(
-                value = isSelected,
-                onValueChange = { onSelectionChange(name) }
-            )) {
-            Text(
-                text = name,
-                style = MaterialTheme.typography.h3,
-                color = if (isSelected) colorWhite else colorSpaceGray,
-                modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun ChipGroup(items: List<Filter>) {
-    Column(modifier = Modifier.padding(8.dp)) {
-        LazyRow {
-            items(items.size) {
-                val filter = items[it]
-                Chip(name = filter.name, isSelected = filter.selected, onSelectionChange = {
-
-                })
             }
         }
     }
