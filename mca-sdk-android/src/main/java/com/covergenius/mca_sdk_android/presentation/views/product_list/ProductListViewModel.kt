@@ -24,6 +24,8 @@ class ProductListViewModel @Inject constructor(
     init {
         val token = savedStateHandle.get<String>(Constants.TOKEN_QUERY)
         val paymentOption = savedStateHandle.get<String>(Constants.PAYMENT_QUERY)
+
+        initialise(token!!,PaymentOption.Gateway)
     }
 
     fun initialise(token: String, paymentOption: PaymentOption) {
