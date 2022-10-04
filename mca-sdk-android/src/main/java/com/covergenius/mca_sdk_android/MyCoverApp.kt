@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.covergenius.mca_sdk_android.common.Constants
 import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.presentation.theme.colorBackground
 import com.covergenius.mca_sdk_android.presentation.views.Routes
@@ -22,10 +23,10 @@ fun MyCoverApp() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.ProductList,
+        startDestination = Routes.ProductList+"MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f", // TODO("never let this get to prod, there's a better way")
         Modifier.background(colorBackground)
     ) {
-        composable(route = Routes.ProductList) {
+        composable(route = Routes.ProductList+"/${Constants.TOKEN_QUERY}") {
             ProductListScreen(onItemClicked = { navController.navigate(Routes.ProductInfo) })
         }
         composable(route = Routes.ProductInfo) {

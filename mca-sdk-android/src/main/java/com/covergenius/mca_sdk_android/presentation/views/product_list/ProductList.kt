@@ -21,12 +21,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.presentation.theme.*
 
 @Composable
-fun ProductListScreen(onItemClicked: (value: Boolean) -> Unit) {
+fun ProductListScreen(
+    onItemClicked: (value: Boolean) -> Unit,
+    viewModel: ProductListViewModel = hiltViewModel()
+) {
 
     val productList = mutableListOf(
         Product("Gadget", "", "AIICO", "6000"),
@@ -42,54 +46,80 @@ fun ProductListScreen(onItemClicked: (value: Boolean) -> Unit) {
         Product("Health", "", "Leedway", "2000"),
     )
 
+    val state = viewModel.state.value
+
     val filterList =
         mutableListOf(Filter("All", false), Filter("AIICO", false), Filter("Leadway", true))
     var search by remember { mutableStateOf(TextFieldValue("")) }
 
-    Column(
+    Box(
         Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(12.dp)
-            .background(colorGrey)) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    colorBackground
-                )
-        ) {
+            .background(colorGrey)
+    ) {
+
+        if (state.isLoading) {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
+        } else if (state.error.isNotBlank()) {
             Text(
-                text = "Products Page",
-                style = MaterialTheme.typography.body2.copy(fontSize = 16.sp),
-                modifier = Modifier.padding(top = 12.dp, bottom = 25.dp)
+                state.error,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.align(Alignment.Center)
             )
-            OutlinedTextField(
-                value = search,
-                shape = textFieldShape,
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "", tint = colorGrey) },
-                placeholder = {
-                    Text(
-                        text = "Search Products",
-                        style = MaterialTheme.typography.h3.copy(color = colorGrey)
+        } else if (state.response != null) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        colorBackground
                     )
-                },
-                singleLine = true,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorPrimary,
-                    unfocusedBorderColor = colorGrey
-                ),
-                onValueChange = { text: TextFieldValue -> search = text },
-                modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                Text(
+                    text = "Products Page",
+                    style = MaterialTheme.typography.body2.copy(fontSize = 16.sp),
+                    modifier = Modifier.padding(top = 12.dp, bottom = 25.dp)
+                )
+                OutlinedTextField(
+                    value = search,
+                    shape = textFieldShape,
+                    leadingIcon = {
+                        Icon(
+                            Icons.Default.Search,
+                            contentDescription = "",
+                            tint = colorGrey
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Search Products",
+                            style = MaterialTheme.typography.h3.copy(color = colorGrey)
+                        )
+                    },
+                    singleLine = true,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorPrimary,
+                        unfocusedBorderColor = colorGrey
+                    ),
+                    onValueChange = { text: TextFieldValue -> search = text },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            ChipGroup(items = filterList)
+                ChipGroup(items = filterList)
 
-            LazyColumn(Modifier.padding(vertical = 10.dp)) {
-                items(productList.size) { index ->
-                    ProductItem(product = productList[index], onItemClicked)
+                LazyColumn(Modifier.padding(vertical = 10.dp)) {
+                    items(productList.size) { index ->
+                        ProductItem(product = productList[index], onItemClicked)
+                    }
                 }
             }
+        } else {
+            Text(
+                "This is probably a desert",
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
 }
@@ -105,7 +135,7 @@ fun ProductItem(product: Product, onItemClicked: (value: Boolean) -> Unit) {
             .background(
                 colorPrimaryLight, shape = RoundedCornerShape(8.dp)
             )
-            .toggleable(value = true, onValueChange = onItemClicked,),
+            .toggleable(value = true, onValueChange = onItemClicked),
         elevation = 0.dp
     ) {
         Column(

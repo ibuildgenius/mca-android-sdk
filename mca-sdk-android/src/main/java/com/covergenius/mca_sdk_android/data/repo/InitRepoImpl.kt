@@ -8,5 +8,5 @@ import javax.inject.Inject
 
 class InitRepoImpl @Inject constructor(private val api: API) : InitRepo {
     override suspend fun initialise(token: String, paymentOption: PaymentOption): Response =
-        api.initialize(token, paymentOption)
+        api.initialize("Bearer $token", paymentOption)
 }
