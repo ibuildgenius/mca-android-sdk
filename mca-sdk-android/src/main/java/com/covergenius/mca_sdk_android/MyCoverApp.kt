@@ -13,7 +13,7 @@ import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentResult
 import com.covergenius.mca_sdk_android.presentation.views.product.ProductInfoScreen
 import com.covergenius.mca_sdk_android.presentation.views.product.ProductDetailsForm
 import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentScreen
-import com.covergenius.mca_sdk_android.presentation.views.product.ProductListScreen
+import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListScreen
 
 @Composable
 fun MyCoverApp() {
