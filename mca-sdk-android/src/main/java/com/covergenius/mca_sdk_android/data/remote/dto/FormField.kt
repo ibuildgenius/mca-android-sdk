@@ -15,7 +15,7 @@ data class FormField(
     @SerializedName("deleted_at")
     val deletedAt: Any,
     @SerializedName("depends_on")
-    val dependsOn: Any,
+    val dependsOn: String,
     @SerializedName("description")
     val description: String,
     @SerializedName("error_msg")
@@ -35,7 +35,7 @@ data class FormField(
     @SerializedName("label")
     val label: String,
     @SerializedName("max")
-    val max: Any,
+    val max: Int,
     @SerializedName("meta")
     val meta: Any,
     @SerializedName("min")

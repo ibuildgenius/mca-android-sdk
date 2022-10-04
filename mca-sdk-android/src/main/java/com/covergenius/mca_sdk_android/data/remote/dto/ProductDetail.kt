@@ -3,7 +3,7 @@ package com.covergenius.mca_sdk_android.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class ProductDetails(
+data class ProductDetail(
     @SerializedName("active")
     val active: Boolean,
     @SerializedName("certificateable")
@@ -21,15 +21,15 @@ data class ProductDetails(
     @SerializedName("distributor_commission_percentage")
     val distributorCommissionPercentage: String,
     @SerializedName("document")
-    val document: Any,
+    val document: String,
     @SerializedName("form_fields")
     val formFields: List<FormField>,
     @SerializedName("full_benefits")
     val fullBenefits: List<FullBenefit>,
     @SerializedName("how_it_works")
-    val howItWorks: Any,
+    val howItWorks: String,
     @SerializedName("how_to_claim")
-    val howToClaim: Any,
+    val howToClaim: String,
     @SerializedName("id")
     val id: String,
     @SerializedName("inspectable")

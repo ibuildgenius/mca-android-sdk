@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.covergenius.mca_sdk_android.model.Product
+import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.views.theme.colorBackground
 import com.covergenius.mca_sdk_android.views.Routes
 import com.covergenius.mca_sdk_android.views.payment.PaymentResult

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.covergenius.mca_sdk_android.views.composables.MyCoverButton
 import com.covergenius.mca_sdk_android.views.theme.colorSpaceGray
+import com.covergenius.mca_sdk_android.R
 
 @Composable
 fun PaymentResult(proceedTo: () -> Unit) {
