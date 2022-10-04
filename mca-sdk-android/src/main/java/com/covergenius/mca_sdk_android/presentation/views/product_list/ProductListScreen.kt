@@ -35,8 +35,7 @@ fun ProductListScreen(
 
     val state = viewModel.state.value
 
-    val filterList =
-        mutableListOf(Filter("All", false), Filter("AIICO", false), Filter("Leadway", true))
+    val filterList = mutableListOf(Filter("All", false), Filter("AIICO", false), Filter("Leadway", true))
     var search by remember { mutableStateOf(TextFieldValue("")) }
 
     Box(
@@ -56,6 +55,11 @@ fun ProductListScreen(
         } else if (state.response != null) {
 
             val products = state.response.data.productDetails
+
+            //filterList =
+                products.forEach { it ->
+
+            }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
