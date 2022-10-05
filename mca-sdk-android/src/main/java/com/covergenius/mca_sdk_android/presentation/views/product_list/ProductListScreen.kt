@@ -108,7 +108,7 @@ fun ProductListScreen(
                     items(products.size) { index ->
                         ProductItem(product = products[index], onItemClicked = {
                             val productString =  products[index].toJson()
-                            navController.navigate(Routes.ProductInfo+"/$productString")
+                            navController.navigate(Routes.ProductInfo+"/yooo")
                         })
                     }
                 }

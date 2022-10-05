@@ -33,9 +33,9 @@ import kotlinx.coroutines.launch
 fun ProductInfoScreen(onContinuePressed: () -> Unit, productJson: String?) {
     val pagerState = rememberPagerState(pageCount = 3)
 
-    val product = productJson?.fromJson(ProductDetail::class.java)
+//    val product = productJson?.fromJson(ProductDetail::class.java)
 
-    Log.d("Productinfo", "product name ${product?.name}")
+    Log.d("Productinfo", "product name ${productJson}")
 
     MyCoverTemplate(
         content =  {
