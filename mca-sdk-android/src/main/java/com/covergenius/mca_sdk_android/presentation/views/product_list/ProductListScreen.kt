@@ -1,12 +1,9 @@
 package com.covergenius.mca_sdk_android.presentation.views.product_list
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,19 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
+import com.covergenius.mca_sdk_android.data.remote.dto.toJson
 import com.covergenius.mca_sdk_android.presentation.theme.*
+import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.product_list.components.ChipGroup
 
 @Composable
 fun ProductListScreen(
-    onItemClicked: (value: Boolean) -> Unit,
-    viewModel: ProductListViewModel = hiltViewModel()
+    viewModel: ProductListViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val state = viewModel.state.value
 
@@ -43,6 +44,7 @@ fun ProductListScreen(
             .fillMaxSize()
             .padding(12.dp)
     ) {
+
 
         if (state.isLoading) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
@@ -58,7 +60,7 @@ fun ProductListScreen(
 
             val fil = mutableListOf<Filter>()
 
-            products.forEach { fil.add( Filter(it.prefix, false)) }
+            products.forEach { fil.add(Filter(it.prefix, false)) }
 
             filterList = fil.distinct()
 
@@ -102,9 +104,12 @@ fun ProductListScreen(
 
                 ChipGroup(items = filterList)
 
-                LazyColumn() {
+                LazyColumn {
                     items(products.size) { index ->
-                        ProductItem(product = products[index], onItemClicked)
+                        ProductItem(product = products[index], onItemClicked = {
+                            val productString =  products[index].toJson()
+                            navController.navigate(Routes.ProductInfo+"/$productString")
+                        })
                     }
                 }
             }

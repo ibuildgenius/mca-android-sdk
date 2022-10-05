@@ -1,6 +1,9 @@
 package com.covergenius.mca_sdk_android.data.remote.dto
 
 
+import android.os.Parcel
+import android.os.Parcelable
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class ProductDetail(
@@ -61,3 +64,10 @@ data class ProductDetail(
     @SerializedName("updated_at")
     val updatedAt: String
 )
+
+fun ProductDetail.toJson() : String =
+    Gson().toJson(this)
+
+fun <A>String.fromJson(type: Class<A>): A {
+    return Gson().fromJson(this, type)
+}
