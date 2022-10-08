@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -20,22 +21,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
+import com.covergenius.mca_sdk_android.common.utils.Log
+import com.covergenius.mca_sdk_android.data.remote.dto.FormField
+import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
+import com.covergenius.mca_sdk_android.data.remote.dto.getPriorityFields
 import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.components.DropdownField
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.covergenius.mca_sdk_android.presentation.views.components.TitledTextField
+import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel
+import kotlinx.coroutines.flow.first
 
 
 @Composable
-fun ProductDetailsForm(product: Product, onContinuePressed: () -> Unit) {
-    var formProgress by remember { mutableStateOf(0) }
+fun ProductDetailsForm(
+    onContinuePressed: () -> Unit,
+    viewModel: ProductListViewModel = hiltViewModel()
+) {
     var hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
 
     val animationTime = 200 // milliseconds
     val animationTimeExit = 0 // milliseconds
+
+    val productDetail = viewModel.state.value.response?.data?.productDetails?.get(0)
+
+    Log.d("Productinfo", "product name ${productDetail?.name}")
 
 
     MyCoverTemplate(content = {
@@ -105,7 +119,7 @@ fun ProductDetailsForm(product: Product, onContinuePressed: () -> Unit) {
             AnimatedVisibility(
 
                 modifier = Modifier.fillMaxWidth(),
-                visible = formProgress == 0,
+                visible = viewModel.formCursor < viewModel.formFieldList.size-1,
                 enter = slideInHorizontally(
                     initialOffsetX = { -300 },
                     animationSpec = tween(
@@ -121,55 +135,36 @@ fun ProductDetailsForm(product: Product, onContinuePressed: () -> Unit) {
                     )
                 )
             ) {
-                FormOne()
-            }
-
-            AnimatedVisibility(
-                modifier = Modifier.fillMaxWidth(),
-                visible = formProgress == 1,
-                enter = slideInHorizontally(
-                    initialOffsetX = { it },
-                    animationSpec = tween(
-                        durationMillis = animationTime,
-                        easing = LinearEasing
-                    )
-                ),
-                exit = slideOutHorizontally(
-                    targetOffsetX = { it },
-                    animationSpec = tween(
-                        durationMillis = animationTimeExit,
-                        easing = LinearEasing
-                    )
-                )
-            ) {
-                FormTwo()
+                FormOne(productDetail, viewModel.formCursor)
             }
 
             MyCoverButton("Continue", onPressed = {
-                if (formProgress == 0) {
-                    formProgress = 1
-                    hintText = "Enter Vehicle details"
+                if (viewModel.formCursor != viewModel.formFieldList.size-1) {
+                    viewModel.formCursor. +2
                 } else {
                     onContinuePressed()
                 }
             })
-
         }
     })
 }
 
-
 @Composable
-fun FormOne() {
-    Column {
-        TitledTextField(
-            placeholderText = "First Name, Last Name",
-            title = "Name of Plan Owner"
-        )
-        TitledTextField(placeholderText = "Enter email address", title = "Email")
-        TitledTextField(placeholderText = "Enter phone number", title = "Phone")
+fun FormOne(productDetails: ProductDetail?, formCursor: Int) {
 
+    if (productDetails == null) return
 
+    //gets 3 fields only
+    val fields = productDetails.formFields.getPriorityFields().subList(formCursor, formCursor+3)
+
+    LazyColumn {
+        items(fields.size) {
+            val formField = fields[it]
+            TitledTextField(
+                placeholderText = formField.description,
+                title = formField.label
+            )
+        }
     }
 }
 
@@ -202,3 +197,4 @@ fun FormTwo() {
         TitledTextField(placeholderText = "Enter Vehicle Plate Number", title = "Vehicle Plate No.")
     }
 }
+

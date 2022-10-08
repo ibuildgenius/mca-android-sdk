@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.R
+import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.toJson
 import com.covergenius.mca_sdk_android.presentation.theme.*
@@ -32,20 +33,17 @@ import com.covergenius.mca_sdk_android.presentation.views.product_list.component
 @Composable
 fun ProductListScreen(
     viewModel: ProductListViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavHostController
 ) {
     val state = viewModel.state.value
 
     var filterList: List<Filter>
     var search by remember { mutableStateOf(TextFieldValue("")) }
-
     Box(
         Modifier
             .fillMaxSize()
             .padding(12.dp)
     ) {
-
-
         if (state.isLoading) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         } else if (state.error.isNotBlank()) {
@@ -107,8 +105,8 @@ fun ProductListScreen(
                 LazyColumn {
                     items(products.size) { index ->
                         ProductItem(product = products[index], onItemClicked = {
-                            val productString =  products[index].toJson()
-                            navController.navigate(Routes.ProductInfo+"/yooo")
+                            val  product: String = products[index].toJson()
+                         navController.navigate(Routes.ProductInfo)
                         })
                     }
                 }

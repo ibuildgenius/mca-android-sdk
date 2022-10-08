@@ -12,8 +12,6 @@ data class FormField(
     val dataType: String,
     @SerializedName("data_url")
     val dataUrl: String,
-    @SerializedName("deleted_at")
-    val deletedAt: Any,
     @SerializedName("depends_on")
     val dependsOn: String,
     @SerializedName("description")
@@ -36,8 +34,6 @@ data class FormField(
     val label: String,
     @SerializedName("max")
     val max: Int,
-    @SerializedName("meta")
-    val meta: Any,
     @SerializedName("min")
     val min: Int,
     @SerializedName("min_max_constraint")
@@ -55,3 +51,7 @@ data class FormField(
     @SerializedName("updated_at")
     val updatedAt: String
 )
+
+
+fun List<FormField>.getPriorityFields(): List<FormField> =
+    this.filter { it.showFirst }

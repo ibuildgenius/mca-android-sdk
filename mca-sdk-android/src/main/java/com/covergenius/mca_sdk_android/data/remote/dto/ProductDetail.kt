@@ -17,8 +17,6 @@ data class ProductDetail(
     val coverPeriod: String,
     @SerializedName("created_at")
     val createdAt: String,
-    @SerializedName("deleted_at")
-    val deletedAt: Any,
     @SerializedName("description")
     val description: String,
     @SerializedName("distributor_commission_percentage")
@@ -27,8 +25,6 @@ data class ProductDetail(
     val document: String,
     @SerializedName("form_fields")
     val formFields: List<FormField>,
-    @SerializedName("full_benefits")
-    val fullBenefits: Any,
     @SerializedName("how_it_works")
     val howItWorks: String,
     @SerializedName("how_to_claim")
@@ -41,8 +37,6 @@ data class ProductDetail(
     val isDynamicPricing: Boolean,
     @SerializedName("is_live")
     val isLive: Boolean,
-    @SerializedName("key_benefits")
-    val keyBenefits: Any,
     @SerializedName("mca_commission_percentage")
     val mcaCommissionPercentage: String,
     @SerializedName("meta")
@@ -66,7 +60,7 @@ data class ProductDetail(
 )
 
 fun ProductDetail.toJson() : String =
-    Gson().toJson(this)
+    Gson().toJson(this, ProductDetail::class.java)
 
 fun <A>String.fromJson(type: Class<A>): A {
     return Gson().fromJson(this, type)

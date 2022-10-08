@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.common.utils.Log
@@ -24,18 +25,18 @@ import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
+import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ProductInfoScreen(onContinuePressed: () -> Unit, productJson: String?) {
+fun ProductInfoScreen(
+    onContinuePressed: () -> Unit,
+) {
     val pagerState = rememberPagerState(pageCount = 3)
 
-//    val product = productJson?.fromJson(ProductDetail::class.java)
-
-    Log.d("Productinfo", "product name ${productJson}")
 
     MyCoverTemplate(
         content =  {
