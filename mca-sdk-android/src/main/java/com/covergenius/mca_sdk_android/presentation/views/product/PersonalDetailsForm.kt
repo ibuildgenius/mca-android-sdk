@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.common.utils.Log
+import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
+import com.covergenius.mca_sdk_android.data.cache.getString
 import com.covergenius.mca_sdk_android.data.remote.dto.FormField
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.getPriorityFields
@@ -42,7 +45,11 @@ fun ProductDetailsForm(
     onContinuePressed: () -> Unit,
     viewModel: ProductListViewModel = hiltViewModel()
 ) {
-    var hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
+    val hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
+
+    val context = LocalContext.current
+
+    viewModel.getSelectedProduct(context)
 
     val animationTime = 200 // milliseconds
     val animationTimeExit = 0 // milliseconds
@@ -51,100 +58,106 @@ fun ProductDetailsForm(
 
     Log.d("Productinfo", "product name ${productDetail?.name}")
 
+    val product = viewModel.selectedProduct.value
 
     MyCoverTemplate(content = {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-        ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(colorPrimaryBg)
-                    .padding(12.dp), verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    Icons.Filled.Info,
-                    contentDescription = "",
-                    tint = colorGreen,
-                    modifier = Modifier.size(12.dp)
-                )
-                Box(modifier = Modifier.width(10.dp))
-                Text(
-                    text = hintText,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 12.sp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                )
-            }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(10.dp)
-            ) {
-                Text(
-                    "Learn more",
-                    style = MaterialTheme.typography.h1.copy(
-                        color = colorAccent,
-                        fontSize = 10.sp,
-                        fontStyle = FontStyle.Italic
-                    )
-                )
-                Box(
+        Column() {
+            if (product != null) {
+                Column(
                     Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                )
-                Text(
-                    "Underwritten by ",
-                    style = MaterialTheme.typography.h1.copy(fontSize = 12.sp, color = colorGrey)
-                )
-                Text(
-                    "AIICO",
-                    style = MaterialTheme.typography.h1.copy(colorSpaceGray, fontSize = 12.sp)
-                )
-                Box(Modifier.width(4.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.aiico),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .width(40.dp)
-                        .height(12.dp)
-                )
-            }
+                        .padding(12.dp)
+                ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .background(colorPrimaryBg)
+                            .padding(12.dp), verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Filled.Info,
+                            contentDescription = "",
+                            tint = colorGreen,
+                            modifier = Modifier.size(12.dp)
+                        )
+                        Box(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = hintText,
+                            style = MaterialTheme.typography.body1.copy(fontSize = 12.sp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
+                    }
 
-            Box(Modifier.height(8.dp))
-            AnimatedVisibility(
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        Text(
+                            "Learn more",
+                            style = MaterialTheme.typography.h1.copy(
+                                color = colorAccent,
+                                fontSize = 10.sp,
+                                fontStyle = FontStyle.Italic
+                            )
+                        )
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
+                        Text(
+                            "Underwritten by ",
+                            style = MaterialTheme.typography.h1.copy(fontSize = 12.sp, color = colorGrey)
+                        )
+                        Text(
+                            "AIICO",
+                            style = MaterialTheme.typography.h1.copy(colorSpaceGray, fontSize = 12.sp)
+                        )
+                        Box(Modifier.width(4.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.aiico),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .width(40.dp)
+                                .height(12.dp)
+                        )
+                    }
 
-                modifier = Modifier.fillMaxWidth(),
-                visible = viewModel.formCursor < viewModel.formFieldList.size-1,
-                enter = slideInHorizontally(
-                    initialOffsetX = { -300 },
-                    animationSpec = tween(
-                        durationMillis = animationTime,
-                        easing = LinearEasing
-                    )
-                ),
-                exit = slideOutHorizontally(
-                    targetOffsetX = { -300 },
-                    animationSpec = tween(
-                        durationMillis = animationTimeExit,
-                        easing = LinearEasing
-                    )
-                )
-            ) {
-                FormOne(productDetail, viewModel.formCursor)
-            }
+                    Box(Modifier.height(8.dp))
+                    AnimatedVisibility(
 
-            MyCoverButton("Continue", onPressed = {
-                if (viewModel.formCursor != viewModel.formFieldList.size-1) {
-                    viewModel.formCursor. +2
-                } else {
-                    onContinuePressed()
+                        modifier = Modifier.fillMaxWidth(),
+                        visible = true, //viewModel.formCursor < viewModel.formFieldList.size - 1,
+                        enter = slideInHorizontally(
+                            initialOffsetX = { -300 },
+                            animationSpec = tween(
+                                durationMillis = animationTime,
+                                easing = LinearEasing
+                            )
+                        ),
+                        exit = slideOutHorizontally(
+                            targetOffsetX = { -300 },
+                            animationSpec = tween(
+                                durationMillis = animationTimeExit,
+                                easing = LinearEasing
+                            )
+                        )
+                    ) {
+                        FormOne(productDetail, 0/*viewModel.formCursor*/)
+                    }
+
+                    MyCoverButton("Continue", onPressed = {
+                      /*  if (viewModel.formCursor != viewModel.formFieldList.size - 1) {
+                            viewModel.formCursor.+2
+                        } else {
+                            onContinuePressed()
+                        }*/
+                    })
                 }
-            })
+            }
         }
     })
 }
@@ -155,7 +168,7 @@ fun FormOne(productDetails: ProductDetail?, formCursor: Int) {
     if (productDetails == null) return
 
     //gets 3 fields only
-    val fields = productDetails.formFields.getPriorityFields().subList(formCursor, formCursor+3)
+    val fields = productDetails.formFields.getPriorityFields().subList(formCursor, formCursor + 3)
 
     LazyColumn {
         items(fields.size) {

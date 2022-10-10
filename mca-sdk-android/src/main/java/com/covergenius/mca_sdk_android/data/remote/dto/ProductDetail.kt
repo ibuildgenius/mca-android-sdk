@@ -3,10 +3,19 @@ package com.covergenius.mca_sdk_android.data.remote.dto
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
+@Entity(tableName = "my_cover_product_table")
 data class ProductDetail(
+    @PrimaryKey(autoGenerate = true)
+    val roomId: Int = 0,
+    @SerializedName("id")
+    val id: String,
     @SerializedName("active")
     val active: Boolean,
     @SerializedName("certificateable")
@@ -29,8 +38,6 @@ data class ProductDetail(
     val howItWorks: String,
     @SerializedName("how_to_claim")
     val howToClaim: String,
-    @SerializedName("id")
-    val id: String,
     @SerializedName("inspectable")
     val inspectable: Boolean,
     @SerializedName("is_dynamic_pricing")
@@ -57,7 +64,7 @@ data class ProductDetail(
     val routeName: String,
     @SerializedName("updated_at")
     val updatedAt: String
-)
+) : Parcelable
 
 fun ProductDetail.toJson() : String =
     Gson().toJson(this, ProductDetail::class.java)

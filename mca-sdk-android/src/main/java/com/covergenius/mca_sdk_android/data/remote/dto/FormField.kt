@@ -1,8 +1,12 @@
 package com.covergenius.mca_sdk_android.data.remote.dto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
 data class FormField(
     @SerializedName("created_at")
     val createdAt: String,
@@ -50,7 +54,7 @@ data class FormField(
     val showFirst: Boolean,
     @SerializedName("updated_at")
     val updatedAt: String
-)
+): Parcelable
 
 
 fun List<FormField>.getPriorityFields(): List<FormField> =

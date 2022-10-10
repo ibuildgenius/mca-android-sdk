@@ -14,27 +14,31 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.common.utils.Log
+import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
+
+import com.covergenius.mca_sdk_android.data.cache.writeString
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.toJson
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.product_list.components.ChipGroup
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProductListScreen(
     viewModel: ProductListViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     val state = viewModel.state.value
 
     var filterList: List<Filter>
@@ -106,6 +110,11 @@ fun ProductListScreen(
                     items(products.size) { index ->
                         ProductItem(product = products[index], onItemClicked = {
                             val  product: String = products[index].toJson()
+
+                            GlobalScope.launch {
+                                context.writeString(SELECTED_PRODUCT_KEY, product)
+                            }
+
                          navController.navigate(Routes.ProductInfo)
                         })
                     }
