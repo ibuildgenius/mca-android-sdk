@@ -31,15 +31,12 @@ import com.covergenius.mca_sdk_android.data.remote.dto.FormField
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
 import com.covergenius.mca_sdk_android.data.remote.dto.getPriorityFields
-import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.components.DropdownField
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.covergenius.mca_sdk_android.presentation.views.components.TitledTextField
 import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel
-import kotlinx.coroutines.flow.first
-
 
 @Composable
 fun ProductDetailsForm(
@@ -48,12 +45,17 @@ fun ProductDetailsForm(
 ) {
     val hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
 
+    var formIndex by remember { mutableStateOf(0) }
+
     val context = LocalContext.current
 
     val animationTime = 200 // milliseconds
     val animationTimeExit = 0 // milliseconds
 
     val product = context.getString(SELECTED_PRODUCT_KEY).fromJson(ProductDetail::class.java)
+
+    //gets 3 fields only
+    val fields = product.formFields.getPriorityFields().chunked(3)
 
     Log.d("Productinfo", "product name ${product?.name}")
 
@@ -107,11 +109,17 @@ fun ProductDetailsForm(
                         )
                         Text(
                             "Underwritten by ",
-                            style = MaterialTheme.typography.h1.copy(fontSize = 12.sp, color = colorGrey)
+                            style = MaterialTheme.typography.h1.copy(
+                                fontSize = 12.sp,
+                                color = colorGrey
+                            )
                         )
                         Text(
-                            "AIICO",
-                            style = MaterialTheme.typography.h1.copy(colorSpaceGray, fontSize = 12.sp)
+                            product.name.uppercase(),
+                            style = MaterialTheme.typography.h1.copy(
+                                colorSpaceGray,
+                                fontSize = 12.sp
+                            )
                         )
                         Box(Modifier.width(4.dp))
                         Image(
@@ -124,34 +132,36 @@ fun ProductDetailsForm(
                     }
 
                     Box(Modifier.height(8.dp))
-                    AnimatedVisibility(
 
-                        modifier = Modifier.fillMaxWidth(),
-                        visible = true, //viewModel.formCursor < viewModel.formFieldList.size - 1,
-                        enter = slideInHorizontally(
-                            initialOffsetX = { -300 },
-                            animationSpec = tween(
-                                durationMillis = animationTime,
-                                easing = LinearEasing
+                    fields.forEachIndexed { index, list ->
+                        AnimatedVisibility(
+                            modifier = Modifier.fillMaxWidth(),
+                            visible = index == formIndex,
+                            enter = slideInHorizontally(
+                                initialOffsetX = { -300 },
+                                animationSpec = tween(
+                                    durationMillis = animationTime,
+                                    easing = LinearEasing
+                                )
+                            ),
+                            exit = slideOutHorizontally(
+                                targetOffsetX = { -300 },
+                                animationSpec = tween(
+                                    durationMillis = animationTimeExit,
+                                    easing = LinearEasing
+                                )
                             )
-                        ),
-                        exit = slideOutHorizontally(
-                            targetOffsetX = { -300 },
-                            animationSpec = tween(
-                                durationMillis = animationTimeExit,
-                                easing = LinearEasing
-                            )
-                        )
-                    ) {
-                        FormOne(product, 0/*viewModel.formCursor*/)
+                        ) {
+                            FormOne(list)
+                        }
                     }
 
                     MyCoverButton("Continue", onPressed = {
-                      /*  if (viewModel.formCursor != viewModel.formFieldList.size - 1) {
-                            viewModel.formCursor.+2
+                        if (formIndex < fields.size-1) {
+                            formIndex += 1
                         } else {
                             onContinuePressed()
-                        }*/
+                        }
                     })
                 }
             }
@@ -160,12 +170,7 @@ fun ProductDetailsForm(
 }
 
 @Composable
-fun FormOne(productDetails: ProductDetail?, formCursor: Int) {
-
-    if (productDetails == null) return
-
-    //gets 3 fields only
-    val fields = productDetails.formFields.getPriorityFields().subList(formCursor, formCursor + 3)
+fun FormOne(fields: List<FormField>) {
 
     LazyColumn {
         items(fields.size) {

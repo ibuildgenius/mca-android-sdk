@@ -40,12 +40,15 @@ fun ProductListScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     val state = viewModel.state.value
 
-    var filterList: List<Filter>
+    var filterList: List<String>
+
     var search by remember { mutableStateOf(TextFieldValue("")) }
+
+    var currentFilter by remember { mutableStateOf("All") }
+
     Box(
         Modifier
             .fillMaxSize()
@@ -63,11 +66,16 @@ fun ProductListScreen(
 
             val products = state.response.data.productDetails
 
-            val fil = mutableListOf<Filter>()
+            val filteredProducts =
+                if (currentFilter.lowercase() != "all") products.filter { it.prefix == currentFilter } else products
 
-            products.forEach { fil.add(Filter(it.prefix, false)) }
+            val fil = mutableListOf<String>()
 
-            filterList = fil.distinct()
+            products.forEach { fil.add(it.prefix) }
+
+            fil.add("All")
+
+            filterList = fil.distinct().sortedBy { it }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,13 +115,17 @@ fun ProductListScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                ChipGroup(items = filterList)
+                ChipGroup(items = filterList, selectedString = currentFilter, onItemClick = {
+                    currentFilter = it
+                })
 
                 LazyColumn {
-                    items(products.size) { index ->
-                        ProductItem(product = products[index], onItemClicked = {
-                            context.writeString(SELECTED_PRODUCT_KEY,products[index].toJson())
-
+                    items(filteredProducts.size) { index ->
+                        ProductItem(product = filteredProducts[index], onItemClicked = {
+                            context.writeString(
+                                SELECTED_PRODUCT_KEY,
+                                filteredProducts[index].toJson()
+                            )
                             navController.navigate(Routes.ProductInfo)
                         })
                     }

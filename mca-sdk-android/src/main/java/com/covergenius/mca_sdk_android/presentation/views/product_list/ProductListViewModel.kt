@@ -37,9 +37,6 @@ class ProductListViewModel @Inject constructor(
     private val _state = mutableStateOf(ProductListState())
     private val _sP = mutableStateOf<ProductDetail?>(null)
 
-    var formFieldList: Flow<List<FormField>> = MutableStateFlow(listOf())
-    var formCursor: Flow<Int> = MutableStateFlow(0)
-
     val state: State<ProductListState> = _state
     val selectedProduct: State<ProductDetail?> = _sP
 
@@ -49,9 +46,6 @@ class ProductListViewModel @Inject constructor(
         //TODO("Secure token")
         initialise("MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f",PaymentOption.Gateway)
 
-        if (state.value.response != null) {
-            formFieldList = MutableStateFlow(state.value.response?.data?.productDetails?.get(0)?.formFields ?: listOf())
-        }
     }
 
     private fun initialise(token: String, paymentOption: PaymentOption) {

@@ -49,14 +49,12 @@ fun Chip(name: String, isSelected: Boolean, onSelectionChange: (String) -> Unit 
 }
 
 @Composable
-fun ChipGroup(items: List<Filter>) {
+fun ChipGroup(items: List<String>, onItemClick: (s: String) -> Unit = {}, selectedString: String) {
     Column(modifier = Modifier.padding(8.dp)) {
         LazyRow {
             items(items.size) {
                 val filter = items[it]
-                Chip(name = filter.name, isSelected = filter.selected, onSelectionChange = {
-
-                })
+                Chip(name = filter, isSelected = filter == selectedString, onSelectionChange = onItemClick)
             }
         }
     }
