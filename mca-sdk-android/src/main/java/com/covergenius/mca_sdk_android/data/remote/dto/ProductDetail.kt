@@ -1,6 +1,5 @@
 package com.covergenius.mca_sdk_android.data.remote.dto
 
-
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
@@ -9,11 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-@Entity(tableName = "my_cover_product_table")
 data class ProductDetail(
-    @PrimaryKey(autoGenerate = true)
-    val roomId: Int = 0,
     @SerializedName("id")
     val id: String,
     @SerializedName("active")
@@ -64,7 +59,7 @@ data class ProductDetail(
     val routeName: String,
     @SerializedName("updated_at")
     val updatedAt: String
-) : Parcelable
+)
 
 fun ProductDetail.toJson() : String =
     Gson().toJson(this, ProductDetail::class.java)

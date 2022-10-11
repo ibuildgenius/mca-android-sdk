@@ -1,5 +1,6 @@
 package com.covergenius.mca_sdk_android.presentation.views.product_list
 
+import android.app.Application
 import android.content.Context
 import androidx.compose.runtime.*
 import androidx.lifecycle.LiveData
@@ -8,14 +9,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.covergenius.mca_sdk_android.common.Constants
 import com.covergenius.mca_sdk_android.common.Resource
+import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
 import com.covergenius.mca_sdk_android.data.cache.getString
+import com.covergenius.mca_sdk_android.data.cache.writeString
 import com.covergenius.mca_sdk_android.data.remote.dto.FormField
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
+import com.covergenius.mca_sdk_android.data.remote.dto.toJson
 import com.covergenius.mca_sdk_android.domain.model.PaymentOption
 import com.covergenius.mca_sdk_android.domain.use_case.InitialiseUseCase
+import com.covergenius.mca_sdk_android.domain.use_case.SCOPE
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -25,8 +31,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductListViewModel @Inject constructor(
+    private val appContext: Application,
     private val initUseCase: InitialiseUseCase,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _state = mutableStateOf(ProductListState())
     private val _sP = mutableStateOf<ProductDetail?>(null)
@@ -63,13 +69,4 @@ class ProductListViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-    fun getSelectedProduct(c: Context) {
-        c.getString(SELECTED_PRODUCT_KEY).onEach { r ->
-            if (!r.isEmpty()) {
-                _sP.value = r.fromJson(ProductDetail::class.java)
-            }
-        }
-    }
-
 }

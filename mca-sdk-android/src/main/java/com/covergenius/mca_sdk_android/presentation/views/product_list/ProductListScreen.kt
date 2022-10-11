@@ -31,6 +31,7 @@ import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.product_list.components.ChipGroup
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,6 +40,8 @@ fun ProductListScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
     val state = viewModel.state.value
 
     var filterList: List<Filter>
@@ -109,13 +112,9 @@ fun ProductListScreen(
                 LazyColumn {
                     items(products.size) { index ->
                         ProductItem(product = products[index], onItemClicked = {
-                            val  product: String = products[index].toJson()
+                            context.writeString(SELECTED_PRODUCT_KEY,products[index].toJson())
 
-                            GlobalScope.launch {
-                                context.writeString(SELECTED_PRODUCT_KEY, product)
-                            }
-
-                         navController.navigate(Routes.ProductInfo)
+                            navController.navigate(Routes.ProductInfo)
                         })
                     }
                 }

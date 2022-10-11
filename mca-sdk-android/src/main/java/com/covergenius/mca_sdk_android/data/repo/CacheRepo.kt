@@ -1,4 +1,5 @@
 package com.covergenius.mca_sdk_android.data.repo
+/*
 
 import androidx.annotation.WorkerThread
 import com.covergenius.mca_sdk_android.data.cache.ProductDao
@@ -16,4 +17,4 @@ class CacheRepo(private val productDao: ProductDao) {
     suspend fun saveSelectedProduct(product: ProductDetail) = productDao.saveSelectedProduct(product)
 
     suspend fun deleteSelectedProduct(product: ProductDetail) = productDao.deleteSelectedDetails(product)
-}
+}*/

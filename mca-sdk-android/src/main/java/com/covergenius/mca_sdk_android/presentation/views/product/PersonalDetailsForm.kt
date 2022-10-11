@@ -29,6 +29,7 @@ import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
 import com.covergenius.mca_sdk_android.data.cache.getString
 import com.covergenius.mca_sdk_android.data.remote.dto.FormField
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
+import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
 import com.covergenius.mca_sdk_android.data.remote.dto.getPriorityFields
 import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.presentation.theme.*
@@ -49,16 +50,12 @@ fun ProductDetailsForm(
 
     val context = LocalContext.current
 
-    viewModel.getSelectedProduct(context)
-
     val animationTime = 200 // milliseconds
     val animationTimeExit = 0 // milliseconds
 
-    val productDetail = viewModel.state.value.response?.data?.productDetails?.get(0)
+    val product = context.getString(SELECTED_PRODUCT_KEY).fromJson(ProductDetail::class.java)
 
-    Log.d("Productinfo", "product name ${productDetail?.name}")
-
-    val product = viewModel.selectedProduct.value
+    Log.d("Productinfo", "product name ${product?.name}")
 
     MyCoverTemplate(content = {
 
@@ -146,7 +143,7 @@ fun ProductDetailsForm(
                             )
                         )
                     ) {
-                        FormOne(productDetail, 0/*viewModel.formCursor*/)
+                        FormOne(product, 0/*viewModel.formCursor*/)
                     }
 
                     MyCoverButton("Continue", onPressed = {
