@@ -84,9 +84,7 @@ fun MyCoverTemplate(
         }
 
     }
-
 }
-
 
 @Composable
 fun TitledTextField(placeholderText: String, title: String) {
@@ -121,7 +119,6 @@ fun MyCoverButton(buttonText: String = "", onPressed: () -> Unit = {}) {
         )
     }
 }
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -168,7 +165,6 @@ fun DropdownField(title: String, options: List<String>) {
 
     }
 }
-
 
 @Composable
 fun PaymentType(

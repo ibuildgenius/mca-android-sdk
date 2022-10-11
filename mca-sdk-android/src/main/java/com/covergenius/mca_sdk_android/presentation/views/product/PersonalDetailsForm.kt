@@ -41,26 +41,21 @@ import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductLi
 @Composable
 fun ProductDetailsForm(
     onContinuePressed: () -> Unit,
-    viewModel: ProductListViewModel = hiltViewModel()
+    viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val hintText by remember { mutableStateOf("Enter details as it appear on legal documents") }
-
-    var formIndex by remember { mutableStateOf(0) }
-
-    val context = LocalContext.current
 
     val animationTime = 200 // milliseconds
     val animationTimeExit = 0 // milliseconds
 
-    val product = context.getString(SELECTED_PRODUCT_KEY).fromJson(ProductDetail::class.java)
+
+    val product = viewModel.product.value
+
 
     //gets 3 fields only
-    val fields = product.formFields.getPriorityFields().chunked(3)
-
-    Log.d("Productinfo", "product name ${product?.name}")
+    val fields = product?.formFields?.getPriorityFields()?.chunked(3)
 
     MyCoverTemplate(content = {
-
         Column() {
             if (product != null) {
                 Column(
@@ -133,10 +128,10 @@ fun ProductDetailsForm(
 
                     Box(Modifier.height(8.dp))
 
-                    fields.forEachIndexed { index, list ->
+                    fields?.forEachIndexed { index, list ->
                         AnimatedVisibility(
                             modifier = Modifier.fillMaxWidth(),
-                            visible = index == formIndex,
+                            visible = index == viewModel.formIndex.value,
                             enter = slideInHorizontally(
                                 initialOffsetX = { -300 },
                                 animationSpec = tween(
@@ -157,8 +152,8 @@ fun ProductDetailsForm(
                     }
 
                     MyCoverButton("Continue", onPressed = {
-                        if (formIndex < fields.size-1) {
-                            formIndex += 1
+                        if (viewModel.formIndex.value < fields?.size!! - 1) {
+                            viewModel.formIndex.value += 1
                         } else {
                             onContinuePressed()
                         }
@@ -212,4 +207,3 @@ fun FormTwo() {
         TitledTextField(placeholderText = "Enter Vehicle Plate Number", title = "Vehicle Plate No.")
     }
 }
-
