@@ -2,6 +2,7 @@ package com.covergenius.mca_sdk_android.data.remote.dto
 
 
 import android.os.Parcelable
+import androidx.compose.ui.text.input.KeyboardType
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -59,3 +60,13 @@ data class FormField(
 
 fun List<FormField>.getPriorityFields(): List<FormField> =
     this.filter { it.showFirst }
+
+
+fun FormField.getKeyboardType() : KeyboardType {
+    return when(this.inputType.lowercase()) {
+        "email" -> KeyboardType.Email
+        "text" -> KeyboardType.Text
+        "phone" -> KeyboardType.Phone
+        else -> {KeyboardType.Text}
+    }
+}

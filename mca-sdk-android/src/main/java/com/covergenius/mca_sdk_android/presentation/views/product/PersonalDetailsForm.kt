@@ -27,10 +27,7 @@ import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
 import com.covergenius.mca_sdk_android.data.cache.getString
-import com.covergenius.mca_sdk_android.data.remote.dto.FormField
-import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
-import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
-import com.covergenius.mca_sdk_android.data.remote.dto.getPriorityFields
+import com.covergenius.mca_sdk_android.data.remote.dto.*
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.components.DropdownField
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
@@ -170,9 +167,11 @@ fun FormOne(fields: List<FormField>) {
     LazyColumn {
         items(fields.size) {
             val formField = fields[it]
+
             TitledTextField(
                 placeholderText = formField.description,
-                title = formField.label
+                title = formField.label,
+                keyboardType = formField.getKeyboardType()
             )
         }
     }
