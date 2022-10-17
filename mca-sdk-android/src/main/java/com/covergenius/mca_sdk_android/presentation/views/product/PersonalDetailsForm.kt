@@ -45,14 +45,18 @@ fun ProductDetailsForm(
     val animationTime = 200 // milliseconds
     val animationTimeExit = 0 // milliseconds
 
-
     val product = viewModel.product.value
-
 
     //gets 3 fields only
     val fields = product?.formFields?.getPriorityFields()?.chunked(3)
 
-    MyCoverTemplate(content = {
+    MyCoverTemplate(
+        onBackPressed = {
+            if (viewModel.formIndex.value > 0) {
+                viewModel.formIndex.value -= 1
+            }
+        },
+        content = {
         Column() {
             if (product != null) {
                 Column(
@@ -163,10 +167,12 @@ fun ProductDetailsForm(
 
 @Composable
 fun FormOne(fields: List<FormField>) {
-
     LazyColumn {
         items(fields.size) {
             val formField = fields[it]
+
+            //if(fields.)
+
 
             TitledTextField(
                 placeholderText = formField.description,
@@ -174,35 +180,5 @@ fun FormOne(fields: List<FormField>) {
                 keyboardType = formField.getKeyboardType()
             )
         }
-    }
-}
-
-@Composable
-fun FormTwo() {
-    Column {
-        Row {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                DropdownField(
-                    title = "Vehicle Type",
-                    options = listOf("Commercial", "Personal")
-                )
-            }
-            Box(Modifier.width(10.dp))
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                DropdownField(
-                    title = "Kind of Vehicle",
-                    options = listOf("Car", "Bus", "Trailer", "Motorcycle").sorted()
-                )
-            }
-        }
-        TitledTextField(placeholderText = "Enter Vehicle Plate Number", title = "Vehicle Plate No.")
     }
 }

@@ -1,11 +1,9 @@
 package com.covergenius.mca_sdk_android.data.remote.dto
 
-
 import android.os.Parcelable
 import androidx.compose.ui.text.input.KeyboardType
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-
 
 @Parcelize
 data class FormField(
@@ -57,9 +55,12 @@ data class FormField(
     val updatedAt: String
 ): Parcelable
 
-
 fun List<FormField>.getPriorityFields(): List<FormField> =
-    this.filter { it.showFirst }
+    this.filter { it.showFirst }.sortedBy { it.position }
+
+
+fun List<FormField>.getOtherFields(): List<FormField> =
+    this.filter { !it.showFirst }.sortedBy { it.position }
 
 
 fun FormField.getKeyboardType() : KeyboardType {

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.domain.model.PaymentMethod
+import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Toolbar
 
@@ -172,7 +172,7 @@ fun DropdownField(title: String, options: List<String>) {
 
 @Composable
 fun PaymentType(
-    method: PaymentMethod = PaymentMethod.Transfer,
+    method: PaymentChannel = PaymentChannel.Transfer,
     isSelected: Boolean = false,
     onPressed: () -> Unit
 ) {
@@ -193,7 +193,7 @@ fun PaymentType(
     ) {
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(id = if (method == PaymentMethod.Transfer) R.drawable.transfer else R.drawable.ussd),
+                painter = painterResource(id = if (method == PaymentChannel.Transfer) R.drawable.transfer else R.drawable.ussd),
                 contentDescription = "",
                 modifier = Modifier.size(42.dp)
             )
@@ -205,12 +205,12 @@ fun PaymentType(
                     .padding(horizontal = 8.dp)
             ) {
                 Text(
-                    if (method == PaymentMethod.Transfer) "Transfer" else "USSD",
+                    if (method == PaymentChannel.Transfer) "Transfer" else "USSD",
                     style = MaterialTheme.typography.body2.copy(fontSize = 16.sp)
                 )
                 Box(Modifier.height(8.dp))
                 Text(
-                    if (method == PaymentMethod.Transfer) "Send to a bank Account" else "Select any bank to generate USSD",
+                    if (method == PaymentChannel.Transfer) "Send to a bank Account" else "Select any bank to generate USSD",
                     style = MaterialTheme.typography.body2.copy(fontSize = 13.sp, color = colorGrey)
                 )
             }

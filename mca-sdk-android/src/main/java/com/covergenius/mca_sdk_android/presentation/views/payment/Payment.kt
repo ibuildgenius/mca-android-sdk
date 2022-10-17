@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.covergenius.mca_sdk_android.domain.model.PaymentMethod
+import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Separator
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
@@ -86,7 +86,7 @@ fun PaymentScreen(onComplete: () -> Unit) {
 @Composable
 fun StepOne() {
 
-    var paymentMethod by remember { mutableStateOf(PaymentMethod.Transfer) }
+    var paymentMethod by remember { mutableStateOf(PaymentChannel.Transfer) }
 
 
     Column {
@@ -107,16 +107,16 @@ fun StepOne() {
         Box(Modifier.height(10.dp))
 
         PaymentType(
-            isSelected = (paymentMethod == PaymentMethod.Transfer),
-            method = PaymentMethod.Transfer
+            isSelected = (paymentMethod == PaymentChannel.Transfer),
+            method = PaymentChannel.Transfer
         ) {
-            paymentMethod = PaymentMethod.Transfer
+            paymentMethod = PaymentChannel.Transfer
         }
         PaymentType(
-            isSelected = (paymentMethod == PaymentMethod.USSD),
-            method = PaymentMethod.USSD
+            isSelected = (paymentMethod == PaymentChannel.USSD),
+            method = PaymentChannel.USSD
         ) {
-            paymentMethod = PaymentMethod.USSD
+            paymentMethod = PaymentChannel.USSD
         }
     }
 }
