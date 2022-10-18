@@ -1,5 +1,7 @@
 package com.covergenius.mca_sdk_android.presentation.views.product
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -25,15 +27,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.common.utils.Log
-import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
-import com.covergenius.mca_sdk_android.data.cache.getString
 import com.covergenius.mca_sdk_android.data.remote.dto.*
 import com.covergenius.mca_sdk_android.presentation.theme.*
-import com.covergenius.mca_sdk_android.presentation.views.components.DropdownField
-import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
-import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
-import com.covergenius.mca_sdk_android.presentation.views.components.TitledTextField
-import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel
+import com.covergenius.mca_sdk_android.presentation.views.components.*
+import java.util.*
 
 @Composable
 fun ProductDetailsForm(
@@ -148,7 +145,7 @@ fun ProductDetailsForm(
                                     )
                                 )
                             ) {
-                                FormOne(list)
+                                FormOne(list, viewModel)
                             }
                         }
 
@@ -156,6 +153,7 @@ fun ProductDetailsForm(
                             if (viewModel.formIndex.value < fields?.size!! - 1) {
                                 viewModel.formIndex.value += 1
                             } else {
+                                viewModel.saveFieldEntries()
                                 onContinuePressed()
                             }
                         })
@@ -166,25 +164,67 @@ fun ProductDetailsForm(
 }
 
 @Composable
-fun FormOne(fields: List<FormField>) {
+fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
     LazyColumn {
         items(fields.size) {
             val formField = fields[it]
 
             if (formField.inputType.lowercase() == "date") {
-                TitledTextField(
-                    placeholderText = formField.description,
-                    title = formField.label,
-                    readOnly = true,
-                    onPressed = {}
-                )
+                DateField(formField = formField, viewModel)
             } else {
                 TitledTextField(
                     placeholderText = formField.description,
                     title = formField.label,
-                    keyboardType = formField.getKeyboardType()
+                    keyboardType = formField.getKeyboardType(),
+                    onValueChange = { value ->
+                        viewModel.addFormDataEntry(formField.name, value)
+                    }
                 )
             }
         }
     }
+}
+
+
+@Composable
+fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
+    val context = LocalContext.current
+
+    val year: Int
+    val month: Int
+    val day: Int
+
+    val calendar = Calendar.getInstance()
+
+    year = calendar.get(Calendar.YEAR)
+    month = calendar.get(Calendar.MONTH)
+    day = calendar.get(Calendar.DAY_OF_MONTH)
+    calendar.time = Date()
+
+    val date = remember { mutableStateOf("") }
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth-$month-$year"
+
+            viewModel.addFormDataEntry(formField.name, date.value)
+        }, year, month, day
+    )
+
+
+    TitledTextField(
+        placeholderText = formField.description,
+        title = formField.label,
+        readOnly = true,
+        value = date.value,
+        onPressed = { Log.d("", "Xheghun David"); datePickerDialog.show() },
+        trailingIcon = {
+            Image(
+                painter = painterResource(id = R.drawable.ic_calendar_today),
+                contentDescription = ""
+            )
+        }
+    )
+
 }

@@ -1,5 +1,8 @@
 package com.covergenius.mca_sdk_android.presentation.views.components
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -20,6 +23,7 @@ import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Toolbar
+import java.util.*
 
 @Composable
 fun MyCoverTemplate(
@@ -88,18 +92,37 @@ fun MyCoverTemplate(
     }
 }
 
+
 @Composable
-fun TitledTextField(placeholderText: String, title: String, keyboardType: KeyboardType = KeyboardType.Text, readOnly: Boolean = false, onPressed: () -> Unit = {}) {
-    Column(Modifier.padding(top = 10.dp, bottom = 15.dp).clickable { onPressed() }) {
+fun TitledTextField(
+    placeholderText: String,
+    title: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    readOnly: Boolean = false,
+    onPressed: () -> Unit = {},
+    value: String = "",
+    onValueChange: (s: String) -> Unit = {},
+    trailingIcon: (@Composable () -> Unit)? = null
+) {
+    Column(
+        Modifier
+            .padding(top = 10.dp, bottom = 15.dp)
+    ) {
         Text(title, style = MaterialTheme.typography.body1)
         Box(Modifier.height(10.dp))
+
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(colorGreyLight),
-            value = "",
-            onValueChange = {},
+                .background(colorGreyLight)
+                .clickable{ onPressed() },
+
+            enabled = false,
+            value = value,
+            onValueChange = onValueChange,
+            trailingIcon = trailingIcon,
             readOnly = readOnly,
+
             placeholder = { Text(placeholderText, color = colorGrey) },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType)
