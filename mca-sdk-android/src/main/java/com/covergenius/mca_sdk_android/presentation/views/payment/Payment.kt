@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Separator
@@ -18,10 +20,13 @@ import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemp
 import com.covergenius.mca_sdk_android.presentation.views.components.PaymentType
 
 @Composable
-fun PaymentScreen(onComplete: () -> Unit) {
+fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltViewModel()) {
 
     var formStep by remember { mutableStateOf(0) }
     var buttonText by remember { mutableStateOf("Continue") }
+
+    Log.i("form_fields", viewModel.formData.value)
+    Log.i("instance_id", viewModel.businessDetails.value)
 
     MyCoverTemplate(
         content = {
@@ -40,23 +45,23 @@ fun PaymentScreen(onComplete: () -> Unit) {
                         .padding(8.dp)
                 ) {
                     Text(
-                        "chuks@gmail.com",
+                        viewModel.getField("email") ?: "chuks@gmail.com",
                         style = MaterialTheme.typography.subtitle1.copy(color = colorGrey)
                     )
                     Box(modifier = Modifier.height(4.dp))
                     Row {
                         Text("Pay", style = MaterialTheme.typography.body1.copy(color = colorGrey))
                         Box(Modifier.width(4.dp))
-                        Text("N6,500.00", style = MaterialTheme.typography.body2.copy(colorPrimary))
+                        Text("N${viewModel.product.value?.price}", style = MaterialTheme.typography.body2.copy(colorPrimary))
                     }
                 }
 
                 Box(modifier = Modifier.height(20.dp))
 
                 if (formStep == 0) {
-                    StepOne()
+                    StepOne(viewModel)
                 } else {
-                    StepTwo()
+                    StepTwo(viewModel)
                 }
 
 
@@ -84,13 +89,9 @@ fun PaymentScreen(onComplete: () -> Unit) {
 
 
 @Composable
-fun StepOne() {
-
-    var paymentMethod by remember { mutableStateOf(PaymentChannel.Transfer) }
-
+fun StepOne(viewModel: PaymentViewModel) {
 
     Column {
-
         Text(
             "Select Payment method",
             style = MaterialTheme.typography.body2.copy(
@@ -107,23 +108,23 @@ fun StepOne() {
         Box(Modifier.height(10.dp))
 
         PaymentType(
-            isSelected = (paymentMethod == PaymentChannel.Transfer),
+            isSelected = (viewModel.selectedPaymentMethod.value == PaymentChannel.Transfer),
             method = PaymentChannel.Transfer
         ) {
-            paymentMethod = PaymentChannel.Transfer
+            viewModel.selectedPaymentMethod.value = PaymentChannel.Transfer
         }
         PaymentType(
-            isSelected = (paymentMethod == PaymentChannel.USSD),
+            isSelected = (viewModel.selectedPaymentMethod.value == PaymentChannel.USSD),
             method = PaymentChannel.USSD
         ) {
-            paymentMethod = PaymentChannel.USSD
+            viewModel.selectedPaymentMethod.value = PaymentChannel.USSD
         }
     }
 }
 
 
 @Composable
-fun StepTwo() {
+fun StepTwo(viewModel: PaymentViewModel) {
     Column {
         Column(
             Modifier

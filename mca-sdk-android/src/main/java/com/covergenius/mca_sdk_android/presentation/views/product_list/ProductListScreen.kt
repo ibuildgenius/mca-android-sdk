@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.covergenius.mca_sdk_android.R
+import com.covergenius.mca_sdk_android.data.cache.BUSINESS_INSTANCE_ID
 import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
 
 import com.covergenius.mca_sdk_android.data.cache.writeString
@@ -126,6 +127,11 @@ fun ProductListScreen(
                                 SELECTED_PRODUCT_KEY,
                                 filteredProducts[index].toJson()
                             )
+
+                            viewModel.state.value.response?.let {
+                                context.writeString(BUSINESS_INSTANCE_ID, it.data.businessDetails.toJson())
+                            }
+
                             navController.navigate(Routes.ProductInfo)
                         })
                     }

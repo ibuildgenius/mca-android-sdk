@@ -3,6 +3,7 @@ package com.covergenius.mca_sdk_android.presentation.views.product_list
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.covergenius.mca_sdk_android.API_KEY
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.domain.model.PaymentOption
@@ -26,7 +27,7 @@ class ProductListViewModel @Inject constructor(
 
     init {
         //TODO("Secure token")
-        initialise("MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f",PaymentOption.Gateway)
+        initialise(API_KEY,PaymentOption.Gateway)
 
     }
 

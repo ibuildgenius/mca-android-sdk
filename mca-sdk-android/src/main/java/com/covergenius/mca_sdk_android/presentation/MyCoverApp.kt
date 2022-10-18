@@ -46,9 +46,9 @@ fun MyCoverApp() {
         }
 
         composable(route = Routes.Payment) {
-            PaymentScreen {
+            PaymentScreen(onComplete = {
                 navController.navigate(Routes.PaymentResult)
-            }
+            })
         }
 
         composable(route = Routes.PaymentResult) {

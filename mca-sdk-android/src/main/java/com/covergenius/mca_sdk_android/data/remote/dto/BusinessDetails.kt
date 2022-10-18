@@ -1,6 +1,7 @@
 package com.covergenius.mca_sdk_android.data.remote.dto
 
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 data class BusinessDetails(
@@ -21,3 +22,6 @@ data class BusinessDetails(
     @SerializedName("trading_name")
     val tradingName: String
 )
+
+fun BusinessDetails.toJson() : String =
+    Gson().toJson(this, BusinessDetails::class.java)

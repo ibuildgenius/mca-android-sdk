@@ -1,6 +1,7 @@
 package com.covergenius.mca_sdk_android.data.remote
 
 import com.covergenius.mca_sdk_android.data.remote.dto.Response
+import com.covergenius.mca_sdk_android.data.remote.dto.payment.PaymentResponse
 import com.covergenius.mca_sdk_android.domain.model.PaymentOption
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -13,6 +14,9 @@ interface API {
     @POST("/v1/sdk/initialize")
     suspend fun initialize(@Header("Authorization") token: String, @Body body: String): Response
 
-    @POST("/v1/sdk/buy")
-    suspend fun buyProduct(@Body payload: String): Response
+    @POST("/v1/sdk/initiate-purchase")
+    suspend fun buyProduct(
+        @Header("Authorization") token: String,
+        @Body payload: String
+    ): PaymentResponse
 }

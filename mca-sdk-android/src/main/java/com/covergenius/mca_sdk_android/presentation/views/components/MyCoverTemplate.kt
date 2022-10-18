@@ -100,7 +100,8 @@ fun TitledTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     readOnly: Boolean = false,
     onPressed: () -> Unit = {},
-    value: String = "",
+    value: String,
+    enabled: Boolean = true,
     onValueChange: (s: String) -> Unit = {},
     trailingIcon: (@Composable () -> Unit)? = null
 ) {
@@ -117,12 +118,11 @@ fun TitledTextField(
                 .background(colorGreyLight)
                 .clickable{ onPressed() },
 
-            enabled = false,
+            enabled = enabled,
             value = value,
             onValueChange = onValueChange,
             trailingIcon = trailingIcon,
             readOnly = readOnly,
-
             placeholder = { Text(placeholderText, color = colorGrey) },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType)

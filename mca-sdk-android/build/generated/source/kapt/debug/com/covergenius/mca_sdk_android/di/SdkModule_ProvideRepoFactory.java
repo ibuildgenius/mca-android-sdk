@@ -30,6 +30,6 @@ public final class SdkModule_ProvideRepoFactory implements Factory<InitRepo> {
   }
 
   public static InitRepo provideRepo(API api) {
-    return Preconditions.checkNotNullFromProvides(SdkModule.INSTANCE.provideRepo(api));
+    return Preconditions.checkNotNullFromProvides(SdkModule.INSTANCE.provideInitRepo(api));
   }
 }

@@ -153,6 +153,7 @@ fun ProductDetailsForm(
                             if (viewModel.formIndex.value < fields?.size!! - 1) {
                                 viewModel.formIndex.value += 1
                             } else {
+                                viewModel.addFormDataEntry("product_id", product.id)
                                 viewModel.saveFieldEntries()
                                 onContinuePressed()
                             }
@@ -172,11 +173,15 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
             if (formField.inputType.lowercase() == "date") {
                 DateField(formField = formField, viewModel)
             } else {
+                val data = remember { mutableStateOf("") }
+
                 TitledTextField(
                     placeholderText = formField.description,
                     title = formField.label,
                     keyboardType = formField.getKeyboardType(),
+                    value = data.value,
                     onValueChange = { value ->
+                        data.value = value
                         viewModel.addFormDataEntry(formField.name, value)
                     }
                 )
@@ -217,8 +222,9 @@ fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
         placeholderText = formField.description,
         title = formField.label,
         readOnly = true,
+        enabled = false,
         value = date.value,
-        onPressed = { Log.d("", "Xheghun David"); datePickerDialog.show() },
+        onPressed = {datePickerDialog.show() },
         trailingIcon = {
             Image(
                 painter = painterResource(id = R.drawable.ic_calendar_today),
