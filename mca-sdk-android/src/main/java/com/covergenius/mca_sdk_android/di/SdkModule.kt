@@ -45,6 +45,9 @@ object SdkModule {
         return InitRepoImpl(api)
     }
 
+
+    @Provides
+    @Singleton
     fun providePaymentRepo(api: API): PaymentRepo {
         return PaymentRepoImpl(api)
     }
