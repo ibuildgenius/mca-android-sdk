@@ -57,112 +57,112 @@ fun ProductDetailsForm(
             }
         },
         content = {
-        Column() {
-            if (product != null) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
-                ) {
-                    Row(
+            Column() {
+                if (product != null) {
+                    Column(
                         Modifier
                             .fillMaxWidth()
-                            .background(colorPrimaryBg)
-                            .padding(12.dp), verticalAlignment = Alignment.CenterVertically
+                            .padding(12.dp)
                     ) {
-                        Icon(
-                            Icons.Filled.Info,
-                            contentDescription = "",
-                            tint = colorGreen,
-                            modifier = Modifier.size(12.dp)
-                        )
-                        Box(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = hintText,
-                            style = MaterialTheme.typography.body1.copy(fontSize = 12.sp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
-                        )
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(10.dp)
-                    ) {
-                        Text(
-                            "Learn more",
-                            style = MaterialTheme.typography.h1.copy(
-                                color = colorAccent,
-                                fontSize = 10.sp,
-                                fontStyle = FontStyle.Italic
-                            )
-                        )
-                        Box(
+                        Row(
                             Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
-                        )
-                        Text(
-                            "Underwritten by ",
-                            style = MaterialTheme.typography.h1.copy(
-                                fontSize = 12.sp,
-                                color = colorGrey
-                            )
-                        )
-                        Text(
-                            product.name.uppercase(),
-                            style = MaterialTheme.typography.h1.copy(
-                                colorSpaceGray,
-                                fontSize = 12.sp
-                            )
-                        )
-                        Box(Modifier.width(4.dp))
-                        Image(
-                            painter = painterResource(id = R.drawable.aiico),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .width(40.dp)
-                                .height(12.dp)
-                        )
-                    }
-
-                    Box(Modifier.height(8.dp))
-
-                    fields?.forEachIndexed { index, list ->
-                        AnimatedVisibility(
-                            modifier = Modifier.fillMaxWidth(),
-                            visible = index == viewModel.formIndex.value,
-                            enter = slideInHorizontally(
-                                initialOffsetX = { -300 },
-                                animationSpec = tween(
-                                    durationMillis = animationTime,
-                                    easing = LinearEasing
-                                )
-                            ),
-                            exit = slideOutHorizontally(
-                                targetOffsetX = { -300 },
-                                animationSpec = tween(
-                                    durationMillis = animationTimeExit,
-                                    easing = LinearEasing
-                                )
-                            )
+                                .background(colorPrimaryBg)
+                                .padding(12.dp), verticalAlignment = Alignment.CenterVertically
                         ) {
-                            FormOne(list)
+                            Icon(
+                                Icons.Filled.Info,
+                                contentDescription = "",
+                                tint = colorGreen,
+                                modifier = Modifier.size(12.dp)
+                            )
+                            Box(modifier = Modifier.width(10.dp))
+                            Text(
+                                text = hintText,
+                                style = MaterialTheme.typography.body1.copy(fontSize = 12.sp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            )
                         }
-                    }
 
-                    MyCoverButton("Continue", onPressed = {
-                        if (viewModel.formIndex.value < fields?.size!! - 1) {
-                            viewModel.formIndex.value += 1
-                        } else {
-                            onContinuePressed()
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            Text(
+                                "Learn more",
+                                style = MaterialTheme.typography.h1.copy(
+                                    color = colorAccent,
+                                    fontSize = 10.sp,
+                                    fontStyle = FontStyle.Italic
+                                )
+                            )
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            )
+                            Text(
+                                "Underwritten by ",
+                                style = MaterialTheme.typography.h1.copy(
+                                    fontSize = 12.sp,
+                                    color = colorGrey
+                                )
+                            )
+                            Text(
+                                product.name.uppercase(),
+                                style = MaterialTheme.typography.h1.copy(
+                                    colorSpaceGray,
+                                    fontSize = 12.sp
+                                )
+                            )
+                            Box(Modifier.width(4.dp))
+                            Image(
+                                painter = painterResource(id = R.drawable.aiico),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .width(40.dp)
+                                    .height(12.dp)
+                            )
                         }
-                    })
+
+                        Box(Modifier.height(8.dp))
+
+                        fields?.forEachIndexed { index, list ->
+                            AnimatedVisibility(
+                                modifier = Modifier.fillMaxWidth(),
+                                visible = index == viewModel.formIndex.value,
+                                enter = slideInHorizontally(
+                                    initialOffsetX = { -300 },
+                                    animationSpec = tween(
+                                        durationMillis = animationTime,
+                                        easing = LinearEasing
+                                    )
+                                ),
+                                exit = slideOutHorizontally(
+                                    targetOffsetX = { -300 },
+                                    animationSpec = tween(
+                                        durationMillis = animationTimeExit,
+                                        easing = LinearEasing
+                                    )
+                                )
+                            ) {
+                                FormOne(list)
+                            }
+                        }
+
+                        MyCoverButton("Continue", onPressed = {
+                            if (viewModel.formIndex.value < fields?.size!! - 1) {
+                                viewModel.formIndex.value += 1
+                            } else {
+                                onContinuePressed()
+                            }
+                        })
+                    }
                 }
             }
-        }
-    })
+        })
 }
 
 @Composable
@@ -171,14 +171,20 @@ fun FormOne(fields: List<FormField>) {
         items(fields.size) {
             val formField = fields[it]
 
-            //if(fields.)
-
-
-            TitledTextField(
-                placeholderText = formField.description,
-                title = formField.label,
-                keyboardType = formField.getKeyboardType()
-            )
+            if (formField.inputType.lowercase() == "date") {
+                TitledTextField(
+                    placeholderText = formField.description,
+                    title = formField.label,
+                    readOnly = true,
+                    onPressed = {}
+                )
+            } else {
+                TitledTextField(
+                    placeholderText = formField.description,
+                    title = formField.label,
+                    keyboardType = formField.getKeyboardType()
+                )
+            }
         }
     }
 }

@@ -12,4 +12,7 @@ interface API {
     @Headers("Content-Type: application/json")
     @POST("/v1/sdk/initialize")
     suspend fun initialize(@Header("Authorization") token: String, @Body body: String): Response
+
+    @POST("/v1/sdk/buy")
+    suspend fun buyProduct(@Body payload: String): Response
 }

@@ -89,8 +89,8 @@ fun MyCoverTemplate(
 }
 
 @Composable
-fun TitledTextField(placeholderText: String, title: String, keyboardType: KeyboardType = KeyboardType.Text) {
-    Column(Modifier.padding(top = 10.dp, bottom = 15.dp)) {
+fun TitledTextField(placeholderText: String, title: String, keyboardType: KeyboardType = KeyboardType.Text, readOnly: Boolean = false, onPressed: () -> Unit = {}) {
+    Column(Modifier.padding(top = 10.dp, bottom = 15.dp).clickable { onPressed() }) {
         Text(title, style = MaterialTheme.typography.body1)
         Box(Modifier.height(10.dp))
         OutlinedTextField(
@@ -98,8 +98,8 @@ fun TitledTextField(placeholderText: String, title: String, keyboardType: Keyboa
                 .fillMaxWidth()
                 .background(colorGreyLight),
             value = "",
-
             onValueChange = {},
+            readOnly = readOnly,
             placeholder = { Text(placeholderText, color = colorGrey) },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType)
