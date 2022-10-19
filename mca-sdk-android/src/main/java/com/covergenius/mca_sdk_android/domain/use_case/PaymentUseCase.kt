@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class PaymentUseCase @Inject constructor(val repo: PaymentRepo) {
-    val SCOPE = "PAYMENT_SDK"
+    private val SCOPE = "PAYMENT_SDK"
     operator fun invoke(token: String, payload: String): Flow<Resource<PaymentResponse>> = flow {
         try {
             emit(Resource.Loading())
