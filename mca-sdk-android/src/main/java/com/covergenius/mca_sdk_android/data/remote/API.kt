@@ -12,11 +12,14 @@ import retrofit2.http.POST
 interface API {
     @Headers("Content-Type: application/json")
     @POST("/v1/sdk/initialize")
-    suspend fun initialize(@Header("Authorization") token: String, @Body body: String): Response
+    suspend fun initialize(
+        @Header("Authorization") token: String,
+        @Body body: String): Response
 
+
+    @Headers("Content-Type: application/json")
     @POST("/v1/sdk/initiate-purchase")
     suspend fun buyProduct(
         @Header("Authorization") token: String,
-        @Body payload: String
-    ): PaymentResponse
+        @Body payload: String): PaymentResponse
 }

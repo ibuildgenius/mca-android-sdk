@@ -11,13 +11,12 @@ import java.io.IOException
 import javax.inject.Inject
 
 class PaymentUseCase @Inject constructor(val repo: PaymentRepo) {
-    private val SCOPE = "PAYMENT_SDK"
+
+    private val SCOPE = "PAYMENT_USE_CASE"
     operator fun invoke(token: String, payload: String): Flow<Resource<PaymentResponse>> = flow {
         try {
             emit(Resource.Loading())
-
             val response = repo.buyProduct(token, payload)
-
             emit(Resource.Success(response))
         } catch (e: HttpException) {
             Log.e(SCOPE, e.message(), e)

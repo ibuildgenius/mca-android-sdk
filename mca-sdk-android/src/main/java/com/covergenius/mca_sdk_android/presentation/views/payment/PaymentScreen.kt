@@ -15,6 +15,7 @@ import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Separator
+import com.covergenius.mca_sdk_android.data.cache.getFieldFromJson
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.covergenius.mca_sdk_android.presentation.views.components.PaymentType
@@ -45,7 +46,7 @@ fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltView
                         .padding(8.dp)
                 ) {
                     Text(
-                        viewModel.getField("email") ?: "chuks@gmail.com",
+                        getFieldFromJson("email", viewModel.formData.value) ?: "chuks@gmail.com",
                         style = MaterialTheme.typography.subtitle1.copy(color = colorGrey)
                     )
                     Box(modifier = Modifier.height(4.dp))
@@ -58,9 +59,10 @@ fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltView
 
                 Box(modifier = Modifier.height(20.dp))
 
-                if (formStep == 0) {
+                if (viewModel._state.value.paymentResponse == null) {
                     StepOne(viewModel)
                 } else {
+                    buttonText = "I have sent the money"
                     StepTwo(viewModel)
                 }
 
@@ -74,12 +76,13 @@ fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltView
                 }
 
                 MyCoverButton(buttonText = buttonText, onPressed = {
-                    if (formStep == 0) {
-                        formStep++
-                        buttonText = "I have sent the money"
+
+                    if(viewModel._state.value.paymentResponse == null) {
+                        viewModel.initializePurchase()
                     } else {
                         onComplete()
                     }
+
                 })
 
             }
@@ -125,33 +128,40 @@ fun StepOne(viewModel: PaymentViewModel) {
 
 @Composable
 fun StepTwo(viewModel: PaymentViewModel) {
-    Column {
-        Column(
-            Modifier
-                .background(colorGreyLight)
-                .padding(horizontal = 50.dp, vertical = 15.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(Modifier.height(20.dp))
-            Text(
-                "Send to the Account No. below", style = MaterialTheme.typography.body2.copy(
-                    colorGreen, fontSize = 13.sp
+
+    val data = viewModel._state.value.paymentResponse?.data
+
+    data?.let {
+
+        Column {
+            Column(
+                Modifier
+                    .background(colorGreyLight)
+                    .padding(horizontal = 50.dp, vertical = 15.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(Modifier.height(20.dp))
+                Text(
+                    "Send to the Account No. below", style = MaterialTheme.typography.body2.copy(
+                        colorGreen, fontSize = 13.sp
+                    )
                 )
-            )
 
-            Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
+                Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
 
-            Text(
-                text = "Access Bank\nMyCover.ai\n12345678904",
-                style = MaterialTheme.typography.body2.copy(
-                    fontSize = 20.sp,
-                    color = colorNavyBlue,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 33.sp
+
+                Text(
+                    text = "${data.bank}\n${data.reference}\n${data.accountNumber}",
+                    style = MaterialTheme.typography.body2.copy(
+                        fontSize = 20.sp,
+                        color = colorNavyBlue,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 33.sp
+                    )
                 )
-            )
 
-            Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
+                Separator(color = colorGray, modifier = Modifier.padding(vertical = 25.dp))
+            }
         }
     }
 }

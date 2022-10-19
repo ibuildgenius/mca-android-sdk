@@ -207,13 +207,14 @@ fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
     calendar.time = Date()
 
     val date = remember { mutableStateOf("") }
+    val isoDate = remember { mutableStateOf("") }
 
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth-$month-$year"
-
-            viewModel.addFormDataEntry(formField.name, date.value)
+            isoDate.value = "$dayOfMonth$month$year"
+            viewModel.addFormDataEntry(formField.name, isoDate.value)
         }, year, month, day
     )
 

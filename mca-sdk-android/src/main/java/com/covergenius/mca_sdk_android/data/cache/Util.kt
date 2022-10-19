@@ -8,6 +8,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -35,3 +37,10 @@ fun Context.getString(key: String): String {
 
 fun Context.getSelectedProduct(): ProductDetail =
     getString(SELECTED_PRODUCT_KEY).fromJson(ProductDetail::class.java)
+
+
+
+fun getFieldFromJson(key: String, json: String): String? {
+    val entry = Gson().fromJson(json, JsonObject::class.java)
+    return entry.get(key).asString
+}

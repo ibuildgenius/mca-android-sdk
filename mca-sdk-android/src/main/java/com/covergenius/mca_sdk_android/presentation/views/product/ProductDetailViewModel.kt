@@ -23,12 +23,10 @@ class ProductDetailViewModel @Inject constructor(application: Application): Andr
         product.value = context.getSelectedProduct()
     }
 
-
     fun saveFieldEntries() {
         val gson = Gson().toJson(formData)
         context.writeString(SAVED_FORM_DATA_ENTRY, gson)
     }
-
 
     fun addFormDataEntry(key: String, value: String) {
         formData[key] = value

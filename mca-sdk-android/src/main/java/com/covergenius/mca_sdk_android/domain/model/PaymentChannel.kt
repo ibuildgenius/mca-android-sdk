@@ -7,7 +7,16 @@ enum class PaymentChannel {
     Transfer
 }
 
-data class PaymentModel (
+
+fun resolvedPaymentChannel(p: PaymentChannel): String {
+    return when (p) {
+        PaymentChannel.Transfer -> "bank transfer"
+        PaymentChannel.USSD -> "ussd"
+    }
+}
+
+
+data class PaymentModel(
     val channel: PaymentChannel,
     @SerializedName("bank-code")
     val bankCode: String?,

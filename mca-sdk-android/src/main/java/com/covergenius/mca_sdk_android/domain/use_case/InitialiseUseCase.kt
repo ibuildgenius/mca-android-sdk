@@ -11,10 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-
-
-
-class InitialiseUseCkase @Inject constructor(val repo: InitRepo) {
+class InitialiseUseCase @Inject constructor(val repo: InitRepo) {
     private val SCOPE = "SDK_INITIALISATION_USE_CASE"
     operator fun invoke(token: String, paymentOption: PaymentOption): Flow<Resource<Response>> = flow {
       try {
