@@ -7,7 +7,6 @@ enum class PaymentChannel {
     Transfer
 }
 
-
 fun resolvedPaymentChannel(p: PaymentChannel): String {
     return when (p) {
         PaymentChannel.Transfer -> "bank transfer"

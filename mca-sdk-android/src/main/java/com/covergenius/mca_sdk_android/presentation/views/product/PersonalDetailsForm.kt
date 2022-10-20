@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.remote.dto.*
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.components.*
@@ -195,15 +194,16 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
 fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
     val context = LocalContext.current
 
-    val year: Int
-    val month: Int
-    val day: Int
+    val mYear: Int
+    val mMonth: Int
+    val mDay: Int
 
     val calendar = Calendar.getInstance()
 
-    year = calendar.get(Calendar.YEAR)
-    month = calendar.get(Calendar.MONTH)
-    day = calendar.get(Calendar.DAY_OF_MONTH)
+    mYear = calendar.get(Calendar.YEAR)
+    mMonth = calendar.get(Calendar.MONTH)
+    mDay = calendar.get(Calendar.DAY_OF_MONTH)
+
     calendar.time = Date()
 
     val date = remember { mutableStateOf("") }
@@ -215,9 +215,8 @@ fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
             date.value = "$dayOfMonth-$month-$year"
             isoDate.value = "$dayOfMonth$month$year"
             viewModel.addFormDataEntry(formField.name, isoDate.value)
-        }, year, month, day
+        }, mYear, mMonth, mDay
     )
-
 
     TitledTextField(
         placeholderText = formField.description,

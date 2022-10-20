@@ -3,16 +3,9 @@ package com.covergenius.mca_sdk_android.presentation
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import com.covergenius.mca_sdk_android.common.utils.Log
-import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
-import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
-import com.covergenius.mca_sdk_android.domain.model.Product
 import com.covergenius.mca_sdk_android.presentation.theme.colorBackground
 import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentResult
@@ -48,7 +41,7 @@ fun MyCoverApp() {
         composable(route = Routes.Payment) {
             PaymentScreen(onComplete = {
                 navController.navigate(Routes.PaymentResult)
-            })
+            }, navigator = navController)
         }
 
         composable(route = Routes.PaymentResult) {

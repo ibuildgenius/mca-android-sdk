@@ -3,9 +3,9 @@ package com.covergenius.mca_sdk_android.di
 import com.covergenius.mca_sdk_android.common.Constants
 import com.covergenius.mca_sdk_android.data.remote.API
 import com.covergenius.mca_sdk_android.data.repo.InitRepoImpl
-import com.covergenius.mca_sdk_android.data.repo.PaymentRepoImpl
+import com.covergenius.mca_sdk_android.data.repo.InitiatePurchaseRepoImpl
 import com.covergenius.mca_sdk_android.domain.repo.InitRepo
-import com.covergenius.mca_sdk_android.domain.repo.PaymentRepo
+import com.covergenius.mca_sdk_android.domain.repo.InitiatePurchaseRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,10 +45,9 @@ object SdkModule {
         return InitRepoImpl(api)
     }
 
-
     @Provides
     @Singleton
-    fun providePaymentRepo(api: API): PaymentRepo {
-        return PaymentRepoImpl(api)
+    fun providePurchaseRepo(api: API): InitiatePurchaseRepo {
+        return InitiatePurchaseRepoImpl(api)
     }
 }

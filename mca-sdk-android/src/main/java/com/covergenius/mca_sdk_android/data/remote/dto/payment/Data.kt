@@ -1,6 +1,5 @@
 package com.covergenius.mca_sdk_android.data.remote.dto.payment
 
-
 import com.google.gson.annotations.SerializedName
 
 class Data(

@@ -11,26 +11,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Separator
 import com.covergenius.mca_sdk_android.data.cache.getFieldFromJson
+import com.covergenius.mca_sdk_android.data.remote.dto.getOtherFields
+import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
 import com.covergenius.mca_sdk_android.presentation.views.components.PaymentType
 
 @Composable
-fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltViewModel()) {
+fun PaymentScreen(
+    onComplete: () -> Unit,
+    viewModel: PaymentViewModel = hiltViewModel(),
+    navigator: NavHostController, ) {
 
-    var formStep by remember { mutableStateOf(0) }
     var buttonText by remember { mutableStateOf("Continue") }
+
+
+
 
     Log.i("form_fields", viewModel.formData.value)
     Log.i("instance_id", viewModel.businessDetails.value)
 
     MyCoverTemplate(
         content = {
+
             Column(
                 modifier = Modifier
                     .padding(12.dp)
@@ -59,13 +69,12 @@ fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltView
 
                 Box(modifier = Modifier.height(20.dp))
 
-                if (viewModel._state.value.paymentResponse == null) {
+                if (viewModel._state.value.paymentResponse?.data == null) {
                     StepOne(viewModel)
                 } else {
                     buttonText = "I have sent the money"
                     StepTwo(viewModel)
                 }
-
 
                 Box(
                     Modifier
@@ -75,14 +84,19 @@ fun PaymentScreen(onComplete: () -> Unit, viewModel: PaymentViewModel = hiltView
                     Separator(Modifier.align(Alignment.Center))
                 }
 
-                MyCoverButton(buttonText = buttonText, onPressed = {
-
-                    if(viewModel._state.value.paymentResponse == null) {
+                MyCoverButton(buttonText = buttonText,
+                    enabled =  viewModel.waitCompleted.value,
+                    onPressed = {
+                    if(viewModel._state.value.paymentResponse?.data == null) {
                         viewModel.initializePurchase()
-                    } else {
-                        onComplete()
-                    }
 
+                    } else {
+                        if(viewModel.product.value?.formFields?.getOtherFields()?.isNotEmpty()!!) {
+                            navigator.navigate(Routes.ProductList)
+                        } else {
+                            onComplete()
+                        }
+                    }
                 })
 
             }

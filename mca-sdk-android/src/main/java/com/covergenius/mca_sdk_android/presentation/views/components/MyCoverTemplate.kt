@@ -131,13 +131,13 @@ fun TitledTextField(
 }
 
 @Composable
-fun MyCoverButton(buttonText: String = "", onPressed: () -> Unit = {}) {
+fun MyCoverButton(buttonText: String = "", onPressed: () -> Unit = {}, enabled: Boolean = true) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         onClick = onPressed,
-
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
     ) {
         Text(

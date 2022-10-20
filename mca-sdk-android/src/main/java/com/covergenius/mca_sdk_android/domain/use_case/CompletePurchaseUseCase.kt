@@ -2,22 +2,21 @@ package com.covergenius.mca_sdk_android.domain.use_case
 
 import android.util.Log
 import com.covergenius.mca_sdk_android.common.Resource
-import com.covergenius.mca_sdk_android.data.remote.dto.payment.PaymentResponse
-import com.covergenius.mca_sdk_android.domain.repo.PaymentRepo
+import com.covergenius.mca_sdk_android.domain.repo.InitiatePurchaseRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class PaymentUseCase @Inject constructor(val repo: PaymentRepo) {
+class CompletePurchaseUseCase @Inject constructor(val repo: InitiatePurchaseRepo) {
+    private val SCOPE = "COMPL_PURCHASE_USE_CASE"
 
-    private val SCOPE = "PAYMENT_USE_CASE"
-    operator fun invoke(token: String, payload: String): Flow<Resource<PaymentResponse>> = flow {
+    operator fun invoke(token: String, payload: String): Flow<Resource<Any>> = flow {
         try {
             emit(Resource.Loading())
-            val response = repo.buyProduct(token, payload)
-            emit(Resource.Success(response))
+            val r = repo.completePurchase(token, payload)
+            emit(Resource.Success(r))
         } catch (e: HttpException) {
             Log.e(SCOPE, e.message(), e)
             emit(Resource.Error("Opps an unexpected error occurred"))
