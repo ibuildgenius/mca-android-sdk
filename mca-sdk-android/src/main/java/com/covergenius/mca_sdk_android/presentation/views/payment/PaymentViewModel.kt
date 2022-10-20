@@ -2,21 +2,25 @@ package com.covergenius.mca_sdk_android.presentation.views.payment
 
 import android.app.Application
 import android.os.CountDownTimer
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.covergenius.mca_sdk_android.API_KEY
+import com.covergenius.mca_sdk_android.MCA_API_KEY
+import com.covergenius.mca_sdk_android.PUSHER_APP_KEY
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.cache.*
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
+import com.covergenius.mca_sdk_android.domain.model.TransactionUpdate
 import com.covergenius.mca_sdk_android.domain.model.resolvedPaymentChannel
 import com.covergenius.mca_sdk_android.domain.use_case.InitiatePurchaseUseCase
+import com.google.gson.Gson
+import com.pusher.client.Pusher
+import com.pusher.client.PusherOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.json.JSONObject
@@ -34,16 +38,6 @@ class PaymentViewModel @Inject constructor(
 
     var selectedPaymentMethod = mutableStateOf(PaymentChannel.Transfer)
 
-
-    val timer = object : CountDownTimer(5000, 1000)  {
-        override fun onTick(p0: Long) {
-        }
-
-        override fun onFinish() {
-            waitCompleted.value = true
-        }
-    }
-
     var waitCompleted =
         mutableStateOf(true)
 
@@ -52,7 +46,7 @@ class PaymentViewModel @Inject constructor(
     val formData = mutableStateOf("")
     val businessDetails = mutableStateOf("")
 
-     val _state = mutableStateOf(PaymentState())
+    val _state = mutableStateOf(PaymentState())
 
     init {
         product.value = context.getSelectedProduct()
@@ -65,12 +59,15 @@ class PaymentViewModel @Inject constructor(
 
         jsonObject.put("payload", JSONObject(formData.value))
         jsonObject.put("instance_id", "${getFieldFromJson("instance_id", businessDetails.value)}")
-        jsonObject.put("payment_channel",JSONObject("{\"channel\": \"${resolvedPaymentChannel(selectedPaymentMethod.value)}\"}"))
+        jsonObject.put(
+            "payment_channel",
+            JSONObject("{\"channel\": \"${resolvedPaymentChannel(selectedPaymentMethod.value)}\"}")
+        )
 
 
         Log.i("", "Payload is $jsonObject")
 
-        initiatePurchaseUseCase(API_KEY, jsonObject.toString()).onEach { result ->
+        initiatePurchaseUseCase(MCA_API_KEY, jsonObject.toString()).onEach { result ->
             when (result) {
                 is Resource.Error -> {
                     _state.value = PaymentState(error = result.message ?: "A server error occurred")
@@ -82,10 +79,32 @@ class PaymentViewModel @Inject constructor(
                 is Resource.Success -> {
                     waitCompleted.value = false
                     _state.value = PaymentState(paymentResponse = result.data)
-                    timer.start()
+
+                    _state.value.paymentResponse?.let {
+                        listen(it.data.reference).launchIn(viewModelScope)
+                    }
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun listen(ref: String): Flow<Resource<TransactionUpdate>> = flow {
+        val options = PusherOptions()
+        options.setCluster("us2")
+
+        val pusher = Pusher(PUSHER_APP_KEY, options)
+
+        pusher.connect()
+
+        val channel = pusher.subscribe("cache-$ref")
+
+        channel.bind(
+            "transaction_successful"
+        ) { pusherEvent ->
+            Log.i("PaymentViewmodel", "Event data is ${pusherEvent.data}")
+            val d = Gson().fromJson(pusherEvent.data, TransactionUpdate::class.java)
+            waitCompleted.value = d.isSuccessful()
+        }
     }
 
 }
