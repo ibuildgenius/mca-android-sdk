@@ -116,7 +116,7 @@ fun TitledTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(colorGreyLight)
-                .clickable{ onPressed() },
+                .clickable { onPressed() },
 
             enabled = enabled,
             value = value,
@@ -131,11 +131,16 @@ fun TitledTextField(
 }
 
 @Composable
-fun MyCoverButton(buttonText: String = "", onPressed: () -> Unit = {}, enabled: Boolean = true) {
+fun MyCoverButton(
+    buttonText: String = "",
+    onPressed: () -> Unit = {},
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 12.dp)
+) {
     Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
+        modifier = modifier,
         onClick = onPressed,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
@@ -151,8 +156,16 @@ fun MyCoverButton(buttonText: String = "", onPressed: () -> Unit = {}, enabled: 
 @Composable
 fun DropdownField(title: String, options: List<String>) {
 
+    var data: List<String> = options
+
+    if (data.isEmpty()) {
+        data = listOf("Select data")
+    }
+
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    var selectedOptionText by remember { mutableStateOf(data[0]) }
+
+
 
     Column {
         Text(text = title, style = MaterialTheme.typography.body1)
@@ -176,7 +189,7 @@ fun DropdownField(title: String, options: List<String>) {
             )
             ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
 
-                options.forEach { selectionOption ->
+                data.forEach { selectionOption ->
                     DropdownMenuItem(
                         onClick = {
                             selectedOptionText = selectionOption

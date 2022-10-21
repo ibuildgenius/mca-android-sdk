@@ -24,7 +24,6 @@ fun MyCoverApp() {
         startDestination = Routes.ProductList,
         Modifier.background(colorBackground)
     ) {
-
         composable(route = Routes.ProductList) {
             ProductListScreen(navController = navController)
         }
@@ -35,13 +34,11 @@ fun MyCoverApp() {
         }
 
         composable(route = Routes.ProductForms) {
-            ProductDetailsForm( { navController.navigate(Routes.Payment) })
+            ProductDetailsForm(navigator = navController, onContinuePressed =  { navController.navigate(Routes.Payment) }, )
         }
 
         composable(route = Routes.Payment) {
-            PaymentScreen(onComplete = {
-                navController.navigate(Routes.PaymentResult)
-            }, navigator = navController)
+            PaymentScreen( navigator = navController)
         }
 
         composable(route = Routes.PaymentResult) {

@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.onEach
 import org.json.JSONObject
 import javax.inject.Inject
 
-
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     application: Application,
@@ -41,12 +40,13 @@ class PaymentViewModel @Inject constructor(
     var waitCompleted =
         mutableStateOf(true)
 
-
     val product = mutableStateOf<ProductDetail?>(null)
     val formData = mutableStateOf("")
     val businessDetails = mutableStateOf("")
 
     val _state = mutableStateOf(PaymentState())
+
+    val showDialog = mutableStateOf(false)
 
     init {
         product.value = context.getSelectedProduct()
@@ -64,19 +64,21 @@ class PaymentViewModel @Inject constructor(
             JSONObject("{\"channel\": \"${resolvedPaymentChannel(selectedPaymentMethod.value)}\"}")
         )
 
-
         Log.i("", "Payload is $jsonObject")
 
         initiatePurchaseUseCase(MCA_API_KEY, jsonObject.toString()).onEach { result ->
             when (result) {
                 is Resource.Error -> {
+                    showDialog.value = false
                     _state.value = PaymentState(error = result.message ?: "A server error occurred")
                 }
                 is Resource.Loading -> {
+                    showDialog.value = true
                     _state.value = PaymentState(isLoading = true)
                 }
 
                 is Resource.Success -> {
+                    showDialog.value = false
                     waitCompleted.value = false
                     _state.value = PaymentState(paymentResponse = result.data)
 
@@ -101,7 +103,7 @@ class PaymentViewModel @Inject constructor(
         channel.bind(
             "transaction_successful"
         ) { pusherEvent ->
-            Log.i("PaymentViewmodel", "Event data is ${pusherEvent.data}")
+            Log.i("PaymentViewModel", "Event data is ${pusherEvent.data}")
             val d = Gson().fromJson(pusherEvent.data, TransactionUpdate::class.java)
             waitCompleted.value = d.isSuccessful()
         }

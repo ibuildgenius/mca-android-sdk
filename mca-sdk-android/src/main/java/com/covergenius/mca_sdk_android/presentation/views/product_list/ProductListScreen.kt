@@ -17,19 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.covergenius.mca_sdk_android.MCA_API_KEY
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.data.cache.BUSINESS_INSTANCE_ID
-import com.covergenius.mca_sdk_android.data.cache.SELECTED_PRODUCT_KEY
+import com.covergenius.mca_sdk_android.data.cache.*
 
-import com.covergenius.mca_sdk_android.data.cache.writeString
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.data.remote.dto.toJson
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.presentation.views.Routes
+import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.product_list.components.ChipGroup
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
@@ -50,6 +51,8 @@ fun ProductListScreen(
 
     var currentFilter by remember { mutableStateOf("All") }
 
+
+
     Box(
         Modifier
             .fillMaxSize()
@@ -58,11 +61,18 @@ fun ProductListScreen(
         if (state.isLoading) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         } else if (state.error.isNotBlank()) {
-            Text(
-                state.error,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    state.error,
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
+                )
+
+                Box(Modifier.height(12.dp))
+
+                MyCoverButton(onPressed = { viewModel.initialise(MCA_API_KEY)}, buttonText = "Try Again", modifier = Modifier.padding(12.dp))
+            }
+
         } else if (state.response != null) {
 
             val products = state.response.data.productDetails
@@ -91,30 +101,33 @@ fun ProductListScreen(
                     style = MaterialTheme.typography.body2.copy(fontSize = 16.sp),
                     modifier = Modifier.padding(top = 12.dp, bottom = 25.dp)
                 )
-                OutlinedTextField(
-                    value = search,
-                    shape = textFieldShape,
-                    leadingIcon = {
-                        Icon(
-                            Icons.Default.Search,
-                            contentDescription = "",
-                            tint = colorGrey
-                        )
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Search Products",
-                            style = MaterialTheme.typography.h3.copy(color = colorGrey)
-                        )
-                    },
-                    singleLine = true,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorPrimary,
-                        unfocusedBorderColor = colorGrey
-                    ),
-                    onValueChange = { text: TextFieldValue -> search = text },
-                    modifier = Modifier.fillMaxWidth()
-                )
+
+                if(false) {
+                    OutlinedTextField(
+                        value = search,
+                        shape = textFieldShape,
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = "",
+                                tint = colorGrey
+                            )
+                        },
+                        placeholder = {
+                            Text(
+                                text = "Search Products",
+                                style = MaterialTheme.typography.h3.copy(color = colorGrey)
+                            )
+                        },
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = colorPrimary,
+                            unfocusedBorderColor = colorGrey
+                        ),
+                        onValueChange = { text: TextFieldValue -> search = text },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
                 ChipGroup(items = filterList, selectedString = currentFilter, onItemClick = {
                     currentFilter = it
