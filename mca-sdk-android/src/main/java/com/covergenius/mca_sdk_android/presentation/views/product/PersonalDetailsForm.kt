@@ -221,8 +221,7 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
                 DateField(formField = formField, viewModel)
             } else if (formField.formField.name.lowercase() == "select") {
 
-
-                if(!viewModel.select.value.containsKey(formField.name)) {
+                if (!viewModel.select.value.containsKey(formField.name)) {
                     viewModel.getSelect(
                         formField.name,
                         "${Constants.BASE_URL}/v1${formField.dataUrl}"
@@ -231,6 +230,8 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
                 }
 
                 SelectDropdown(formField = formField, viewModel = viewModel)
+            } else if (formField.inputType.lowercase() == "file") {
+                filePicker(formField = formField, viewModel = viewModel)
             } else {
 
                 val data = remember { mutableStateOf("") }
@@ -249,7 +250,6 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
         }
     }
 }
-
 
 @Composable
 fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
@@ -302,4 +302,9 @@ fun SelectDropdown(formField: FormField, viewModel: ProductDetailViewModel) {
         title = formField.label,
         options = viewModel.select.value[formField.name] ?: listOf()
     )
+}
+
+@Composable
+fun filePicker(formField: FormField, viewModel: ProductDetailViewModel) {
+
 }
