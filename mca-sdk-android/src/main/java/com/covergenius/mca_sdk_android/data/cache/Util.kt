@@ -60,3 +60,20 @@ fun getFieldFromJson(key: String, json: String): String {
         ""
     }
 }
+
+
+fun Context.clearCache() {
+
+    runBlocking {
+        dataStore.edit {
+            it.clear()
+        }
+    }
+
+
+    //rest entries
+    writeString(SELECTED_PRODUCT_KEY, "")
+    writeBoolean(PAYMENT_SUCCESS_KEY,false)
+    writeString(BUSINESS_INSTANCE_ID, "")
+    writeString(SAVED_FORM_DATA_ENTRY, "")
+}

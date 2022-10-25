@@ -29,7 +29,6 @@ class ProductListViewModel @Inject constructor(
 
     var product: ProductDetail? = null
 
-
     private val context =
         getApplication<Application>().applicationContext //TODO("implement a better solution")
 
@@ -37,17 +36,12 @@ class ProductListViewModel @Inject constructor(
     init {
         //TODO("Secure token")
         initialise(MCA_API_KEY, PaymentOption.Gateway)
-
     }
 
     fun initialise(token: String, paymentOption: PaymentOption = PaymentOption.Gateway) {
 
         //rest entries
-        context.writeString(SELECTED_PRODUCT_KEY, "")
-        context.writeBoolean(PAYMENT_SUCCESS_KEY,false)
-        context.writeString(BUSINESS_INSTANCE_ID, "")
-        context.writeString(SAVED_FORM_DATA_ENTRY, "")
-
+        context.clearCache()
 
         initUseCase(token, paymentOption).onEach { result ->
             when (result) {
