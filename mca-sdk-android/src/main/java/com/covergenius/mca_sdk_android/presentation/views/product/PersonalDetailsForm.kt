@@ -67,7 +67,6 @@ fun ProductDetailsForm(
                 }
             }
         }
-
     }
 
     //split fields into a group of 3s
