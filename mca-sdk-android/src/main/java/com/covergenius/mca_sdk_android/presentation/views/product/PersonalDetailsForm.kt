@@ -48,7 +48,6 @@ fun ProductDetailsForm(
 
     val product = viewModel.product.value
 
-
     val context = LocalContext.current
 
     val hasPaid = context.getBoolean(PAYMENT_SUCCESS_KEY)
