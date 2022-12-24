@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.covergenius.mca_sdk_android.MyCoverAI
+import com.covergenius.mca_sdk_android.presentation.MyCoverAI
 import com.covergenius.test_compose.ui.theme.Test_composeTheme
 
 class MainActivity : ComponentActivity() {

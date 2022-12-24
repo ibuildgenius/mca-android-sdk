@@ -9,4 +9,3 @@ data class FullBenefit(
     @SerializedName("name")
     val name: String
 )
-

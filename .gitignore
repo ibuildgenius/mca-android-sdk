@@ -1,4 +1,4 @@
 /build
 .idea
 .gradle
-app
+/mca-sdk-android/build

@@ -1,8 +1,11 @@
 package com.covergenius.mca_sdk_android.data.remote.dto
 
-
+import android.os.Parcelable
+import androidx.compose.ui.text.input.KeyboardType
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class FormField(
     @SerializedName("created_at")
     val createdAt: String,
@@ -12,10 +15,8 @@ data class FormField(
     val dataType: String,
     @SerializedName("data_url")
     val dataUrl: String,
-    @SerializedName("deleted_at")
-    val deletedAt: Any,
     @SerializedName("depends_on")
-    val dependsOn: Any,
+    val dependsOn: String,
     @SerializedName("description")
     val description: String,
     @SerializedName("error_msg")
@@ -35,9 +36,7 @@ data class FormField(
     @SerializedName("label")
     val label: String,
     @SerializedName("max")
-    val max: Any,
-    @SerializedName("meta")
-    val meta: Any,
+    val max: Int,
     @SerializedName("min")
     val min: Int,
     @SerializedName("min_max_constraint")
@@ -54,4 +53,21 @@ data class FormField(
     val showFirst: Boolean,
     @SerializedName("updated_at")
     val updatedAt: String
-)
+): Parcelable
+
+fun List<FormField>.getPriorityFields(): List<FormField> =
+    this.filter { it.showFirst }.sortedBy { it.position }
+
+
+fun List<FormField>.getOtherFields(): List<FormField> =
+    this.filter { !it.showFirst }.sortedBy { it.position }
+
+
+fun FormField.getKeyboardType() : KeyboardType {
+    return when(this.inputType.lowercase()) {
+        "email" -> KeyboardType.Email
+        "text" -> KeyboardType.Text
+        "phone" -> KeyboardType.Phone
+        else -> {KeyboardType.Text}
+    }
+}
