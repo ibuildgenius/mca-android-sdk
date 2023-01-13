@@ -71,7 +71,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.3.1'
 
-
     // Compose dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha08"
@@ -142,7 +141,7 @@ artifactory {
 publishing {
     publications {
         release(MavenPublication) {
-            groupId = "com.mycover.ai"
+            groupId = "com.github.ibuildgenius"
             artifactId = "mca-android-sdk"
             version = "1.0.0"
 
