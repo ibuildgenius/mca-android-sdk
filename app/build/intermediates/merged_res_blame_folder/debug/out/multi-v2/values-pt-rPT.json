@@ -4,24 +4,7 @@
             "outputFile": "com.covergenius.test_compose.app-mergeDebugResources-49:/values-pt-rPT/values-pt-rPT.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\79ff8c00e50388d3812b4ab143857fbc\\transformed\\ui-1.1.0-beta01\\res\\values-pt-rPT\\values-pt-rPT.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,200,283,380,479,565,644,751,842,929,1001,1070,1146,1218",
-                        "endColumns": "94,82,96,98,85,78,106,90,86,71,68,75,71,121",
-                        "endOffsets": "195,278,375,474,560,639,746,837,924,996,1065,1141,1213,1335"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,15,16",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,200,283,380,479,565,644,751,842,929,1001,1070,1247,1319",
-                        "endColumns": "94,82,96,98,85,78,106,90,86,71,68,75,71,121",
-                        "endOffsets": "195,278,375,474,560,639,746,837,924,996,1065,1141,1314,1436"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\b1f5041c97df7bc3dcde46a89200fe47\\transformed\\core-1.7.0\\res\\values-pt-rPT\\values-pt-rPT.xml",
+                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\92c32eb3000cc2482093a45c859d2447\\transformed\\core-1.7.0\\res\\values-pt-rPT\\values-pt-rPT.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -35,6 +18,23 @@
                         "startOffsets": "1146",
                         "endColumns": "100",
                         "endOffsets": "1242"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\dea2c779c46f0b9ec6f0ac375eba1461\\transformed\\ui-1.1.0-beta01\\res\\values-pt-rPT\\values-pt-rPT.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,283,380,479,565,644,751,842,929,1001,1070,1146,1218",
+                        "endColumns": "94,82,96,98,85,78,106,90,86,71,68,75,71,121",
+                        "endOffsets": "195,278,375,474,560,639,746,837,924,996,1065,1141,1213,1335"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,15,16",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,283,380,479,565,644,751,842,929,1001,1070,1247,1319",
+                        "endColumns": "94,82,96,98,85,78,106,90,86,71,68,75,71,121",
+                        "endOffsets": "195,278,375,474,560,639,746,837,924,996,1065,1141,1314,1436"
                     }
                 }
             ]

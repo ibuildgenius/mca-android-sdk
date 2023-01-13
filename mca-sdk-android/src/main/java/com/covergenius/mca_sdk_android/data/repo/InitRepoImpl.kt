@@ -9,7 +9,8 @@ import javax.inject.Inject
 
 class InitRepoImpl @Inject constructor(private val api: API) : InitRepo {
     override suspend fun initialise(token: String, paymentOption: PaymentOption): Response {
-        val body = JSONObject().put("payment_option", paymentOption.name.lowercase()).toString()
+        val body = JSONObject().put("payment_option", paymentOption.name.lowercase())
+            .put("action", "purchase").toString()
         return api.initialize("Bearer $token", body)
     }
 }

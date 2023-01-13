@@ -4,24 +4,7 @@
             "outputFile": "com.covergenius.test_compose.app-mergeDebugResources-49:/values-hi/values-hi.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\79ff8c00e50388d3812b4ab143857fbc\\transformed\\ui-1.1.0-beta01\\res\\values-hi\\values-hi.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,200,283,376,474,563,641,794,883,968,1036,1105,1178,1244",
-                        "endColumns": "94,82,92,97,88,77,152,88,84,67,68,72,65,119",
-                        "endOffsets": "195,278,371,469,558,636,789,878,963,1031,1100,1173,1239,1359"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,15,16",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,200,283,376,474,563,641,794,883,968,1036,1105,1279,1345",
-                        "endColumns": "94,82,92,97,88,77,152,88,84,67,68,72,65,119",
-                        "endOffsets": "195,278,371,469,558,636,789,878,963,1031,1100,1173,1340,1460"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\b1f5041c97df7bc3dcde46a89200fe47\\transformed\\core-1.7.0\\res\\values-hi\\values-hi.xml",
+                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\92c32eb3000cc2482093a45c859d2447\\transformed\\core-1.7.0\\res\\values-hi\\values-hi.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -35,6 +18,23 @@
                         "startOffsets": "1178",
                         "endColumns": "100",
                         "endOffsets": "1274"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\dea2c779c46f0b9ec6f0ac375eba1461\\transformed\\ui-1.1.0-beta01\\res\\values-hi\\values-hi.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,283,376,474,563,641,794,883,968,1036,1105,1178,1244",
+                        "endColumns": "94,82,92,97,88,77,152,88,84,67,68,72,65,119",
+                        "endOffsets": "195,278,371,469,558,636,789,878,963,1031,1100,1173,1239,1359"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,15,16",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,200,283,376,474,563,641,794,883,968,1036,1105,1279,1345",
+                        "endColumns": "94,82,92,97,88,77,152,88,84,67,68,72,65,119",
+                        "endOffsets": "195,278,371,469,558,636,789,878,963,1031,1100,1173,1340,1460"
                     }
                 }
             ]
