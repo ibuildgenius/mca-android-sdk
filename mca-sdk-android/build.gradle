@@ -145,8 +145,6 @@ publishing {
             artifactId = "mca-android-sdk"
             version = "1.0.0"
 
-            artifact("$buildDir/outputs/aar/release/${project.getName()}-release.aar")
-
             afterEvaluate {
                 from(components["release"])
             }
