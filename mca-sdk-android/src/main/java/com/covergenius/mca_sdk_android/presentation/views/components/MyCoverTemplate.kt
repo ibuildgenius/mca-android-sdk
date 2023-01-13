@@ -1,8 +1,5 @@
 package com.covergenius.mca_sdk_android.presentation.views.components
 
-import android.app.DatePickerDialog
-import android.content.Context
-import android.widget.DatePicker
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -33,6 +30,8 @@ fun MyCoverTemplate(
 ) {
     ConstraintLayout(Modifier.fillMaxSize()) {
         val (bgStart, bgBottom, layout) = createRefs()
+
+
 
         Image(
             painter = painterResource(id = R.drawable.bg),
