@@ -1,2 +1,4 @@
 jdk:
   - openjdk11
+install:
+  - ./gradlew clean -Pgroup=com.github.ibuildgenius -Pversion=1.0.2 -xtest -xlint assembleDebug publishToMavenLocal
