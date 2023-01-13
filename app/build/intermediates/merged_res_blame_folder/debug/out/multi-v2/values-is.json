@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.covergenius.test_compose.app-mergeDebugResources-49:/values-is/values-is.xml",
+            "outputFile": "com.covergenius.test_compose.app-mergeDebugResources-53:/values-is/values-is.xml",
             "map": [
                 {
                     "source": "C:\\Users\\xhegh\\.gradle\\caches\\transforms-3\\dea2c779c46f0b9ec6f0ac375eba1461\\transformed\\ui-1.1.0-beta01\\res\\values-is\\values-is.xml",

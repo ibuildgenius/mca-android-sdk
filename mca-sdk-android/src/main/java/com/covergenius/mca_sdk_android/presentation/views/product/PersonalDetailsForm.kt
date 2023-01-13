@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.CountDownTimer
 import android.widget.DatePicker
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -35,6 +36,8 @@ import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.components.*
 import java.util.*
 
+
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ProductDetailsForm(
     onContinuePressed: () -> Unit,
