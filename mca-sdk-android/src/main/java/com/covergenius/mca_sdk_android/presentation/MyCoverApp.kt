@@ -30,7 +30,7 @@ fun MyCoverApp() {
         composable(
             route = Routes.ProductInfo
         ) {
-            ProductInfoScreen(onContinuePressed = { navController.navigate(Routes.ProductForms) })
+            ProductInfoScreen(onContinuePressed = { navController.navigate(Routes.ProductForms) }, navigator = navController)
         }
 
         composable(route = Routes.ProductForms) {

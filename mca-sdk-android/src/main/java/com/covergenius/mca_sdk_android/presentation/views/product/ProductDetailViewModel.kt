@@ -12,8 +12,7 @@ import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
 import com.covergenius.mca_sdk_android.domain.use_case.SelectFieldsUseCase
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +20,24 @@ class ProductDetailViewModel @Inject constructor(
     application: Application,
     val selectFieldsUseCase: SelectFieldsUseCase
 ) : AndroidViewModel(application) {
+
+
+    private val _showCancelDialog =  MutableStateFlow(false)
+
+    val showCancelDialog: StateFlow<Boolean> = _showCancelDialog.asStateFlow()
+
+    fun onOpenDialogClicked() {
+        _showCancelDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showCancelDialog.value = false
+        //continue execution
+    }
+
+    fun onDialogDismiss() {
+        _showCancelDialog.value = false
+    }
 
     private val context =
         getApplication<Application>().applicationContext //TODO("implement a better solution")

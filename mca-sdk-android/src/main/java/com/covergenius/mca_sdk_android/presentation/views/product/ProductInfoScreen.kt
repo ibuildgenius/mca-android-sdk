@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.common.utils.Log
@@ -34,11 +35,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductInfoScreen(
     onContinuePressed: () -> Unit,
+    navigator: NavController,
 ) {
     val pagerState = rememberPagerState(pageCount = 3)
 
 
     MyCoverTemplate(
+        onCanceledPressed = {navigator.popBackStack()},
+        onBackPressed = {navigator.popBackStack() },
         content =  {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

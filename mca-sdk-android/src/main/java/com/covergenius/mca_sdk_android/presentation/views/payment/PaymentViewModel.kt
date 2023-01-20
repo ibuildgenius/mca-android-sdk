@@ -19,10 +19,7 @@ import com.google.gson.Gson
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -53,6 +50,25 @@ class PaymentViewModel @Inject constructor(
         formData.value = context.getString(SAVED_FORM_DATA_ENTRY)
         businessDetails.value = context.getString(BUSINESS_INSTANCE_ID)
     }
+
+
+    private val _showCancelDialog =  MutableStateFlow(false)
+
+    val showCancelDialog: StateFlow<Boolean> = _showCancelDialog.asStateFlow()
+
+    fun onOpenDialogClicked() {
+        _showCancelDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showCancelDialog.value = false
+        //continue execution
+    }
+
+    fun onDialogDismiss() {
+        _showCancelDialog.value = false
+    }
+
 
     fun initializePurchase() {
         val jsonObject = JSONObject()

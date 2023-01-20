@@ -29,7 +29,7 @@ fun Toolbar(margin: Dp = 0.dp, onBackPressed: () -> Unit, onCancelPressed: () ->
                     tint = colorPrimary
                 )
             }
-            IconButton(onClick = onBackPressed) {
+            IconButton(onClick = onCancelPressed) {
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Cancel Process",

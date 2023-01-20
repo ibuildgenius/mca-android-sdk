@@ -1,5 +1,6 @@
 package com.covergenius.mca_sdk_android.presentation.views.payment
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -20,13 +21,11 @@ import com.covergenius.mca_sdk_android.common.utils.Separator
 import com.covergenius.mca_sdk_android.data.cache.PAYMENT_SUCCESS_KEY
 import com.covergenius.mca_sdk_android.data.cache.getFieldFromJson
 import com.covergenius.mca_sdk_android.data.cache.writeBoolean
-import com.covergenius.mca_sdk_android.data.cache.writeString
 import com.covergenius.mca_sdk_android.data.remote.dto.getOtherFields
 import com.covergenius.mca_sdk_android.presentation.views.Routes
-import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
-import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
-import com.covergenius.mca_sdk_android.presentation.views.components.PaymentType
+import com.covergenius.mca_sdk_android.presentation.views.components.*
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun PaymentScreen(
     viewModel: PaymentViewModel = hiltViewModel(),
@@ -34,13 +33,28 @@ fun PaymentScreen(
 ) {
 
     var buttonText by remember { mutableStateOf("Continue") }
+    val showCancelDialog: Boolean by viewModel.showCancelDialog.collectAsState()
 
     val context = LocalContext.current
 
     Log.i("form_fields", viewModel.formData.value)
     Log.i("instance_id", viewModel.businessDetails.value)
 
+    DisplayDialog(
+        show = showCancelDialog,
+        onDialogDismiss = viewModel::onDialogDismiss,
+        onDialogConfirm = {
+            viewModel.onDialogConfirm(); navigator.navigate(Routes.ProductList) {
+            popUpTo(Routes.ProductList) {
+                inclusive = true
+            }
+        }
+        }
+    )
+
+
     MyCoverTemplate(
+        onCanceledPressed = { viewModel.onOpenDialogClicked() },
         content = {
 
             if (viewModel.showDialog.value) {

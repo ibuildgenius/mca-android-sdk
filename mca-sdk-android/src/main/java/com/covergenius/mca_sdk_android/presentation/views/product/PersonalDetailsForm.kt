@@ -1,5 +1,6 @@
 package com.covergenius.mca_sdk_android.presentation.views.product
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.CountDownTimer
 import android.widget.DatePicker
@@ -37,6 +38,7 @@ import com.covergenius.mca_sdk_android.presentation.views.components.*
 import java.util.*
 
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ProductDetailsForm(
@@ -57,6 +59,8 @@ fun ProductDetailsForm(
 
     var showDialog by remember { mutableStateOf(false) }
 
+    val showCancelDialog: Boolean by viewModel.showCancelDialog.collectAsState()
+
     val timer = object : CountDownTimer(5000, 1000) {
         override fun onTick(p0: Long) {
         }
@@ -75,12 +79,28 @@ fun ProductDetailsForm(
     val fields = if (hasPaid) product?.formFields?.getOtherFields()
         ?.chunked(3) else product?.formFields?.getPriorityFields()?.chunked(3)
 
+
+
+    DisplayDialog(
+        show = showCancelDialog,
+        onDialogDismiss = viewModel::onDialogDismiss,
+        onDialogConfirm = {
+            viewModel.onDialogConfirm(); navigator.navigate(Routes.ProductList) {
+            popUpTo(Routes.ProductList) {
+                inclusive = true
+            }
+        }
+        }
+    )
+
     MyCoverTemplate(
         onBackPressed = {
             if (viewModel.formIndex.value > 0) {
                 viewModel.formIndex.value -= 1
             }
         },
+        onCanceledPressed = { viewModel.onOpenDialogClicked() },
+
         content = {
 
             if (showDialog) {
@@ -153,7 +173,7 @@ fun ProductDetailsForm(
                                 product.name.uppercase(),
                                 style = MaterialTheme.typography.h1.copy(
                                     colorSpaceGray,
-                                    fontSize = 12.sp
+                                    fontSize = 10.sp
                                 )
                             )
                             Box(Modifier.width(4.dp))

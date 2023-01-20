@@ -11,10 +11,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
@@ -28,6 +30,8 @@ fun MyCoverTemplate(
     onBackPressed: () -> Unit = {},
     onCanceledPressed: () -> Unit = {}
 ) {
+
+
     ConstraintLayout(Modifier.fillMaxSize()) {
         val (bgStart, bgBottom, layout) = createRefs()
 
@@ -272,6 +276,56 @@ fun PaymentType(
             }
 
 
+        }
+    }
+}
+
+@Composable
+fun DisplayDialog(show: Boolean, onDialogConfirm: () -> Unit, onDialogDismiss: () -> Unit) {
+
+    if (show) {
+        AlertDialog(onDismissRequest = onDialogDismiss,
+
+            confirmButton = {
+                TextButton(onClick = onDialogConfirm) {
+                    Text("Ok")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDialogDismiss) {
+                    Text("Cancel")
+                }
+            },
+            title = { Text("Cancel Process") },
+            text = { Text("you will loose your data") }
+        )
+    }
+}
+
+@Composable
+private fun DialogUI(
+    modifier: Modifier = Modifier,
+    onDialogConfirm: () -> Unit,
+    onDialogDismiss: () -> Unit,
+) {
+    Card(
+        modifier = Modifier.padding(10.dp),
+        elevation = 8.dp
+    ) {
+        Column(modifier.background(Color.White)) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Cancel Process")
+                Text("you will loose your progress so far ")
+            }
+
+            Row() {
+                Button(onClick = onDialogDismiss) {
+                    Text(text = "No")
+                }
+                Button(onClick = onDialogConfirm) {
+                    Text(text = "Yes")
+                }
+            }
         }
     }
 }
