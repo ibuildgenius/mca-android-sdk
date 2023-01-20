@@ -301,31 +301,3 @@ fun DisplayDialog(show: Boolean, onDialogConfirm: () -> Unit, onDialogDismiss: (
         )
     }
 }
-
-@Composable
-private fun DialogUI(
-    modifier: Modifier = Modifier,
-    onDialogConfirm: () -> Unit,
-    onDialogDismiss: () -> Unit,
-) {
-    Card(
-        modifier = Modifier.padding(10.dp),
-        elevation = 8.dp
-    ) {
-        Column(modifier.background(Color.White)) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Cancel Process")
-                Text("you will loose your progress so far ")
-            }
-
-            Row() {
-                Button(onClick = onDialogDismiss) {
-                    Text(text = "No")
-                }
-                Button(onClick = onDialogConfirm) {
-                    Text(text = "Yes")
-                }
-            }
-        }
-    }
-}

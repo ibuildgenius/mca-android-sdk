@@ -16,17 +16,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.covergenius.mca_sdk_android.R
-import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Separator
 import com.covergenius.mca_sdk_android.common.utils.center
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
-import com.covergenius.mca_sdk_android.data.remote.dto.fromJson
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverButton
 import com.covergenius.mca_sdk_android.presentation.views.components.MyCoverTemplate
-import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListViewModel
+import com.covergenius.mca_sdk_android.presentation.views.html.HtmlText
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
@@ -36,9 +33,11 @@ import kotlinx.coroutines.launch
 fun ProductInfoScreen(
     onContinuePressed: () -> Unit,
     navigator: NavController,
+    viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState(pageCount = 3)
 
+    val product = viewModel.product.value
 
     MyCoverTemplate(
         onCanceledPressed = {navigator.popBackStack()},
@@ -51,7 +50,7 @@ fun ProductInfoScreen(
                 Tabs(pagerState = pagerState)
                 Box(Modifier.height(10.dp))
                 Column(Modifier.weight(1f)) {
-                    TabsContent(pagerState = pagerState)
+                    TabsContent(pagerState = pagerState, product)
                 }
 
                 Column {
@@ -121,34 +120,20 @@ fun Tabs(pagerState: PagerState) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
+fun TabsContent(pagerState: PagerState, product: ProductDetail?) {
+
     HorizontalPager(state = pagerState, modifier = Modifier.background(colorPrimaryBg)) { page ->
         when (page) {
             0 -> TabsContentScreen(
-                perks = listOf(
-                    "Get this Auto insurance plan",
-                    "Provide Vehicle Detail",
-                    "Get your Insurance Certificate",
-                    "Inspect your vehicle, form anywhere",
-                ),
+                perks = product?.howItWorks,
                 icon = R.drawable.how_it_works
             )
             1 -> TabsContentScreen(
-                perks = listOf(
-                    "3rd Party Bodily Injury",
-                    "3rd Party Property Damage Up to 1 Million",
-                    "Own Accident Damage",
-                    "Excess Buy Back",
-                    "Theft",
-                ),
+                perks = "",
                 icon = R.drawable.benefits
             )
             2 -> TabsContentScreen(
-                perks = listOf(
-                    "Take Pictures of damage",
-                    "Track Progress of your Claim",
-                    "Get paid",
-                ),
+                perks = product?.howToClaim,
                 icon = R.drawable.how_to_claim
             )
         }
@@ -158,9 +143,9 @@ fun TabsContent(pagerState: PagerState) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContentScreen(perks: List<String>, icon: Int) {
+fun TabsContentScreen(perks: String?, icon: Int) {
+    val data = if(!perks.isNullOrEmpty()) perks else ""
     Column(
-
         Modifier
             .fillMaxWidth()
             .fillMaxHeight()
@@ -186,6 +171,10 @@ fun TabsContentScreen(perks: List<String>, icon: Int) {
         Box(Modifier.padding(vertical = 25.dp, horizontal = 5.dp)) {
             Separator()
         }
+
+        HtmlText(html = data)
+
+    /*
         LazyColumn(
             Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Top,
@@ -209,6 +198,6 @@ fun TabsContentScreen(perks: List<String>, icon: Int) {
                     )
                 }
             }
-        }
+        }*/
     }
 }
