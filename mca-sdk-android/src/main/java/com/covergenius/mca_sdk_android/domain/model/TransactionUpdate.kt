@@ -14,6 +14,6 @@ class TransactionUpdate(
     val status: String
 ) {
     fun isSuccessful(): Boolean =
-        this.status.lowercase() == "successful"
+        this.status.lowercase() == "successful" || this.status.lowercase() == "success"
 
 }

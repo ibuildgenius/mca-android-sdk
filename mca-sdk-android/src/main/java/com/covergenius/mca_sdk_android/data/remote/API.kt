@@ -3,6 +3,7 @@ package com.covergenius.mca_sdk_android.data.remote
 import com.covergenius.mca_sdk_android.data.remote.dto.Response
 import com.covergenius.mca_sdk_android.data.remote.dto.payment.PaymentResponse
 import com.covergenius.mca_sdk_android.domain.model.SelectModel
+import com.covergenius.mca_sdk_android.domain.model.TransactionUpdate
 import retrofit2.http.*
 
 interface API {
@@ -12,18 +13,19 @@ interface API {
         @Header("Authorization") token: String,
         @Body body: String): Response
 
-
     @Headers("Content-Type: application/json")
     @POST("/v1/sdk/initiate-purchase")
     suspend fun initiatePurchase(
         @Header("Authorization") token: String,
         @Body payload: String): PaymentResponse
 
-
     @Headers("Content-Type: application/json")
     @POST("/v1/sdk/complete-purchase")
     suspend fun completePurchase(@Header("Authorization")token: String, @Body payload: String)
 
+    @Headers("Content-Type: application/json")
+    @POST("/v1/sdk/verify-transaction")
+    suspend fun verifyTransaction(@Header("Authorization")token: String, @Body payload: String): TransactionUpdate
 
     @GET
     suspend fun getData(@Url url: String, @Header("Authorization") token: String): SelectModel

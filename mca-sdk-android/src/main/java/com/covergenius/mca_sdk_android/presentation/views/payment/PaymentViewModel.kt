@@ -2,6 +2,7 @@ package com.covergenius.mca_sdk_android.presentation.views.payment
 
 import android.app.Application
 import android.os.CountDownTimer
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,7 @@ import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.domain.model.TransactionUpdate
 import com.covergenius.mca_sdk_android.domain.model.resolvedPaymentChannel
 import com.covergenius.mca_sdk_android.domain.use_case.InitiatePurchaseUseCase
+import com.covergenius.mca_sdk_android.domain.use_case.TransactionVerificationUseCase
 import com.google.gson.Gson
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
@@ -26,9 +28,13 @@ import javax.inject.Inject
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     application: Application,
-    private val initiatePurchaseUseCase: InitiatePurchaseUseCase
+    private val initiatePurchaseUseCase: InitiatePurchaseUseCase,
+    private val verifyTransactionUseCase: TransactionVerificationUseCase
 ) :
     AndroidViewModel(application) {
+
+    var transactionStatus: MutableState<TransactionUpdate?> = mutableStateOf(null)
+
     private val context =
         getApplication<Application>().applicationContext //TODO("implement a better solution")
 
@@ -40,6 +46,9 @@ class PaymentViewModel @Inject constructor(
     val product = mutableStateOf<ProductDetail?>(null)
     val formData = mutableStateOf("")
     val businessDetails = mutableStateOf("")
+
+    var transSuccess = mutableStateOf(false)
+    var transLoading = mutableStateOf(false)
 
     val _state = mutableStateOf(PaymentState())
 
@@ -104,6 +113,36 @@ class PaymentViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun verifyTransaction() {
+        _state.value.paymentResponse?.let {
+            val data = JSONObject()
+            data.put("transaction_reference", it.data.reference)
+
+            Log.i("", "Verifying with $data")
+
+            verifyTransactionUseCase(MCA_API_KEY,data.toString()).onEach {
+                result ->
+                when(result) {
+                    is Resource.Success -> {
+                        transLoading.value = false
+                        transSuccess.value = true
+
+                        transactionStatus.value = result.data
+                        waitCompleted.value = transactionStatus.value!!.isSuccessful()
+                    }
+
+                    is Resource.Error -> {
+                        transLoading.value = false
+                    }
+
+                    is Resource.Loading -> {
+                        transLoading.value = true
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
     private fun listen(ref: String): Flow<Resource<TransactionUpdate>> = flow {

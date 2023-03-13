@@ -49,7 +49,7 @@ class ProductDetailViewModel @Inject constructor(
 
     var select: State<Map<String, List<String>>> = _select;
 
-    private val formData = mutableMapOf<String, String>()
+    private val formData = mutableMapOf<String, Any>()
 
     init {
         product.value = context.getSelectedProduct()
@@ -60,12 +60,12 @@ class ProductDetailViewModel @Inject constructor(
         context.writeString(SAVED_FORM_DATA_ENTRY, gson)
     }
 
-    fun addFormDataEntry(key: String, value: String) {
+    fun addFormDataEntry(key: String, value: Any) {
         formData[key] = value
     }
 
     fun getFormEntry(key: String): String? {
-        return formData[key]
+        return formData[key] as String?
     }
 
     fun getSelect(key: String, url: String) {

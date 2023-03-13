@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.covergenius.mca_sdk_android.presentation.views.payment
 
 import android.annotation.SuppressLint
@@ -7,13 +9,15 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
@@ -24,6 +28,9 @@ import com.covergenius.mca_sdk_android.data.cache.writeBoolean
 import com.covergenius.mca_sdk_android.data.remote.dto.getOtherFields
 import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.components.*
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -33,6 +40,10 @@ fun PaymentScreen(
 ) {
 
     var buttonText by remember { mutableStateOf("Continue") }
+
+    var transactionTimerProgress by remember { mutableStateOf(1.0) }
+    var timeleft by remember { mutableStateOf(10.0) }
+    var startTimer by remember { mutableStateOf(false) }
     val showCancelDialog: Boolean by viewModel.showCancelDialog.collectAsState()
 
     val context = LocalContext.current
@@ -70,32 +81,51 @@ fun PaymentScreen(
                 )
             }
 
+            /*   if(viewModel._state.value.error.isNotEmpty()) {
+                   //Notifier.showNotification(context, title = "Error", text = viewModel._state.value.error, backgroundColor = colorError)
+                   Popup(alignment = Alignment.TopCenter, properties = PopupProperties(dismissOnClickOutside = true, focusable = true)) {
+                       Box(Modifier.padding(12.dp)) {
+                           Column(Modifier.padding(11.dp).background(colorError)) {
+                               Text(viewModel._state.value.error, style = MaterialTheme.typography.body1, color = Color.White)
+                           }
+                       }
+                   }
+               }*/
+
+
+
             Column(
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxHeight()
             ) {
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            colorPrimaryBg
-                        )
-                        .padding(8.dp)
-                ) {
-                    Text(
-                        getFieldFromJson("email", viewModel.formData.value) ?: "",
-                        style = MaterialTheme.typography.subtitle1.copy(color = colorGrey)
-                    )
-                    Box(modifier = Modifier.height(4.dp))
-                    Row {
-                        Text("Pay", style = MaterialTheme.typography.body1.copy(color = colorGrey))
-                        Box(Modifier.width(4.dp))
+
+                if (viewModel._state.value.paymentResponse?.data == null) {
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                colorPrimaryBg
+                            )
+                            .padding(8.dp)
+                    ) {
                         Text(
-                            "N${viewModel.product.value?.price}",
-                            style = MaterialTheme.typography.body2.copy(colorPrimary)
+                            getFieldFromJson("email", viewModel.formData.value) ?: "",
+                            style = MaterialTheme.typography.subtitle1.copy(color = colorGrey)
                         )
+                        Box(modifier = Modifier.height(4.dp))
+                        Row {
+                            Text(
+                                "Pay",
+                                style = MaterialTheme.typography.body1.copy(color = colorGrey)
+                            )
+                            Box(Modifier.width(4.dp))
+                            Text(
+                                "N${viewModel.product.value?.price}",
+                                style = MaterialTheme.typography.body2.copy(colorPrimary)
+                            )
+                        }
                     }
                 }
 
@@ -104,6 +134,7 @@ fun PaymentScreen(
                 if (viewModel._state.value.paymentResponse?.data == null) {
                     StepOne(viewModel)
                 } else {
+                    startTimer = true
                     buttonText = "I have sent the money"
                     StepTwo(viewModel)
                 }
@@ -116,6 +147,30 @@ fun PaymentScreen(
                     Separator(Modifier.align(Alignment.Center))
                 }
 
+
+                if (viewModel._state.value.paymentResponse?.data != null) {
+
+                    LaunchedEffect(key1 = transactionTimerProgress, key2 = startTimer) {
+                        if (transactionTimerProgress > 0 && startTimer) {
+                            delay(30.seconds)
+                            transactionTimerProgress -= 0.05
+                            timeleft -= 0.5
+                            if (!viewModel.transLoading.value) {
+                                viewModel.verifyTransaction()
+                            }
+
+                        }
+                    }
+
+                    Column(Modifier.padding(vertical = 8.dp)) {
+                        Text(
+                            "Transaction would expire in ${timeleft.toInt()} minute(s)",
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                        LinearProgressIndicator(progress = transactionTimerProgress.toFloat(), modifier = Modifier
+                            .height(4.dp).fillMaxWidth())
+                    }
+                }
                 MyCoverButton(buttonText = buttonText,
                     enabled = viewModel.waitCompleted.value,
                     onPressed = {
@@ -174,7 +229,6 @@ fun StepOne(viewModel: PaymentViewModel) {
         }
     }
 }
-
 
 @Composable
 fun StepTwo(viewModel: PaymentViewModel) {

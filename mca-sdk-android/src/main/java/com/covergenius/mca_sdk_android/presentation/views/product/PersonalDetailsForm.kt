@@ -18,6 +18,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -97,6 +98,8 @@ fun ProductDetailsForm(
         onBackPressed = {
             if (viewModel.formIndex.value > 0) {
                 viewModel.formIndex.value -= 1
+            } else {
+                navigator.popBackStack()
             }
         },
         onCanceledPressed = { viewModel.onOpenDialogClicked() },
@@ -255,7 +258,7 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
                 filePicker(formField = formField, viewModel = viewModel)
             } else {
 
-                val data = remember { mutableStateOf("") }
+                val data = rememberSaveable { mutableStateOf("") }
 
                 TitledTextField(
                     placeholderText = formField.description,
@@ -263,8 +266,9 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
                     keyboardType = formField.getKeyboardType(),
                     value = data.value,
                     onValueChange = { value ->
+                        val x = if(formField.dataType.lowercase() == "number") value.toInt() else value
                         data.value = value
-                        viewModel.addFormDataEntry(formField.name, value)
+                        viewModel.addFormDataEntry(formField.name, x)
                     }
                 )
             }
@@ -294,8 +298,12 @@ fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth-$month-$year"
-            isoDate.value = "$dayOfMonth$month$year"
+
+            val newMonth = if(month.toString().length <= 1) "0$month" else month
+
+
+            date.value = "$year-${newMonth}-$dayOfMonth"
+            isoDate.value = "$year-${newMonth}-$dayOfMonth"
             viewModel.addFormDataEntry(formField.name, isoDate.value)
         }, mYear, mMonth, mDay
     )

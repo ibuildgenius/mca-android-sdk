@@ -16,3 +16,4 @@ val colorGrey = Color(0xFF98A2B3)
 val colorGreyLight = Color(0xFFEAECF0)
 val colorBackground = Color(0xFFF2F4F7)
 val colorGray = Color(0xffD0D5DD)
+val colorError = Color.Red
