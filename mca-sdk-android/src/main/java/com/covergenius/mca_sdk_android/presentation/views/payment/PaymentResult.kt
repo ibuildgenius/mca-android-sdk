@@ -36,21 +36,21 @@ fun PaymentResult(proceedTo: () -> Unit) {
             Box(modifier = Modifier.height(10.dp))
 
             Text(
-                "Payment Successful",
+                "Purchase Successful",
                 style = MaterialTheme.typography.body2.copy(fontSize = 22.sp),
                 textAlign = TextAlign.Center
             )
             Box(modifier = Modifier.height(10.dp))
             Text(
-                "You have successfully made\n" +
-                        "payment for your Auto Insurance,\n" +
+                "You have successfully completed\n" +
+                        "your purchase,\n" +
                         "Kindly Check your email\n" +
                         "to complete your activation",
                 style = MaterialTheme.typography.h1.copy(colorSpaceGray, lineHeight = 20.sp),
                 textAlign = TextAlign.Center
             )
         }
-        MyCoverButton("Go to Inbox", proceedTo)
+        MyCoverButton("Done", proceedTo)
 
     }
 }

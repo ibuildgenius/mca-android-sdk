@@ -11,17 +11,17 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.covergenius.mca_sdk_android.R
+import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Toolbar
+import com.covergenius.mca_sdk_android.presentation.views.product.ProductDetailViewModel
 import java.util.*
 
 @Composable
@@ -157,7 +157,7 @@ fun MyCoverButton(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DropdownField(title: String, options: List<String>) {
+fun DropdownField(title: String, options: List<String>, onValueChange: (s: String) -> Unit = {}) {
 
     var data: List<String> = options
 
@@ -166,7 +166,7 @@ fun DropdownField(title: String, options: List<String>) {
     }
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(data[0]) }
+    var selectedOptionText by remember { mutableStateOf("") }
 
 
 
@@ -179,7 +179,7 @@ fun DropdownField(title: String, options: List<String>) {
                 singleLine = true,
                 value = selectedOptionText,
                 textStyle = MaterialTheme.typography.body1,
-                onValueChange = { },
+                onValueChange = {},
                 trailingIcon = {
                     Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "", tint = colorGrey)
                 },
@@ -197,6 +197,8 @@ fun DropdownField(title: String, options: List<String>) {
                         onClick = {
                             selectedOptionText = selectionOption
                             expanded = false
+                            Log.i("" ,"Valued changed to $selectedOptionText")
+                            onValueChange(selectionOption)
                         }
                     ) {
                         Text(text = selectionOption)

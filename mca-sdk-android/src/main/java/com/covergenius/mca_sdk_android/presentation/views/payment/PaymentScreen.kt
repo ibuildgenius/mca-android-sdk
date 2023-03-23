@@ -22,9 +22,7 @@ import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.presentation.theme.*
 import com.covergenius.mca_sdk_android.common.utils.Separator
-import com.covergenius.mca_sdk_android.data.cache.PAYMENT_SUCCESS_KEY
-import com.covergenius.mca_sdk_android.data.cache.getFieldFromJson
-import com.covergenius.mca_sdk_android.data.cache.writeBoolean
+import com.covergenius.mca_sdk_android.data.cache.*
 import com.covergenius.mca_sdk_android.data.remote.dto.getOtherFields
 import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.components.*
@@ -100,7 +98,7 @@ fun PaymentScreen(
                     .fillMaxHeight()
             ) {
 
-                if (viewModel._state.value.paymentResponse?.data == null) {
+
                     Column(
                         horizontalAlignment = Alignment.End,
                         modifier = Modifier
@@ -111,27 +109,32 @@ fun PaymentScreen(
                             .padding(8.dp)
                     ) {
                         Text(
-                            getFieldFromJson("email", viewModel.formData.value) ?: "",
+                            if(viewModel._state.value.response?.data != null)  getFieldFromJson("email", viewModel.formData.value) else viewModel.product.value!!.prefix,
                             style = MaterialTheme.typography.subtitle1.copy(color = colorGrey)
                         )
                         Box(modifier = Modifier.height(4.dp))
+
                         Row {
+                            if(viewModel._state.value.response?.data != null) {
+                                Text(
+                                    "Pay",
+                                    style = MaterialTheme.typography.body1.copy(color = colorGrey)
+                                )
+
+                                Box(Modifier.width(4.dp))
+                            }
+
                             Text(
-                                "Pay",
-                                style = MaterialTheme.typography.body1.copy(color = colorGrey)
-                            )
-                            Box(Modifier.width(4.dp))
-                            Text(
-                                "N${viewModel.product.value?.price}",
+                                if(viewModel._state.value.response?.data != null) "N${viewModel._state.value.response!!.data.amount}" else viewModel.product.value!!.name,
                                 style = MaterialTheme.typography.body2.copy(colorPrimary)
                             )
                         }
                     }
-                }
+
 
                 Box(modifier = Modifier.height(20.dp))
 
-                if (viewModel._state.value.paymentResponse?.data == null) {
+                if (viewModel._state.value.response?.data == null) {
                     StepOne(viewModel)
                 } else {
                     startTimer = true
@@ -148,17 +151,16 @@ fun PaymentScreen(
                 }
 
 
-                if (viewModel._state.value.paymentResponse?.data != null) {
+                if (viewModel._state.value.response?.data != null && !viewModel.waitCompleted.value) {
 
                     LaunchedEffect(key1 = transactionTimerProgress, key2 = startTimer) {
                         if (transactionTimerProgress > 0 && startTimer) {
                             delay(30.seconds)
                             transactionTimerProgress -= 0.05
                             timeleft -= 0.5
-                            if (!viewModel.transLoading.value) {
+                            if (!viewModel.transLoading.value && transactionTimerProgress > 0) {
                                 viewModel.verifyTransaction()
                             }
-
                         }
                     }
 
@@ -174,7 +176,7 @@ fun PaymentScreen(
                 MyCoverButton(buttonText = buttonText,
                     enabled = viewModel.waitCompleted.value,
                     onPressed = {
-                        if (viewModel._state.value.paymentResponse?.data == null) {
+                        if (viewModel._state.value.response?.data == null) {
                             viewModel.initializePurchase()
 
                         } else {
@@ -182,6 +184,7 @@ fun PaymentScreen(
                                     ?.isNotEmpty()!!
                             ) {
                                 context.writeBoolean(PAYMENT_SUCCESS_KEY, true)
+                                context.writeString(TRANSACTION_REF_KEY, viewModel._state.value.response!!.data.reference)
                                 navigator.navigate(Routes.ProductForms)
                             } else {
                                 navigator.navigate(Routes.ProductList)
@@ -194,10 +197,8 @@ fun PaymentScreen(
     )
 }
 
-
 @Composable
 fun StepOne(viewModel: PaymentViewModel) {
-
     Column {
         Text(
             "Select Payment method",
@@ -232,8 +233,7 @@ fun StepOne(viewModel: PaymentViewModel) {
 
 @Composable
 fun StepTwo(viewModel: PaymentViewModel) {
-
-    val data = viewModel._state.value.paymentResponse?.data
+    val data = viewModel._state.value.response?.data
 
     data?.let {
 
@@ -268,5 +268,3 @@ fun StepTwo(viewModel: PaymentViewModel) {
         }
     }
 }
-
-

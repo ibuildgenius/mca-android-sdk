@@ -1,7 +1,6 @@
 package com.covergenius.mca_sdk_android.presentation.views.payment
 
 import android.app.Application
-import android.os.CountDownTimer
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
@@ -12,8 +11,10 @@ import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.cache.*
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
+import com.covergenius.mca_sdk_android.data.remote.dto.payment.PaymentResponse
 import com.covergenius.mca_sdk_android.domain.model.PaymentChannel
 import com.covergenius.mca_sdk_android.domain.model.TransactionUpdate
+import com.covergenius.mca_sdk_android.domain.model.VerifyTransactionResponse
 import com.covergenius.mca_sdk_android.domain.model.resolvedPaymentChannel
 import com.covergenius.mca_sdk_android.domain.use_case.InitiatePurchaseUseCase
 import com.covergenius.mca_sdk_android.domain.use_case.TransactionVerificationUseCase
@@ -29,11 +30,11 @@ import javax.inject.Inject
 class PaymentViewModel @Inject constructor(
     application: Application,
     private val initiatePurchaseUseCase: InitiatePurchaseUseCase,
-    private val verifyTransactionUseCase: TransactionVerificationUseCase
+    private val verifyTransactionUseCase: TransactionVerificationUseCase,
 ) :
     AndroidViewModel(application) {
 
-    var transactionStatus: MutableState<TransactionUpdate?> = mutableStateOf(null)
+    var transactionStatus: MutableState<VerifyTransactionResponse?> = mutableStateOf(null)
 
     private val context =
         getApplication<Application>().applicationContext //TODO("implement a better solution")
@@ -44,13 +45,15 @@ class PaymentViewModel @Inject constructor(
         mutableStateOf(true)
 
     val product = mutableStateOf<ProductDetail?>(null)
+
     val formData = mutableStateOf("")
+
     val businessDetails = mutableStateOf("")
 
     var transSuccess = mutableStateOf(false)
     var transLoading = mutableStateOf(false)
 
-    val _state = mutableStateOf(PaymentState())
+    val _state = mutableStateOf(ViewState<PaymentResponse>())
 
     val showDialog = mutableStateOf(false)
 
@@ -78,36 +81,35 @@ class PaymentViewModel @Inject constructor(
         _showCancelDialog.value = false
     }
 
-
     fun initializePurchase() {
-        val jsonObject = JSONObject()
+        val payload = JSONObject()
 
-        jsonObject.put("payload", JSONObject(formData.value))
-        jsonObject.put("instance_id", "${getFieldFromJson("instance_id", businessDetails.value)}")
-        jsonObject.put(
+        payload.put("payload", JSONObject(formData.value))
+        payload.put("instance_id", "${getFieldFromJson("instance_id", businessDetails.value)}")
+        payload.put(
             "payment_channel",
             JSONObject("{\"channel\": \"${resolvedPaymentChannel(selectedPaymentMethod.value)}\"}")
         )
 
-        Log.i("", "Payload is $jsonObject")
+        Log.i("", "Payload is $payload")
 
-        initiatePurchaseUseCase(MCA_API_KEY, jsonObject.toString()).onEach { result ->
+        initiatePurchaseUseCase(MCA_API_KEY, payload.toString()).onEach { result ->
             when (result) {
                 is Resource.Error -> {
                     showDialog.value = false
-                    _state.value = PaymentState(error = result.message ?: "A server error occurred")
+                    _state.value = ViewState<PaymentResponse>(error = result.message ?: "A server error occurred")
                 }
                 is Resource.Loading -> {
                     showDialog.value = true
-                    _state.value = PaymentState(isLoading = true)
+                    _state.value = ViewState(isLoading = true)
                 }
 
                 is Resource.Success -> {
                     showDialog.value = false
                     waitCompleted.value = false
-                    _state.value = PaymentState(paymentResponse = result.data)
+                    _state.value = ViewState(response = result.data)
 
-                    _state.value.paymentResponse?.let {
+                    _state.value.response?.let {
                         listen(it.data.reference).launchIn(viewModelScope)
                     }
                 }
@@ -116,7 +118,7 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun verifyTransaction() {
-        _state.value.paymentResponse?.let {
+        _state.value.response?.let {
             val data = JSONObject()
             data.put("transaction_reference", it.data.reference)
 
@@ -130,7 +132,7 @@ class PaymentViewModel @Inject constructor(
                         transSuccess.value = true
 
                         transactionStatus.value = result.data
-                        waitCompleted.value = transactionStatus.value!!.isSuccessful()
+                        waitCompleted.value = transactionStatus.value!!.responseCode == 1
                     }
 
                     is Resource.Error -> {

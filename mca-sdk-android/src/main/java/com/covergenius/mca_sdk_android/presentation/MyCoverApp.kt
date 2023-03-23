@@ -42,7 +42,15 @@ fun MyCoverApp() {
         }
 
         composable(route = Routes.PaymentResult) {
-            PaymentResult { navController.popBackStack(Routes.ProductList, false) }
+            PaymentResult {  navController.navigate(Routes.ProductList) {
+                popUpTo(Routes.PaymentResult) {
+                    inclusive = true
+                }
+            } }
+        }
+
+        composable(route = Routes.PurchaseComplete) {
+
         }
     }
 

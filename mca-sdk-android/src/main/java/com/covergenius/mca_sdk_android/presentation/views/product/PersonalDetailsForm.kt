@@ -2,8 +2,9 @@ package com.covergenius.mca_sdk_android.presentation.views.product
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.os.CountDownTimer
 import android.widget.DatePicker
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
@@ -38,7 +39,6 @@ import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.components.*
 import java.util.*
 
-
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -58,23 +58,21 @@ fun ProductDetailsForm(
 
     val hasPaid = context.getBoolean(PAYMENT_SUCCESS_KEY)
 
-    var showDialog by remember { mutableStateOf(false) }
-
     val showCancelDialog: Boolean by viewModel.showCancelDialog.collectAsState()
 
-    val timer = object : CountDownTimer(5000, 1000) {
-        override fun onTick(p0: Long) {
-        }
+    /* val timer = object : CountDownTimer(5000, 1000) {
+         override fun onTick(p0: Long) {
+         }
 
-        override fun onFinish() {
-            showDialog = false
-            navigator.navigate(Routes.ProductList) {
-                popUpTo(Routes.ProductList) {
-                    inclusive = true
-                }
-            }
-        }
-    }
+         override fun onFinish() {
+             showDialog = false
+             navigator.navigate(Routes.PaymentResult) {
+                 popUpTo(Routes.PaymentResult) {
+                     inclusive = true
+                 }
+             }
+         }
+     }*/
 
     //split fields into a group of 3s
     val fields = if (hasPaid) product?.formFields?.getOtherFields()
@@ -106,8 +104,8 @@ fun ProductDetailsForm(
 
         content = {
 
-            if (showDialog) {
-                AlertDialog(onDismissRequest = { showDialog = false },
+            if (viewModel.showDialog.value) {
+                AlertDialog(onDismissRequest = { viewModel.showDialog.value = false },
                     text = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text("Please Wait...", style = MaterialTheme.typography.body1)
@@ -217,15 +215,21 @@ fun ProductDetailsForm(
                         MyCoverButton("Continue", onPressed = {
 
                             if (hasPaid) {
-                                showDialog = true
-                                timer.start()
+                                if (viewModel.formIndex.value < fields?.size!! - 1) {
+                                    viewModel.formIndex.value += 1
+                                } else {
+                                    viewModel.saveFieldEntries()
+                                    viewModel.completePurchase(navigator)
+                                }
                             } else {
                                 if (viewModel.formIndex.value < fields?.size!! - 1) {
                                     viewModel.formIndex.value += 1
                                 } else {
                                     viewModel.addFormDataEntry("product_id", product.id)
                                     viewModel.saveFieldEntries()
+                                    viewModel.formIndex.value = 0
                                     onContinuePressed()
+
                                 }
                             }
                         })
@@ -255,7 +259,7 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
 
                 SelectDropdown(formField = formField, viewModel = viewModel)
             } else if (formField.inputType.lowercase() == "file") {
-                filePicker(formField = formField, viewModel = viewModel)
+                MCAFilePicker(formField = formField, viewModel = viewModel)
             } else {
 
                 val data = rememberSaveable { mutableStateOf("") }
@@ -266,7 +270,8 @@ fun FormOne(fields: List<FormField>, viewModel: ProductDetailViewModel) {
                     keyboardType = formField.getKeyboardType(),
                     value = data.value,
                     onValueChange = { value ->
-                        val x = if(formField.dataType.lowercase() == "number") value.toInt() else value
+                        val x =
+                            if (formField.dataType.lowercase() == "number") value.toInt() else value
                         data.value = value
                         viewModel.addFormDataEntry(formField.name, x)
                     }
@@ -299,11 +304,11 @@ fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
 
-            val newMonth = if(month.toString().length <= 1) "0$month" else month
+            val newMonth = if (month.toString().length <= 1) "0${month + 1}" else month + 1
+            val newDay = if (dayOfMonth.toString().length <= 1) "0$dayOfMonth" else dayOfMonth
 
-
-            date.value = "$year-${newMonth}-$dayOfMonth"
-            isoDate.value = "$year-${newMonth}-$dayOfMonth"
+            date.value = "$year-${newMonth}-$newDay"
+            isoDate.value = "$year-${newMonth}-$newDay"
             viewModel.addFormDataEntry(formField.name, isoDate.value)
         }, mYear, mMonth, mDay
     )
@@ -329,11 +334,44 @@ fun DateField(formField: FormField, viewModel: ProductDetailViewModel) {
 fun SelectDropdown(formField: FormField, viewModel: ProductDetailViewModel) {
     DropdownField(
         title = formField.label,
-        options = viewModel.select.value[formField.name] ?: listOf()
+        options = viewModel.select.value[formField.name] ?: listOf(),
+        onValueChange = {
+
+            when(formField.dataType.lowercase()) {
+                "number" -> { viewModel.addFormDataEntry(formField.name, it.toInt()) }
+                "boolean", "bool" -> {viewModel.addFormDataEntry(formField.name, it.toBoolean())}
+                else -> { viewModel.addFormDataEntry(formField.name, it) }
+            }
+
+        }
     )
 }
 
 @Composable
-fun filePicker(formField: FormField, viewModel: ProductDetailViewModel) {
+fun MCAFilePicker(formField: FormField, viewModel: ProductDetailViewModel) {
 
+    val fileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        imageUri ->
+        if (imageUri != null) {
+            viewModel.addToFileUploadList(formField.name, imageUri)
+        }
+    }
+
+
+    TitledTextField(
+        placeholderText = formField.description,
+        title = formField.label,
+        readOnly = true,
+        enabled = false,
+        value = viewModel.getFileUploadEntry(formField.name)?.path ?: "",
+        onPressed = {
+           fileLauncher.launch("image/*")
+        },
+        trailingIcon = {
+            Image(
+                painter = painterResource(id = R.drawable.attach_file),
+                contentDescription = ""
+            )
+        }
+    )
 }

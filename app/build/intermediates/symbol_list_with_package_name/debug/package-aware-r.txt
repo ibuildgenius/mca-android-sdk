@@ -82,6 +82,7 @@ dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
 drawable aiico
+drawable attach_file
 drawable benefits
 drawable bg
 drawable how_it_works

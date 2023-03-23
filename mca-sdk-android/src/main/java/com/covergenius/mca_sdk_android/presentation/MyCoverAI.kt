@@ -9,7 +9,6 @@ import com.covergenius.mca_sdk_android.domain.model.Credential
 import com.covergenius.mca_sdk_android.domain.model.Form
 import com.covergenius.mca_sdk_android.domain.model.PaymentOption
 import com.covergenius.mca_sdk_android.domain.model.TransactionType
-import com.covergenius.mca_sdk_android.presentation.MyCoverApp
 import com.covergenius.mca_sdk_android.presentation.theme.McasdkandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 

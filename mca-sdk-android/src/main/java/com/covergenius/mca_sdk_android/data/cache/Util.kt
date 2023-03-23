@@ -17,8 +17,10 @@ import kotlinx.coroutines.runBlocking
 const val PREFERENCE_NAME = "MyCover_Datastore"
 const val SELECTED_PRODUCT_KEY = "selected_product_key"
 const val SAVED_FORM_DATA_ENTRY = "form_data_entry"
+const val SAVED_FILE_DATA_ENTRY = "file_upload_list"
 const val BUSINESS_INSTANCE_ID = "business_instance_id"
 const val PAYMENT_SUCCESS_KEY = "payment_success"
+const val TRANSACTION_REF_KEY = "transaction_reference"
 
 val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCE_NAME)
 

@@ -3,6 +3,7 @@ package com.covergenius.mca_sdk_android.domain.use_case
 import android.util.Log
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.domain.model.TransactionUpdate
+import com.covergenius.mca_sdk_android.domain.model.VerifyTransactionResponse
 import com.covergenius.mca_sdk_android.domain.repo.InitiatePurchaseRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class TransactionVerificationUseCase @Inject constructor(val repo: InitiatePurchaseRepo) {
     private val SCOPE = "VERIFY_TRANSAC_USE_CASE"
 
-    operator fun invoke(token: String, payload: String): Flow<Resource<TransactionUpdate>> = flow {
+    operator fun invoke(token: String, payload: String): Flow<Resource<VerifyTransactionResponse>> = flow {
         try {
             emit(Resource.Loading())
             val response = repo.verifyTransaction(token, payload)

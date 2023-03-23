@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 class SelectModel(
     @SerializedName("data")
-    val `data`: List<String>,
+    val `data`: List<Any>,
     @SerializedName("responseCode")
     val responseCode: Int,
     @SerializedName("responseText")

@@ -6,4 +6,5 @@ object Routes {
     const val ProductList = "productsScreen"
     const val Payment = "paymentScreen"
     const val PaymentResult = "paymentResultScreen"
+    const val PurchaseComplete = "purchaseComplete"
 }
