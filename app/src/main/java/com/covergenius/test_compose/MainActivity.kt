@@ -17,6 +17,8 @@ import com.covergenius.mca_sdk_android.presentation.MyCoverAI
 import com.covergenius.test_compose.ui.theme.Test_composeTheme
 
 class MainActivity : ComponentActivity() {
+
+    val mcaToken =  "MCAPUBK_TEST|48c01008-5f01-4705-b63f-e71ef5fc974f"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,8 +31,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column() {
                         val context = LocalContext.current
-                        MyCoverAI.init(context)
-                        FloatingActionButton(onClick = { MyCoverAI.init(context) }) {
+                        MyCoverAI.init(context, mcaToken)
+                        FloatingActionButton(onClick = { MyCoverAI.init(context,  mcaToken) }) {
                         Greeting("Android")
 
                         }

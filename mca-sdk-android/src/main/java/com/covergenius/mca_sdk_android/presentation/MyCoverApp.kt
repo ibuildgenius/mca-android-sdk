@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.covergenius.mca_sdk_android.Credentials
 import com.covergenius.mca_sdk_android.presentation.theme.colorBackground
 import com.covergenius.mca_sdk_android.presentation.views.Routes
 import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentResult
@@ -15,9 +16,17 @@ import com.covergenius.mca_sdk_android.presentation.views.payment.PaymentScreen
 import com.covergenius.mca_sdk_android.presentation.views.product_list.ProductListScreen
 
 @Composable
-fun MyCoverApp() {
+fun MyCoverApp(token: String?) {
     val navController = rememberNavController()
     // val backStackEntry by navController.currentBackStackEntryAsState()
+
+   // val context = LocalContext.current
+
+    if (token.isNullOrEmpty()) return
+
+    //context.writeString(API_TOKEN_STRING, token)
+
+    Credentials.token = token
 
     NavHost(
         navController = navController,

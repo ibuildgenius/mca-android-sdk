@@ -177,6 +177,8 @@ fun ProductDetailsForm(
                                     fontSize = 10.sp
                                 )
                             )
+
+                            if(product.name.contains(""))
                             Box(Modifier.width(4.dp))
                             Image(
                                 painter = painterResource(id = R.drawable.aiico),
@@ -218,6 +220,7 @@ fun ProductDetailsForm(
                                 if (viewModel.formIndex.value < fields?.size!! - 1) {
                                     viewModel.formIndex.value += 1
                                 } else {
+                                    viewModel.addFormDataEntry("is_full_year", true)
                                     viewModel.saveFieldEntries()
                                     viewModel.completePurchase(navigator)
                                 }

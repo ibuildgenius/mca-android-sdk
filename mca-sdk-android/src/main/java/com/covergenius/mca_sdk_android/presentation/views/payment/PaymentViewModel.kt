@@ -5,8 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.covergenius.mca_sdk_android.MCA_API_KEY
-import com.covergenius.mca_sdk_android.PUSHER_APP_KEY
+import com.covergenius.mca_sdk_android.Credentials
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.common.utils.Log
 import com.covergenius.mca_sdk_android.data.cache.*
@@ -93,7 +92,7 @@ class PaymentViewModel @Inject constructor(
 
         Log.i("", "Payload is $payload")
 
-        initiatePurchaseUseCase(MCA_API_KEY, payload.toString()).onEach { result ->
+        initiatePurchaseUseCase(Credentials.token, payload.toString()).onEach { result ->
             when (result) {
                 is Resource.Error -> {
                     showDialog.value = false
@@ -124,7 +123,7 @@ class PaymentViewModel @Inject constructor(
 
             Log.i("", "Verifying with $data")
 
-            verifyTransactionUseCase(MCA_API_KEY,data.toString()).onEach {
+            verifyTransactionUseCase(Credentials.token,data.toString()).onEach {
                 result ->
                 when(result) {
                     is Resource.Success -> {
@@ -151,7 +150,7 @@ class PaymentViewModel @Inject constructor(
         val options = PusherOptions()
         options.setCluster("us2")
 
-        val pusher = Pusher(PUSHER_APP_KEY, options)
+        val pusher = Pusher(Credentials.PUSHER_APP_KEY, options)
 
         pusher.connect()
 

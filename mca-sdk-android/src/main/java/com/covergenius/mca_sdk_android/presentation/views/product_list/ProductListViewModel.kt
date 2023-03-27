@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.covergenius.mca_sdk_android.MCA_API_KEY
+import com.covergenius.mca_sdk_android.Credentials
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.data.cache.*
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
@@ -35,11 +35,10 @@ class ProductListViewModel @Inject constructor(
 
     init {
         //TODO("Secure token")
-        initialise(MCA_API_KEY, PaymentOption.Gateway)
+        initialise(Credentials.token, PaymentOption.Gateway)
     }
 
     fun initialise(token: String, paymentOption: PaymentOption = PaymentOption.Gateway) {
-
         //rest entries
         context.clearCache()
 

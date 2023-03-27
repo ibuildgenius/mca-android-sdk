@@ -7,7 +7,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.covergenius.mca_sdk_android.MCA_API_KEY
+import com.covergenius.mca_sdk_android.Credentials
 import com.covergenius.mca_sdk_android.common.Resource
 import com.covergenius.mca_sdk_android.data.cache.*
 import com.covergenius.mca_sdk_android.data.remote.dto.ProductDetail
@@ -109,7 +109,7 @@ class ProductDetailViewModel @Inject constructor(
         if (fileList.keys.isNotEmpty()) {
 
             for (file in fileList) {
-                val result = fileUploadUSeCase(file = file.value, token = MCA_API_KEY, contentResolver = context.contentResolver)
+                val result = fileUploadUSeCase(file = file.value, token = Credentials.token, contentResolver = context.contentResolver)
 
                 if (!result.isNullOrEmpty()) {
                     addFormDataEntry(file.key, result)
@@ -127,7 +127,7 @@ class ProductDetailViewModel @Inject constructor(
         data.put("reference", context.getString(TRANSACTION_REF_KEY))
         data.put("payload", payload)
 
-        completePurchaseUseCase(token = MCA_API_KEY, payload = data.toString()).onEach { result ->
+        completePurchaseUseCase(token = Credentials.token, payload = data.toString()).onEach { result ->
 
             when (result) {
                 is Resource.Loading -> {

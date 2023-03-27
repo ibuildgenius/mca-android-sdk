@@ -21,6 +21,7 @@ const val SAVED_FILE_DATA_ENTRY = "file_upload_list"
 const val BUSINESS_INSTANCE_ID = "business_instance_id"
 const val PAYMENT_SUCCESS_KEY = "payment_success"
 const val TRANSACTION_REF_KEY = "transaction_reference"
+const val API_TOKEN_STRING = "api_token"
 
 val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCE_NAME)
 

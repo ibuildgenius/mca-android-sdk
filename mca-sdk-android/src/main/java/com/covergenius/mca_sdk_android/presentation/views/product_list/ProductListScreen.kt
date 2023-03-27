@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.covergenius.mca_sdk_android.MCA_API_KEY
+import com.covergenius.mca_sdk_android.Credentials
 import com.covergenius.mca_sdk_android.R
 import com.covergenius.mca_sdk_android.data.cache.*
 
@@ -70,7 +70,7 @@ fun ProductListScreen(
 
                 Box(Modifier.height(12.dp))
 
-                MyCoverButton(onPressed = { viewModel.initialise(MCA_API_KEY)}, buttonText = "Try Again", modifier = Modifier.padding(12.dp))
+                MyCoverButton(onPressed = { viewModel.initialise(Credentials.token)}, buttonText = "Try Again", modifier = Modifier.padding(12.dp))
             }
 
         } else if (state.response != null) {
