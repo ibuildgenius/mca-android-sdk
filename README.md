@@ -30,6 +30,9 @@ dependencies {
 ## Usage
 Initialise the sdk 
 
-<div align="center">
-      <img title="step four" src="3.png" />
-</div>
+```kotlin
+
+MyCoverAI.init(this, "<YOUR-API-TOKEN>")
+
+
+```
