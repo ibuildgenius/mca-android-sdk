@@ -6,8 +6,30 @@
 
 An android SDK built natively with kotlin and Jetpack Compose, for buying insurance policies on the [mycover.ai](https://www.mycover.ai/) platform
 
-##Add the dependencies to your gradle files
+## Add the dependencies to your gradle files
 
+### add the jitpack maven repo in your settings.gradle file
 <div align="center">
       <img title="step one" src="1.png" />
+</div>
+
+### Or if you're using an older gradle version(root level build.gradle)
+<div align="center">
+      <img title="step two" src="2.png" />
+</div>
+
+### in your module level build.gradle file, add the mycover.ai sdk dependency
+```gradle
+
+dependencies {
+    implementation 'com.github.ibuildgenius:mca-android-sdk:<latest-version>'
+}
+
+```
+
+## Usage
+Initialise the sdk 
+
+<div align="center">
+      <img title="step four" src="3.png" />
 </div>
