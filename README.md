@@ -6,3 +6,8 @@
 
 An android SDK built natively with kotlin and Jetpack Compose, for buying insurance policies on the [mycover.ai](https://www.mycover.ai/) platform
 
+##Add the dependencies to your gradle files
+
+<div align="center">
+      <img title="step one" src="1.png" />
+</div>

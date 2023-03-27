@@ -31,7 +31,12 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column() {
                         val context = LocalContext.current
-                        MyCoverAI.init(context, mcaToken)
+
+
+                        MyCoverAI.init(context, "<YOUR_API_TOKEN>")
+
+
+
                         FloatingActionButton(onClick = { MyCoverAI.init(context,  mcaToken) }) {
                         Greeting("Android")
 
