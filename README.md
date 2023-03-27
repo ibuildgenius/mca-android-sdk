@@ -1,0 +1,1 @@
+#MyCover.ai(https://www.mycover.ai/) Insurance SDK Android
